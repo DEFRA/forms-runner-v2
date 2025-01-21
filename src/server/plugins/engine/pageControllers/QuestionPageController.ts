@@ -19,7 +19,6 @@ import {
 } from '~/src/server/plugins/engine/helpers.js'
 import { type FormModel } from '~/src/server/plugins/engine/models/index.js'
 import { PageController } from '~/src/server/plugins/engine/pageControllers/PageController.js'
-import { getFormMetadata } from '~/src/server/plugins/engine/services/formsService.js'
 import {
   type FormContext,
   type FormContextRequest,
@@ -361,6 +360,8 @@ export class QuestionPageController extends PageController {
 
     const startPath = this.getStartPath()
     const summaryPath = this.getSummaryPath()
+    const { formsService } = this.model.services
+    const { getFormMetadata } = formsService
 
     // Warn the user if the form has no notification email set only on start page and summary page
     if ([startPath, summaryPath].includes(path) && !isForceAccess) {
