@@ -65,7 +65,7 @@
       "path": "/what-is-your-business",
       "next": [
         {
-          "path": "/summary"
+          "path": "/score-results"
         }
       ],
       "components": [
@@ -79,6 +79,27 @@
           "schema": {}
         }
       ]
+    },
+    {
+      "title": "Score results",
+      "path": "/score-results",
+      "next": [
+        {
+          "path": "/summary"
+        }
+      ],
+      "components": [
+        {
+          "name": "sdFYHf",
+          "title": "What is your business?",
+          "type": "RadiosField",
+          "list": "dfdGFY",
+          "hint": "",
+          "options": {},
+          "schema": {}
+        }
+      ],
+      "controller": "CustomPageController"
     },
     {
       "path": "/summary",
