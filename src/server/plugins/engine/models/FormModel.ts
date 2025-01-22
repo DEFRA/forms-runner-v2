@@ -25,8 +25,7 @@ import {
   type PageControllerClass
 } from '~/src/server/plugins/engine/pageControllers/helpers.js'
 import { validationOptions as opts } from '~/src/server/plugins/engine/pageControllers/validationOptions.js'
-import * as defaultFormSubmissionService from '~/src/server/plugins/engine/services/formSubmissionService.js'
-import * as defaultFormsService from '~/src/server/plugins/engine/services/formsService.js'
+import * as defaultServices from '~/src/server/plugins/engine/services/index.js'
 import {
   type FormContext,
   type FormContextRequest,
@@ -36,11 +35,6 @@ import {
 import { FormAction } from '~/src/server/routes/types.js'
 import { merge } from '~/src/server/services/cacheService.js'
 import { type Services } from '~/src/server/types.js'
-
-const defaultServices = {
-  formsService: defaultFormsService,
-  formSubmissionService: defaultFormSubmissionService
-}
 
 export class FormModel {
   /**
@@ -62,7 +56,7 @@ export class FormModel {
   constructor(
     def: typeof this.def,
     options: { basePath: string },
-    services?: Services
+    services: Services = defaultServices
   ) {
     const result = formDefinitionSchema.validate(def, { abortEarly: false })
 
@@ -98,7 +92,7 @@ export class FormModel {
     this.values = result.value
     this.basePath = options.basePath
     this.conditions = {}
-    this.services = services ?? defaultServices
+    this.services = services
 
     def.conditions.forEach((conditionDef) => {
       const condition = this.makeCondition(conditionDef)
