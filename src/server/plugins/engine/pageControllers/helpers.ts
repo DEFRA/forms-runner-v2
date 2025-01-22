@@ -1,3 +1,5 @@
+// import Module from 'node:module'
+
 import {
   ControllerType,
   controllerNameFromPath,
@@ -5,8 +7,12 @@ import {
   type Page
 } from '@defra/forms-model'
 
+import ScorePageController from '~/src/server/controllers/score-page.js'
 import { type FormModel } from '~/src/server/plugins/engine/models/FormModel.js'
+// import { CustomPageController } from '~/src/server/plugins/engine/pageControllers/CustomPageController.js'
 import * as PageControllers from '~/src/server/plugins/engine/pageControllers/index.js'
+
+// const require = Module.createRequire(import.meta.url)
 
 export function isPageController(
   controllerName?: string | ControllerType
@@ -33,6 +39,12 @@ export function createPage(model: FormModel, pageDef: Page) {
     pageDef.controller = controllerName
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
+  if (pageDef.controller === 'CustomPageController') {
+    const Ctrl = ScorePageController // require('~/src/server/controllers/score-page.js')
+    return new Ctrl(model, pageDef)
+  }
+
   let controller: PageControllerClass | undefined
 
   switch (pageDef.controller) {
@@ -42,10 +54,6 @@ export function createPage(model: FormModel, pageDef: Page) {
 
     case ControllerType.Page:
       controller = new PageControllers.QuestionPageController(model, pageDef)
-      break
-
-    case ControllerType.Terminal:
-      controller = new PageControllers.TerminalPageController(model, pageDef)
       break
 
     case ControllerType.Summary:
