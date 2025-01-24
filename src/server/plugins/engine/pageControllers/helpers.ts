@@ -71,6 +71,10 @@ export function createPage(model: FormModel, pageDef: Page) {
     case ControllerType.Repeat:
       controller = new PageControllers.RepeatPageController(model, pageDef)
       break
+
+    case ControllerType.Terminal:
+      controller = new PageControllers.TerminalPageController(model, pageDef)
+      break
   }
 
   if (typeof controller === 'undefined') {
