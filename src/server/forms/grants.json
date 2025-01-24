@@ -1,6 +1,6 @@
 {
   "engine": "V2",
-  "name": "Grants V2",
+  "name": "Adding value",
   "pages": [
     {
       "title": "Check if you can apply for a Farming Transformation Fund Adding Value Grant",
@@ -39,33 +39,6 @@
       ]
     },
     {
-      "events": {
-        "load": "http:"
-      },
-      "title": "Score results",
-      "controller": "SummaryPageController",
-      "path": "/score-results",
-      "next": [
-        {
-          "path": "/summary"
-        }
-      ],
-      "components": [
-        {
-          "name": "sdFYHf",
-          "title": "What is your business?",
-          "type": "RadiosField",
-          "list": "dfdGFY",
-          "hint": "",
-          "options": {},
-          "schema": {}
-        }
-      ],
-      "options": {
-        "viewName": "scoring"
-      }
-    },
-    {
       "title": "What is your business?",
       "path": "/what-is-your-business",
       "next": [
@@ -87,7 +60,7 @@
     },
     {
       "title": "You cannot apply for a grant from this scheme",
-      "path": "/business-type-you-cannot-apply-for-a-grant-from-this-scheme",
+      "path": "/you-cannot-apply-for-a-grant-from-this-scheme-business-type",
       "controller": "TerminalPageController",
       "next": [],
       "components": [
@@ -103,53 +76,25 @@
       "condition": "BLnAHZ"
     },
     {
-      "title": "Are you in England?",
-      "path": "/are-you-in-england",
-      "next": [
-        {
-          "path": "/you-must-be-in-england",
-          "condition": "uFOrmA"
-        },
-        {
-          "path": "/what-is-your-business"
-        }
-      ],
-      "components": [
-        {
-          "name": "TKsWbP",
-          "title": "Are you in England?",
-          "type": "YesNoField",
-          "hint": "",
-          "options": {},
-          "schema": {}
-        }
-      ]
-    },
-    {
-      "title": "You must be in England",
-      "path": "/you-must-be-in-england",
-      "next": [],
-      "components": [
-        {
-          "name": "FGyiLS",
-          "title": "You must be in England",
-          "type": "Html",
-          "hint": "",
-          "content": "<p class=\"govuk-body\">You must be in England.</p>\n",
-          "options": {},
-          "schema": {}
-        }
-      ]
-    },
-    {
       "title": "What is the legal status of the business?",
       "path": "/what-is-the-legal-status-of-the-business",
       "next": [],
-      "components": []
+      "components": [
+        {
+          "name": "vPivcN",
+          "title": "What is the legal status of the business?",
+          "type": "RadiosField",
+          "hint": "",
+          "list": "ihwVmQ",
+          "options": {},
+          "schema": {}
+        }
+      ]
     },
     {
       "title": "You cannot apply for a grant from this scheme",
       "path": "/you-cannot-apply-for-a-grant-from-this-scheme-legal-status",
+      "controller": "TerminalPageController",
       "next": [],
       "components": []
     },
@@ -243,6 +188,7 @@
     {
       "title": "You cannot apply for a grant from this scheme",
       "path": "/you-cannot-apply-for-a-grant-from-this-scheme-remaining-project-costs",
+      "controller": "TerminalPageController",
       "next": [],
       "components": []
     },
@@ -281,6 +227,27 @@
       "path": "/how-will-the-project-improve-the-environment",
       "next": [],
       "components": []
+    },
+    {
+      "title": "Score results",
+      "controller": "SummaryPageController",
+      "path": "/score-results",
+      "next": [
+        {
+          "path": "/summary"
+        }
+      ],
+      "components": [
+        {
+          "name": "sdFYHf",
+          "title": "What is your business?",
+          "type": "RadiosField",
+          "list": "dfdGFY",
+          "hint": "",
+          "options": {},
+          "schema": {}
+        }
+      ]
     },
     {
       "title": "/business-details",
@@ -406,6 +373,10 @@
         {
           "text": "Government (central)",
           "value": "Government (central)"
+        },
+        {
+          "text": "None of the above",
+          "value": "none"
         }
       ]
     }
@@ -418,28 +389,6 @@
     }
   ],
   "conditions": [
-    {
-      "name": "uFOrmA",
-      "displayName": "notEngland",
-      "value": {
-        "name": "notEngland",
-        "conditions": [
-          {
-            "field": {
-              "name": "TKsWbP",
-              "type": "YesNoField",
-              "display": "Are you in England?"
-            },
-            "operator": "is",
-            "value": {
-              "type": "Value",
-              "value": "false",
-              "display": "No"
-            }
-          }
-        ]
-      }
-    },
     {
       "name": "BLnAHZ",
       "displayName": "businessTypeIsNone",
