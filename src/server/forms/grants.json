@@ -1,25 +1,106 @@
 {
-  "name": "Grants",
+  "engine": "V2",
+  "name": "Grants V2",
   "pages": [
     {
-      "title": "Start page",
+      "title": "Check if you can apply for a Farming Transformation Fund Adding Value Grant",
       "path": "/start",
       "controller": "StartPageController",
+      "next": [
+        {
+          "path": "/are-you-in-england"
+        }
+      ],
       "components": [
         {
           "name": "Jhimsh",
           "title": "Html",
           "type": "Html",
-          "content": "<p class=\"govuk-body\">Welcome to Grants.</p>\n",
+          "content": "<p class=\"govuk-body\">Use this service to:</p>\n\n<ul class=\"govuk-list govuk-list--bullet\">\n  <li>check if you can apply for a grant for your project (takes about 5 minutes)</li>\n  <li>check how well your project fits the funding priorities (takes about 15 minutes if you have all the project details)</li>\n</ul>\n\n<p class=\"govuk-body\">You can apply if you:</p>\n\n<ul class=\"govuk-list govuk-list--bullet\">\n<li>﻿﻿are a grower or producer of agricultural or horticultural produce</li>\n<li>are a business processing agricultural or horticultural products that is at least 50% owned by agricultural or horticultural producers</li>\n<li>﻿﻿will do the grant-funded work in England</li>\n<li>﻿﻿estimate the project costs are over £62,500</li>\n</ul>",
+          "options": {},
+          "schema": {}
+        },
+        {
+          "name": "JrDsEw",
+          "title": "Inset text",
+          "type": "InsetText",
+          "content": "If your project is eligible, you can submit your answers to the Rural Payments Agency (RPA) to request the full application form.",
+          "options": {},
+          "schema": {}
+        },
+        {
+          "name": "znVaPb",
+          "title": "Html",
+          "type": "Html",
+          "content": "<p class=\"govuk-body govuk-!-font-weight-bold\">Before you start</p>\n<p class=\"govuk-body\">To use the checker, you need:</p>\n<ul class=\"govuk-list govuk-list--bullet\">\n  <li>information about your business (for example, number of employees, turnover)</li>\n  <li>information about the project (for example, the types of products being processed and how you will add value, the impact the project will have)</li>\n  <li>a list of the items you'd like to buy for the project</li>\n  <li>an estimate of the total cost of the items</li>\n</ul>\n<p class=\"govuk-body\">If you do not enter any information for more than 20 minutes, your application will time out and you will have to start again.</p>\n\n<p class=\"govuk-body govuk-!-font-weight-bold\">Problems using the online service</p>\n<p class=\"govuk-body\">If you have any problems using the online service, contact the RPA.</p>\n\n<p class=\"govuk-body govuk-!-font-weight-bold\">Telephone</p>\n<p class=\"govuk-body\">Telephone: 03000 200 301</p>\n<p class=\"govuk-body\">Telephone: 03000 200 301</p>\n\n<p class=\"govuk-body\">Monday to Friday, 9am to 5pm (except public holidays)</p>\n\n\n\n",
+          "options": {},
+          "schema": {}
+        }
+      ]
+    },
+    {
+      "events": {
+        "load": "http:"
+      },
+      "title": "Score results",
+      "controller": "SummaryPageController",
+      "path": "/score-results",
+      "next": [
+        {
+          "path": "/summary"
+        }
+      ],
+      "components": [
+        {
+          "name": "sdFYHf",
+          "title": "What is your business?",
+          "type": "RadiosField",
+          "list": "dfdGFY",
+          "hint": "",
           "options": {},
           "schema": {}
         }
       ],
+      "options": {
+        "viewName": "scoring"
+      }
+    },
+    {
+      "title": "What is your business?",
+      "path": "/what-is-your-business",
       "next": [
         {
-          "path": "/are-you-in-england"
+          "path": "/score-results"
+        }
+      ],
+      "components": [
+        {
+          "name": "sdFYHf",
+          "title": "What is your business?",
+          "type": "RadiosField",
+          "list": "dfdGFY",
+          "hint": "",
+          "options": {},
+          "schema": {}
         }
       ]
+    },
+    {
+      "title": "You cannot apply for a grant from this scheme",
+      "path": "/business-type-you-cannot-apply-for-a-grant-from-this-scheme",
+      "controller": "TerminalPageController",
+      "next": [],
+      "components": [
+        {
+          "name": "zHznCQ",
+          "title": "Html",
+          "type": "Html",
+          "content": "<p class=\"govuk-body\">This grant is for businesses who:</p>\n\n<ul class=\"govuk-list govuk-list--bullet\">\n  <li>are agricultural or horticultural growers or producers</li>\n  <li>are a business processing agricultural or horticultural products that is at least 50% owned by agricultural or horticultural producers</li>\n</ul>\n\n<p class=\"govuk-body\">See other grants you may be eligible for.</p>\n",
+          "options": {},
+          "schema": {}
+        }
+      ],
+      "condition": "BLnAHZ"
     },
     {
       "title": "Are you in England?",
@@ -61,45 +142,181 @@
       ]
     },
     {
-      "title": "What is your business?",
-      "path": "/what-is-your-business",
-      "next": [
-        {
-          "path": "/score-results"
-        }
-      ],
-      "components": [
-        {
-          "name": "sdFYHf",
-          "title": "What is your business?",
-          "type": "RadiosField",
-          "list": "dfdGFY",
-          "hint": "",
-          "options": {},
-          "schema": {}
-        }
-      ]
+      "title": "What is the legal status of the business?",
+      "path": "/what-is-the-legal-status-of-the-business",
+      "next": [],
+      "components": []
     },
     {
-      "title": "Score results",
-      "path": "/score-results",
-      "next": [
-        {
-          "path": "/summary"
-        }
-      ],
-      "components": [
-        {
-          "name": "sdFYHf",
-          "title": "What is your business?",
-          "type": "RadiosField",
-          "list": "dfdGFY",
-          "hint": "",
-          "options": {},
-          "schema": {}
-        }
-      ],
-      "controller": "CustomPageController"
+      "title": "You cannot apply for a grant from this scheme",
+      "path": "/you-cannot-apply-for-a-grant-from-this-scheme-legal-status",
+      "next": [],
+      "components": []
+    },
+    {
+      "title": "Is the planned project in England?",
+      "path": "/is-the-planned-project-in-england",
+      "next": [],
+      "components": []
+    },
+    {
+      "title": "You cannot apply for a grant from this scheme",
+      "path": "/you-cannot-apply-for-a-grant-from-this-scheme-project-in-england",
+      "controller": "TerminalPageController",
+      "next": [],
+      "components": []
+    },
+    {
+      "title": "Does the project have planning permission?",
+      "path": "/does-the-project-have-planning-permission",
+      "next": [],
+      "components": []
+    },
+    {
+      "title": "You cannot apply for a grant from this scheme",
+      "path": "/you-cannot-apply-for-a-grant-from-this-scheme-planning-permission",
+      "controller": "TerminalPageController",
+      "next": [],
+      "components": []
+    },
+    {
+      "title": "Have you already started work on the project?",
+      "path": "/have-you-already-started-work-on-the-project",
+      "next": [],
+      "components": []
+    },
+    {
+      "title": "You cannot apply for a grant from this scheme-started-work",
+      "path": "/you-cannot-apply-for-a-grant-from-this-scheme-started-work",
+      "next": [],
+      "components": []
+    },
+    {
+      "title": "Is the planned project on land the business owns?",
+      "path": "/is-the-planned-project-on-land-the-business-owns",
+      "next": [],
+      "components": []
+    },
+    {
+      "title": "Will you take full responsibility for your project?",
+      "path": "/will-you-take-full-responsibility-for-your-project",
+      "next": [],
+      "components": []
+    },
+    {
+      "title": "What eligible items does your project need?",
+      "path": "/what-eligible-items-does-your-project-need",
+      "next": [],
+      "components": []
+    },
+    {
+      "title": "Does your project also need storage facilities?",
+      "path": "/does-your-project-also-need-storage-facilities",
+      "next": [],
+      "components": []
+    },
+    {
+      "title": "What is the total estimated cost of the items?",
+      "path": "/what-is-the-total-estimated-cost-of-the-items",
+      "next": [],
+      "components": []
+    },
+    {
+      "title": "You cannot apply for a grant from this scheme",
+      "path": "/you-cannot-apply-for-a-grant-from-this-scheme-project-costs",
+      "controller": "TerminalPageController",
+      "next": [],
+      "components": []
+    },
+    {
+      "title": "Potential grant funding",
+      "path": "/potential-grant-funding",
+      "next": [],
+      "components": []
+    },
+    {
+      "title": "Can you pay the remaining costs of £XX,XXX?",
+      "path": "/can-you-pay-the-remaining-costs",
+      "next": [],
+      "components": []
+    },
+    {
+      "title": "You cannot apply for a grant from this scheme",
+      "path": "/you-cannot-apply-for-a-grant-from-this-scheme-remaining-project-costs",
+      "next": [],
+      "components": []
+    },
+    {
+      "title": "What type of produce is being processed?",
+      "path": "/what-type-of-produce-is-being-processed",
+      "next": [],
+      "components": []
+    },
+    {
+      "title": "How will your project add value to the produce?",
+      "path": "/how-will-your-project-add-value-to-the-produce",
+      "next": [],
+      "components": []
+    },
+    {
+      "title": "What impact will the project have?",
+      "path": "/what-impact-will-the-project-have",
+      "next": [],
+      "components": []
+    },
+    {
+      "title": "Who will your new customers be after the project?",
+      "path": "/who-will-your-new-customers-be-after-the-project",
+      "next": [],
+      "components": []
+    },
+    {
+      "title": "Will you work in partnership or collaborate with other farmers or producers?",
+      "path": "/will-you-work-in-partnership-or-collaborate-with-other-farmers-or-producers",
+      "next": [],
+      "components": []
+    },
+    {
+      "title": "How will the project improve the environment?",
+      "path": "/how-will-the-project-improve-the-environment",
+      "next": [],
+      "components": []
+    },
+    {
+      "title": "/business-details",
+      "path": "/business-details",
+      "next": [],
+      "components": []
+    },
+    {
+      "title": "Who is applying for this grant?",
+      "path": "/who-is-applying-for-this-grant",
+      "next": [],
+      "components": []
+    },
+    {
+      "title": "{applicantType}'s details",
+      "path": "/applicant-type",
+      "next": [],
+      "components": []
+    },
+    {
+      "title": "Check your details",
+      "path": "/check-your-details",
+      "next": [],
+      "components": []
+    },
+    {
+      "title": "Confirm and send",
+      "path": "/declaration",
+      "next": [],
+      "components": []
+    },
+    {
+      "title": "Confirmation",
+      "path": "/confirmation",
+      "next": [],
+      "components": []
     },
     {
       "path": "/summary",
@@ -195,7 +412,7 @@
   ],
   "sections": [
     {
-      "title": "Contact details",
+      "title": "Eligibility",
       "name": "dhpiZu",
       "hideTitle": false
     }
@@ -222,8 +439,29 @@
           }
         ]
       }
+    },
+    {
+      "name": "BLnAHZ",
+      "displayName": "businessTypeIsNone",
+      "value": {
+        "name": "businessTypeIsNone",
+        "conditions": [
+          {
+            "field": {
+              "name": "sdFYHf",
+              "type": "RadiosField",
+              "display": "What is your business?"
+            },
+            "operator": "is",
+            "value": {
+              "type": "Value",
+              "value": "none",
+              "display": "None of the above"
+            }
+          }
+        ]
+      }
     }
   ],
-  "outputEmail": "david.stone1@defra.gov.uk",
-  "startPage": "/start"
+  "outputEmail": "david.stone1@defra.gov.uk"
 }
