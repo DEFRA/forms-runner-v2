@@ -85,7 +85,7 @@
           "title": "What is the legal status of the business?",
           "type": "RadiosField",
           "hint": "",
-          "list": "ihwVmQ",
+          "list": "DFtbgm",
           "options": {},
           "schema": {}
         }
@@ -96,20 +96,49 @@
       "path": "/you-cannot-apply-for-a-grant-from-this-scheme-legal-status",
       "controller": "TerminalPageController",
       "next": [],
-      "components": []
+      "components": [
+        {
+          "name": "dgTBVj",
+          "title": "Html",
+          "type": "Html",
+          "content": "<p class=\"govuk-body\">Your business does not have an eligible legal status.</p>\n",
+          "options": {},
+          "schema": {}
+        }
+      ],
+      "condition": "DFTghj"
     },
     {
       "title": "Is the planned project in England?",
       "path": "/is-the-planned-project-in-england",
       "next": [],
-      "components": []
+      "components": [
+        {
+          "name": "dfRSaq",
+          "title": "Is the planned project in England?",
+          "hint": "The site where the work will happen",
+          "type": "YesNoField",
+          "options": {},
+          "schema": {}
+        }
+      ]
     },
     {
       "title": "You cannot apply for a grant from this scheme",
       "path": "/you-cannot-apply-for-a-grant-from-this-scheme-project-in-england",
       "controller": "TerminalPageController",
       "next": [],
-      "components": []
+      "components": [
+        {
+          "name": "ddbgTE",
+          "title": "Html",
+          "type": "Html",
+          "content": "<p class=\"govuk-body\">This grant is only for projects in England.</p>\n",
+          "options": {},
+          "schema": {}
+        }
+      ],
+      "condition": "DerTRE"
     },
     {
       "title": "Does the project have planning permission?",
@@ -230,13 +259,9 @@
     },
     {
       "title": "Score results",
-      "controller": "SummaryPageController",
+      "controller": "ScorePageController",
       "path": "/score-results",
-      "next": [
-        {
-          "path": "/summary"
-        }
-      ],
+      "next": [],
       "components": [
         {
           "name": "sdFYHf",
@@ -293,90 +318,82 @@
   ],
   "lists": [
     {
-      "title": "What is the nature of your business?",
+      "title": "What is your business?",
       "name": "dfdGFY",
       "type": "string",
       "items": [
         {
           "text": "A grower or producer of agricultural or horticultural produce",
-          "description": "For example, arable or livestock farmer",
-          "value": "grower"
+          "description": "For example, arable or livestock farmer, fruit producer, salad grower",
+          "value": "sdRGhn"
         },
         {
-          "text": "A business processing agricultural or horticultural products",
-          "description": "For example a cheese processing business owner by farmer",
-          "value": "business"
+          "text": "A business processing agricultural or horticultural products that is at least 50% owned by agricultural or horticultural producers",
+          "description": "For example, a cheese production business owned by a group of farmers",
+          "value": "DSgfyh"
+        },
+        {
+          "text": "A woodland manager processing wild venison products",
+          "value": "FThjoP"
         },
         {
           "text": "None of the above",
-          "value": "none"
+          "value": "noEDag"
         }
       ]
     },
     {
       "title": "What is the legal status of your business?",
-      "name": "ihwVmQ",
+      "name": "DFtbgm",
       "type": "string",
       "items": [
         {
           "text": "Sole trader",
-          "value": "Sole trader"
-        },
-        {
-          "text": "Private limited company (Ltd)",
-          "value": "Private limited company (Ltd)"
+          "value": "dfHYIn"
         },
         {
           "text": "Partnership",
           "value": "Partnership"
         },
         {
-          "text": "Limited partnership (LP)",
-          "value": "Limited partnership (LP)"
+          "text": "Limited company",
+          "value": "FGynjx"
         },
         {
-          "text": "Charitable trust",
-          "value": "Charitable trust"
+          "text": "Charity",
+          "value": "cdGHiu"
         },
         {
-          "text": "Limited liability partnership (LLP)",
-          "value": "Limited liability partnership (LLP)"
+          "text": "Trust",
+          "value": "xzfRTn"
         },
         {
-          "text": "Charitable incorporated organisation (CIO)",
-          "value": "Charitable incorporated organisation (CIO)"
+          "text": "Limited liability partnership",
+          "value": "fgTYui"
         },
         {
-          "text": "Government (local)",
-          "value": "Government (local)"
+          "text": "Community interest company",
+          "value": "asdfTH"
         },
         {
-          "text": "Public limited company (PLC)",
-          "value": "Public limited company (PLC)"
+          "text": "Limited Partnership",
+          "value": "dgUMfd"
         },
         {
-          "text": "Community interest company (CIC)",
-          "value": "Community interest company (CIC)"
+          "text": "Industrial and provident society",
+          "value": "DSweJK"
         },
         {
-          "text": "Non-UK company",
-          "value": "Non-UK company"
+          "text": "Co-operative society (Co-Op)",
+          "value": "DFHVcx"
         },
         {
-          "text": "The Crown",
-          "value": "The Crown"
-        },
-        {
-          "text": "Unlimited company (Ultd)",
-          "value": "Unlimited company (Ultd)"
-        },
-        {
-          "text": "Government (central)",
-          "value": "Government (central)"
+          "text": "Community benefit society (BenCom)",
+          "value": "sdfERx"
         },
         {
           "text": "None of the above",
-          "value": "none"
+          "value": "mkSEvg"
         }
       ]
     }
@@ -404,8 +421,52 @@
             "operator": "is",
             "value": {
               "type": "Value",
-              "value": "none",
+              "value": "noEDag",
               "display": "None of the above"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "DFTghj",
+      "displayName": "legalStatusIsNone",
+      "value": {
+        "name": "legalStatusIsNone",
+        "conditions": [
+          {
+            "field": {
+              "name": "vPivcN",
+              "type": "RadiosField",
+              "display": "What is the legal status of the business?"
+            },
+            "operator": "is",
+            "value": {
+              "type": "Value",
+              "value": "mkSEvg",
+              "display": "None of the above"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "DerTRE",
+      "displayName": "plannedProjectNotInEngland",
+      "value": {
+        "name": "plannedProjectNotInEngland",
+        "conditions": [
+          {
+            "field": {
+              "name": "dfRSaq",
+              "type": "YesNoField",
+              "display": "Is the planned project in England?"
+            },
+            "operator": "is",
+            "value": {
+              "type": "Value",
+              "value": "false",
+              "display": "No"
             }
           }
         ]
