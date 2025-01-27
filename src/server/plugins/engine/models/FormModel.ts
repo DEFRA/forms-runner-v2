@@ -21,6 +21,7 @@ import {
   getPage
 } from '~/src/server/plugins/engine/helpers.js'
 import { type ExecutableCondition } from '~/src/server/plugins/engine/models/types.js'
+import { type PageController } from '~/src/server/plugins/engine/pageControllers/PageController.js'
 import {
   createPage,
   type PageControllerClass
@@ -52,11 +53,13 @@ export class FormModel {
   conditions: Partial<Record<string, ExecutableCondition>>
   pages: PageControllerClass[]
   services: Services
+  controllers?: Record<string, typeof PageController>
 
   constructor(
     def: typeof this.def,
     options: { basePath: string },
-    services: Services = defaultServices
+    services: Services = defaultServices,
+    controllers?: Record<string, typeof PageController>
   ) {
     const result = formDefinitionSchema.validate(def, { abortEarly: false })
 
@@ -94,6 +97,7 @@ export class FormModel {
     this.basePath = options.basePath
     this.conditions = {}
     this.services = services
+    this.controllers = controllers
 
     def.conditions.forEach((conditionDef) => {
       const condition = this.makeCondition(conditionDef)

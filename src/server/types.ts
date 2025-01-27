@@ -5,6 +5,7 @@ import {
   type SubmitResponsePayload
 } from '@defra/forms-model'
 
+import { type PageController } from '~/src/server/plugins/engine/pageControllers/PageController.js'
 import { type FormStatus } from '~/src/server/routes/types.js'
 
 export interface FormsService {
@@ -33,4 +34,5 @@ export interface RouteConfig {
   formFilePath?: string
   enforceCsrf?: boolean
   services?: Services
+  controllers?: Record<string, typeof PageController>
 }
