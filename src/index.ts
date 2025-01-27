@@ -1,4 +1,3 @@
-import { type IncomingMessage } from 'http'
 import path from 'node:path'
 
 import {
@@ -10,6 +9,7 @@ import {
 
 import { config } from '~/src/config/index.js'
 import { createLogger } from '~/src/server/common/helpers/logging/logger.js'
+import ScorePageController from '~/src/server/controllers/score-page.js'
 import { createServer } from '~/src/server/index.js'
 import { type FormStatus } from '~/src/server/routes/types.js'
 import {
@@ -71,10 +71,7 @@ async function startServer() {
     persistFiles: function (
       files: { fileId: string; initiatedRetrievalKey: string }[],
       persistedRetrievalKey: string
-    ): Promise<
-      | { res: IncomingMessage; error: Error | object; payload?: undefined }
-      | { res: IncomingMessage; payload: object; error?: undefined }
-    > {
+    ): Promise<object> {
       throw new Error(
         `Function not implemented. Params files: ${JSON.stringify(files)}, persistedRetrievalKey: ${persistedRetrievalKey}`
       )
@@ -102,7 +99,10 @@ async function startServer() {
   const server = await createServer({
     formFileName: path.basename(exampleFormFile),
     formFilePath: path.dirname(exampleFormFile),
-    services: { formsService, formSubmissionService }
+    services: { formsService, formSubmissionService },
+    controllers: {
+      ScorePageController
+    }
   })
 
   await server.start()
