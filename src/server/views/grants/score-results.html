@@ -7,6 +7,7 @@
   {% set score %}
     <p class="govuk-body govuk-!-font-weight-bold">{{ score.desirability.overallRating.band }}</p>
     This means your project {might be successful}.
+    <b>{{ context.data.message }}</b>
   {% endset %}
 
   <div class="govuk-width-container">
