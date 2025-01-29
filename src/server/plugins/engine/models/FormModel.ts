@@ -232,7 +232,8 @@ export class FormModel {
       payload: page.getFormDataFromState(request, state),
       state,
       paths: [],
-      isForceAccess
+      isForceAccess,
+      data: {}
     }
 
     // Validate current page
