@@ -7,10 +7,12 @@ import {
   type SubmitResponsePayload
 } from '@defra/forms-model'
 
+
 import { config } from '~/src/config/index.js'
 import { createLogger } from '~/src/server/common/helpers/logging/logger.js'
-import ScorePageController from '~/src/server/controllers/score-page.js'
+// import ScorePageController from '~/src/server/controllers/score-page.js'
 import { createServer } from '~/src/server/index.js'
+import { getForm } from '~/src/server/plugins/engine/configureEnginePlugin.js'
 import { type FormStatus } from '~/src/server/routes/types.js'
 import {
   type FormSubmissionService,
@@ -32,9 +34,11 @@ async function startServer() {
   const exampleFormFile = new URL('./server/forms/grants.json', import.meta.url)
     .pathname
 
+  const formDefinition = await getForm(exampleFormFile)
+
   const formsService: FormsService = {
     getFormMetadata: function (slug: string): Promise<FormMetadata> {
-      const now = new Date()
+      const date = new Date('2025-01-0100:00:00.000Z')
       const author = {
         id: 'grants-user',
         displayName: 'Grants dev'
@@ -50,9 +54,21 @@ async function startServer() {
         submissionGuidance: "Thanks for your submission, we'll be in touch",
         notificationEmail: 'noreply@defra.gov.uk',
         createdBy: author,
-        createdAt: now,
+        createdAt: date,
         updatedBy: author,
-        updatedAt: now
+        updatedAt: date,
+        live: {
+          createdAt: date,
+          createdBy: {
+            id: '922dce4e-38a5-40d7-9568-ca04e59aedee',
+            displayName: 'Grants Eligibility Team'
+          },
+          updatedAt: date,
+          updatedBy: {
+            id: '922dce4e-38a5-40d7-9568-ca04e59aedee',
+            displayName: 'Grants Eligibility Team'
+          }
+        }
       }
 
       return Promise.resolve(metadata)
@@ -61,9 +77,7 @@ async function startServer() {
       id: string,
       state: FormStatus
     ): Promise<FormDefinition> {
-      throw new Error(
-        `Function not implemented. Params id: ${id}, state: ${state}`
-      )
+      return Promise.resolve(formDefinition)
     }
   }
 
@@ -97,11 +111,11 @@ async function startServer() {
   }
 
   const server = await createServer({
-    formFileName: path.basename(exampleFormFile),
-    formFilePath: path.dirname(exampleFormFile),
+    // formFileName: path.basename(exampleFormFile),
+    // formFilePath: path.dirname(exampleFormFile),
     services: { formsService, formSubmissionService },
     controllers: {
-      ScorePageController
+      // ScorePageController
     }
   })
 
