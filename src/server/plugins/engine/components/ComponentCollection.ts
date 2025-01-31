@@ -22,6 +22,7 @@ import { type FormModel } from '~/src/server/plugins/engine/models/index.js'
 import { type PageControllerClass } from '~/src/server/plugins/engine/pageControllers/helpers.js'
 import { validationOptions as opts } from '~/src/server/plugins/engine/pageControllers/validationOptions.js'
 import {
+  type FormContext,
   type FormPayload,
   type FormState,
   type FormSubmissionError,
@@ -234,6 +235,7 @@ export class ComponentCollection {
   }
 
   getViewModel(
+    context: FormContext,
     payload: FormPayload,
     errors?: FormSubmissionError[],
     query: FormQuery = {}
@@ -245,8 +247,8 @@ export class ComponentCollection {
 
       const model =
         component instanceof FormComponent
-          ? component.getViewModel(payload, errors, query)
-          : component.getViewModel()
+          ? component.getViewModel(context, payload, errors, query)
+          : component.getViewModel(context)
 
       return { type, isFormComponent, model }
     })

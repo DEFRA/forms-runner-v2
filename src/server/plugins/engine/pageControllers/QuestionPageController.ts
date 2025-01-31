@@ -16,6 +16,7 @@ import { optionalText } from '~/src/server/plugins/engine/components/constants.j
 import { type BackLink } from '~/src/server/plugins/engine/components/types.js'
 import {
   getErrors,
+  interpolate,
   normalisePath,
   proceed
 } from '~/src/server/plugins/engine/helpers.js'
@@ -106,9 +107,10 @@ export class QuestionPageController extends PageController {
     const { query } = request
     const { payload, errors } = context
 
-    let { pageTitle, showTitle } = viewModel
+    let { showTitle } = viewModel
 
-    const components = collection.getViewModel(payload, errors, query)
+    let pageTitle = interpolate(viewModel.pageTitle, context)
+    const components = collection.getViewModel(context, payload, errors, query)
     const formComponents = components.filter(
       ({ isFormComponent }) => isFormComponent
     )

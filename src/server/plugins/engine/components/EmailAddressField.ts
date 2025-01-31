@@ -3,6 +3,7 @@ import joi from 'joi'
 
 import { FormComponent } from '~/src/server/plugins/engine/components/FormComponent.js'
 import {
+  type FormContext,
   type FormPayload,
   type FormSubmissionError
 } from '~/src/server/plugins/engine/types.js'
@@ -46,8 +47,12 @@ export class EmailAddressField extends FormComponent {
     this.options = options
   }
 
-  getViewModel(payload: FormPayload, errors?: FormSubmissionError[]) {
-    const viewModel = super.getViewModel(payload, errors)
+  getViewModel(
+    context: FormContext,
+    payload: FormPayload,
+    errors?: FormSubmissionError[]
+  ) {
+    const viewModel = super.getViewModel(context, payload, errors)
     const { attributes } = viewModel
 
     attributes.autocomplete = 'email'

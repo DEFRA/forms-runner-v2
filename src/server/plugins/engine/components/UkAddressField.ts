@@ -9,6 +9,7 @@ import {
 import { TextField } from '~/src/server/plugins/engine/components/TextField.js'
 import { type QuestionPageController } from '~/src/server/plugins/engine/pageControllers/QuestionPageController.js'
 import {
+  type FormContext,
   type FormPayload,
   type FormState,
   type FormStateValue,
@@ -112,10 +113,14 @@ export class UkAddressField extends FormComponent {
     return Object.values(value).filter(Boolean)
   }
 
-  getViewModel(payload: FormPayload, errors?: FormSubmissionError[]) {
+  getViewModel(
+    context: FormContext,
+    payload: FormPayload,
+    errors?: FormSubmissionError[]
+  ) {
     const { collection, name, options } = this
 
-    const viewModel = super.getViewModel(payload, errors)
+    const viewModel = super.getViewModel(context, payload, errors)
     let { components, fieldset, hint, label } = viewModel
 
     fieldset ??= {
@@ -139,7 +144,7 @@ export class UkAddressField extends FormComponent {
       }
     }
 
-    components = collection.getViewModel(payload, errors)
+    components = collection.getViewModel(context, payload, errors)
 
     return {
       ...viewModel,

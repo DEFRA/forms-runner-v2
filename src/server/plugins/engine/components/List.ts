@@ -6,6 +6,7 @@ import {
 
 import { ComponentBase } from '~/src/server/plugins/engine/components/ComponentBase.js'
 import { type ListItem } from '~/src/server/plugins/engine/components/types.js'
+import { type FormContext } from '~/src/server/plugins/engine/types.js'
 
 export class List extends ComponentBase {
   declare options: ListComponent['options']
@@ -30,7 +31,7 @@ export class List extends ComponentBase {
     this.options = options
   }
 
-  getViewModel() {
+  getViewModel(context: FormContext) {
     const { items: listItems, options, viewModel } = this
 
     let { classes, content, items, type } = viewModel
