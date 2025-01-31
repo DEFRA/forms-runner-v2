@@ -44,10 +44,6 @@ export function createPage(model: FormModel, pageDef: Page) {
       controller = new PageControllers.QuestionPageController(model, pageDef)
       break
 
-    case ControllerType.Terminal:
-      controller = new PageControllers.TerminalPageController(model, pageDef)
-      break
-
     case ControllerType.Summary:
       controller = new PageControllers.SummaryPageController(model, pageDef)
       break
@@ -63,6 +59,17 @@ export function createPage(model: FormModel, pageDef: Page) {
     case ControllerType.Repeat:
       controller = new PageControllers.RepeatPageController(model, pageDef)
       break
+
+    case ControllerType.Terminal:
+      controller = new PageControllers.TerminalPageController(model, pageDef)
+      break
+  }
+
+  if (typeof controller === 'undefined') {
+    if (model.controllers?.[pageDef.controller]) {
+      const Ctrl = model.controllers[pageDef.controller]
+      controller = new Ctrl(model, pageDef)
+    }
   }
 
   if (typeof controller === 'undefined') {
