@@ -1,6 +1,7 @@
 import { ListFormComponent } from '~/src/server/plugins/engine/components/ListFormComponent.js'
 import { type ListItem } from '~/src/server/plugins/engine/components/types.js'
 import {
+  type FormContext,
   type FormPayload,
   type FormSubmissionError
 } from '~/src/server/plugins/engine/types.js'
@@ -9,10 +10,14 @@ import {
  * "Selection controls" are checkboxes and radios (and switches), as per Material UI nomenclature.
  */
 export class SelectionControlField extends ListFormComponent {
-  getViewModel(payload: FormPayload, errors?: FormSubmissionError[]) {
+  getViewModel(
+    context: FormContext,
+    payload: FormPayload,
+    errors?: FormSubmissionError[]
+  ) {
     const { options } = this
 
-    const viewModel = super.getViewModel(payload, errors)
+    const viewModel = super.getViewModel(context, payload, errors)
     let { fieldset, items, label } = viewModel
 
     fieldset ??= {

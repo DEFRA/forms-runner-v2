@@ -5,6 +5,7 @@ import {
 
 import { ListFormComponent } from '~/src/server/plugins/engine/components/ListFormComponent.js'
 import {
+  type FormContext,
   type FormPayload,
   type FormSubmissionError
 } from '~/src/server/plugins/engine/types.js'
@@ -33,8 +34,12 @@ export class SelectField extends ListFormComponent {
     this.options = options
   }
 
-  getViewModel(payload: FormPayload, errors?: FormSubmissionError[]) {
-    const viewModel = super.getViewModel(payload, errors)
+  getViewModel(
+    context: FormContext,
+    payload: FormPayload,
+    errors?: FormSubmissionError[]
+  ) {
+    const viewModel = super.getViewModel(context, payload, errors)
     let { items } = viewModel
 
     items = [{ value: '' }, ...items]

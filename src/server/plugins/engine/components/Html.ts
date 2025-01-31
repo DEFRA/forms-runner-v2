@@ -1,6 +1,7 @@
 import { type HtmlComponent } from '@defra/forms-model'
 
 import { ComponentBase } from '~/src/server/plugins/engine/components/ComponentBase.js'
+import { type FormContext } from '~/src/server/plugins/engine/types.js'
 
 export class Html extends ComponentBase {
   declare options: HtmlComponent['options']
@@ -18,7 +19,7 @@ export class Html extends ComponentBase {
     this.options = options
   }
 
-  getViewModel() {
+  getViewModel(context: FormContext) {
     const { content, viewModel } = this
 
     return {
