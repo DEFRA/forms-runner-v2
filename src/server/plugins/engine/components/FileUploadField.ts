@@ -11,6 +11,7 @@ import {
   type FileState,
   type FileUpload,
   type FileUploadMetadata,
+  type FormContext,
   type FormPayload,
   type FormState,
   type FormStateValue,
@@ -163,6 +164,7 @@ export class FileUploadField extends FormComponent {
   }
 
   getViewModel(
+    context: FormContext,
     payload: FormPayload,
     errors?: FormSubmissionError[],
     query: FormQuery = {}
@@ -172,7 +174,7 @@ export class FileUploadField extends FormComponent {
     // Allow preview URL direct access
     const isForceAccess = 'force' in query
 
-    const viewModel = super.getViewModel(payload, errors)
+    const viewModel = super.getViewModel(context, payload, errors)
     const { attributes, id, value } = viewModel
 
     const files = this.getFormValue(value) ?? []

@@ -15,6 +15,7 @@ import joi, {
 import { FormComponent } from '~/src/server/plugins/engine/components/FormComponent.js'
 import { type ListItem } from '~/src/server/plugins/engine/components/types.js'
 import {
+  type FormContext,
   type FormPayload,
   type FormSubmissionError,
   type FormSubmissionState
@@ -110,10 +111,14 @@ export class ListFormComponent extends FormComponent {
       .join(', ')
   }
 
-  getViewModel(payload: FormPayload, errors?: FormSubmissionError[]) {
+  getViewModel(
+    context: FormContext,
+    payload: FormPayload,
+    errors?: FormSubmissionError[]
+  ) {
     const { items: listItems } = this
 
-    const viewModel = super.getViewModel(payload, errors)
+    const viewModel = super.getViewModel(context, payload, errors)
     const { value } = viewModel
 
     // Support multiple values for checkboxes

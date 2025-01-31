@@ -1,6 +1,7 @@
 import { type DetailsComponent } from '@defra/forms-model'
 
 import { ComponentBase } from '~/src/server/plugins/engine/components/ComponentBase.js'
+import { type FormContext } from '~/src/server/plugins/engine/types.js'
 
 export class Details extends ComponentBase {
   declare options: DetailsComponent['options']
@@ -18,7 +19,7 @@ export class Details extends ComponentBase {
     this.options = options
   }
 
-  getViewModel() {
+  getViewModel(context: FormContext) {
     const { content, title, viewModel } = this
 
     return {

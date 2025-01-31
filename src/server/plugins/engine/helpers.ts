@@ -3,7 +3,7 @@ import Boom from '@hapi/boom'
 import { type ResponseToolkit } from '@hapi/hapi'
 import { format, parseISO } from 'date-fns'
 import { StatusCodes } from 'http-status-codes'
-import { type Schema, type ValidationErrorItem } from 'joi'
+import joi, { type Schema, type ValidationErrorItem } from 'joi'
 import upperFirst from 'lodash/upperFirst.js'
 
 import { createLogger } from '~/src/server/common/helpers/logging/logger.js'
@@ -11,6 +11,7 @@ import { PREVIEW_PATH_PREFIX } from '~/src/server/constants.js'
 import { type FormModel } from '~/src/server/plugins/engine/models/FormModel.js'
 import { type PageControllerClass } from '~/src/server/plugins/engine/pageControllers/helpers.js'
 import {
+  type FormContext,
   type FormContextRequest,
   type FormSubmissionError
 } from '~/src/server/plugins/engine/types.js'
@@ -263,4 +264,21 @@ export function safeGenerateCrumb(
   }
 
   return request.server.plugins.crumb.generate(request)
+}
+
+export function interpolate(str: string, context: FormContext): string {
+  if (!str.includes('{{')) {
+    return str
+  }
+
+  const expr = joi.object<{ __result: string }>().keys({
+    __result: joi.string().default(joi.expression(str))
+  })
+
+  const result = joi.attempt(context.evaluationState, expr, {
+    allowUnknown: true,
+    stripUnknown: true
+  })
+
+  return result.__result
 }

@@ -4,6 +4,7 @@ import Joi, { type CustomValidator, type StringSchema } from 'joi'
 import { type ComponentBase } from '~/src/server/plugins/engine/components/ComponentBase.js'
 import { FormComponent } from '~/src/server/plugins/engine/components/FormComponent.js'
 import {
+  type FormContext,
   type FormPayload,
   type FormSubmissionError
 } from '~/src/server/plugins/engine/types.js'
@@ -79,10 +80,14 @@ export class MultilineTextField extends FormComponent {
     this.schema = schema
   }
 
-  getViewModel(payload: FormPayload, errors?: FormSubmissionError[]) {
+  getViewModel(
+    context: FormContext,
+    payload: FormPayload,
+    errors?: FormSubmissionError[]
+  ) {
     const { schema, options, isCharacterOrWordCount } = this
 
-    const viewModel = super.getViewModel(payload, errors)
+    const viewModel = super.getViewModel(context, payload, errors)
     let { maxlength, maxwords, rows } = viewModel
 
     if (schema.max) {
