@@ -6,11 +6,7 @@
       "title": "Check if you can apply for a Farming Transformation Fund Adding Value Grant",
       "path": "/start",
       "controller": "StartPageController",
-      "next": [
-        {
-          "path": "/are-you-in-england"
-        }
-      ],
+      "next": [],
       "components": [
         {
           "name": "Jhimsh",
@@ -41,11 +37,7 @@
     {
       "title": "What is your business?",
       "path": "/what-is-your-business",
-      "next": [
-        {
-          "path": "/score-results"
-        }
-      ],
+      "next": [],
       "components": [
         {
           "name": "sdFYHf",
@@ -141,119 +133,48 @@
       "condition": "DerTRE"
     },
     {
-      "title": "Does the project have planning permission?",
-      "path": "/does-the-project-have-planning-permission",
-      "next": [],
-      "components": []
-    },
-    {
-      "title": "You cannot apply for a grant from this scheme",
-      "path": "/you-cannot-apply-for-a-grant-from-this-scheme-planning-permission",
-      "controller": "TerminalPageController",
-      "next": [],
-      "components": []
-    },
-    {
-      "title": "Have you already started work on the project?",
-      "path": "/have-you-already-started-work-on-the-project",
-      "next": [],
-      "components": []
-    },
-    {
-      "title": "You cannot apply for a grant from this scheme-started-work",
-      "path": "/you-cannot-apply-for-a-grant-from-this-scheme-started-work",
-      "next": [],
-      "components": []
-    },
-    {
-      "title": "Is the planned project on land the business owns?",
-      "path": "/is-the-planned-project-on-land-the-business-owns",
-      "next": [],
-      "components": []
-    },
-    {
-      "title": "Will you take full responsibility for your project?",
-      "path": "/will-you-take-full-responsibility-for-your-project",
-      "next": [],
-      "components": []
-    },
-    {
-      "title": "What eligible items does your project need?",
-      "path": "/what-eligible-items-does-your-project-need",
-      "next": [],
-      "components": []
-    },
-    {
-      "title": "Does your project also need storage facilities?",
-      "path": "/does-your-project-also-need-storage-facilities",
-      "next": [],
-      "components": []
-    },
-    {
-      "title": "What is the total estimated cost of the items?",
-      "path": "/what-is-the-total-estimated-cost-of-the-items",
-      "next": [],
-      "components": []
-    },
-    {
-      "title": "You cannot apply for a grant from this scheme",
-      "path": "/you-cannot-apply-for-a-grant-from-this-scheme-project-costs",
-      "controller": "TerminalPageController",
-      "next": [],
-      "components": []
-    },
-    {
-      "title": "Potential grant funding",
-      "path": "/potential-grant-funding",
-      "next": [],
-      "components": []
-    },
-    {
-      "title": "Can you pay the remaining costs of £XX,XXX?",
-      "path": "/can-you-pay-the-remaining-costs",
-      "next": [],
-      "components": []
-    },
-    {
-      "title": "You cannot apply for a grant from this scheme",
-      "path": "/you-cannot-apply-for-a-grant-from-this-scheme-remaining-project-costs",
-      "controller": "TerminalPageController",
-      "next": [],
-      "components": []
-    },
-    {
       "title": "What type of produce is being processed?",
-      "path": "/what-type-of-produce-is-being-processed",
+      "path": "/products-processed",
       "next": [],
-      "components": []
+      "components": [
+        {
+          "name": "sdFYHh",
+          "title": "What type of produce is being processed?",
+          "type": "RadiosField",
+          "list": "dfdGFZ",
+          "hint": "",
+          "options": {},
+          "schema": {}
+        }
+      ]
     },
     {
       "title": "How will your project add value to the produce?",
-      "path": "/how-will-your-project-add-value-to-the-produce",
+      "path": "/adding-value",
       "next": [],
       "components": []
     },
     {
       "title": "What impact will the project have?",
-      "path": "/what-impact-will-the-project-have",
+      "path": "/project-impact",
       "next": [],
       "components": []
     },
     {
       "title": "Who will your new customers be after the project?",
-      "path": "/who-will-your-new-customers-be-after-the-project",
+      "path": "/future-customers",
       "next": [],
       "components": []
     },
     {
       "title": "Will you work in partnership or collaborate with other farmers or producers?",
-      "path": "/will-you-work-in-partnership-or-collaborate-with-other-farmers-or-producers",
+      "path": "/collaboration",
       "next": [],
       "components": []
     },
     {
       "title": "How will the project improve the environment?",
-      "path": "/how-will-the-project-improve-the-environment",
+      "path": "/environmental-impact",
       "next": [],
       "components": []
     },
@@ -262,17 +183,7 @@
       "controller": "ScorePageController",
       "path": "/score-results",
       "next": [],
-      "components": [
-        {
-          "name": "sdFYHf",
-          "title": "What is your business?",
-          "type": "RadiosField",
-          "list": "dfdGFY",
-          "hint": "",
-          "options": {},
-          "schema": {}
-        }
-      ]
+      "components": []
     },
     {
       "title": "/business-details",
@@ -338,6 +249,43 @@
         },
         {
           "text": "None of the above",
+          "value": "noEDag"
+        }
+      ]
+    },
+    {
+      "title": "What type of produce is being processed??",
+      "name": "dfdGFZ",
+      "type": "string",
+      "items": [
+        {
+          "text": "Arable produce",
+          "description": "For example, crushing of oilseeds, rolling or flaking of grains as food ingredients",
+          "value": "sdRGha"
+        },
+        {
+          "text": "Horticultural produce",
+          "description": "For example, grading and packing of soft fruit, washing and packing vegetables, packing salad crops",
+          "value": "DSgfyz"
+        },
+        {
+          "text": "Dairy or meat produce",
+          "description": "For example, processing and bottling milk or slaughtering, cutting, processing and packing meat",
+          "value": "FThjoa"
+        },
+        {
+          "text": "Fodder produce",
+          "description": "For example, processing and repacking hay and straw for specialst markets or retail sale",
+          "value": "noEaae"
+        },
+        {
+          "text": "Non-edible produce",
+          "description": "For example, processing and packing ornamental flowers and bulds after harvesting",
+          "value": "noEDae"
+        },
+        {
+          "text": "Fibre produce",
+          "description": "For example, processing animal hides and leather, processing fibres such as flax and hemp",
           "value": "noEDag"
         }
       ]

@@ -2,38 +2,122 @@
 
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% block content %}
-  {% set score %}
-    <p class="govuk-body govuk-!-font-weight-bold">{{ score.desirability.overallRating.band }}</p>
-    This means your project {might be successful}.
+  {% set scoreChanceSection %}
+    <p class="govuk-body govuk-!-font-weight-bold">{{ scoreBand }}</p>
+    This means your project {{scoreChance}} be successful.
   {% endset %}
 
-  <div class="govuk-width-container">
-    <div class="govuk-main-wrapper">
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">Score results</h1>
-          <p class="govuk-body">Based on your answers, your project's score is:</p>
-          {{ govukInsetText({
-            html: score
-          }) }}
-
-          {{ govukWarningText({
-            text: "The likelihood of a full application being successful will also depend on the number and value of applications we receive.",
-            iconFallbackText: "Warning"
-          }) }}
-
-          <p class="govuk-body">Value for money will be assessed alongside the funding priorities at full application stage and this may impact your overall project score.</p>
-          <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
-          <h2 class="govuk-heading-m">Your answers</h2>
-          <p class="govuk-body">You can go back to change scoring questions as many times as you like but you can only submit your details once.</p>
-
-          <h3 class="govuk-heading-s">Next steps</h3>
-          <p class="govuk-body">You can go back to change scoring questions as many times as you like but you can only submit your details once.</p>
-          <p class="govuk-body">You'll get an email with your score and answers, and a reference number.</p>
+  <div class="govuk-body">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">Score results</h1>
+        <p class="govuk-body">Based on your answers, your project's score is:</p>
+        {{ govukInsetText({
+          html: scoreChanceSection
+        }) }}
+        <div class="scoring-block">
+          <dl class="govuk-body govuk-!-margin-bottom-0">
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key govuk-!-font-size-16">
+                Strong
+              </dt>
+              <dd class="govuk-summary-list__value govuk-!-font-size-16">
+                Based on your answers, a grant application is likely to be successful.
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key govuk-!-font-size-16">
+                Average
+              </dt>
+              <dd class="govuk-summary-list__value govuk-!-font-size-16">
+              Based on your answers, a grant application might be successful.
+              </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__key govuk-!-font-size-16">
+                Weak
+              </dt>
+              <dd class="govuk-summary-list__value govuk-!-font-size-16">
+                Based on your answers, a grant application is unlikely to be successful.
+              </dd>
+            </div>
+          </dl>
         </div>
+        <br />
+        {{ govukWarningText({
+          text: "The likelihood of a full application being successful will also depend on the number and value of applications we receive.",
+          iconFallbackText: "Warning"
+        }) }}
+        <p class="govuk-body">Value for money will be assessed alongside the funding priorities at full application stage and this may impact your overall project score.</p>
       </div>
+    </div>
+
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <hr class= "govuk-!-margin-bottom-5"/>
+        <h2 class="govuk-heading-m">Your answers</h2>
+        <p class="govuk-body">You can go back to change scoring questions as many times as you like but you can only submit your details once.</p>
+
+        <table class="govuk-table govuk-body govuk-!-font-size-16">
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header">Answers</th>
+              <th scope="col" class="govuk-table__header">Score</th>
+              <th scope="col" class="govuk-table__header govuk-!-width-one-third">Funding priorities</th>
+              <th scope="col" class="govuk-table__header">Change</th>
+            </tr>
+          </thead>
+  
+          <tbody class="govuk-table__body">
+            {% for question in questions %}
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">
+                <strong class="govuk-!-padding-top-2">{{ question.category }}</strong><br/>
+                <ul class="govuk-list govuk-list--bullet govuk-!-padding-top-2 govuk-!-font-size-16">
+                  {% for answer in question.answers %}
+                    <li>{{ answer.value }}</li>
+                    {% endfor %}
+                </ul>
+              </td>
+  
+              <td class="govuk-table__cell">
+                <p class="govuk-!-font-size-16 govuk-!-margin-top-0">
+                  {{ question.scoreBand }}
+                </p>
+              </td>
+              <td class="govuk-table__cell">
+                <ul class="govuk-list govuk-!-font-size-16">
+                {% for fundingPriority in question.fundingPriorities %}
+                  <li class="govuk-!-margin-bottom-3">{{ fundingPriority }}</li>
+                {% endfor %}
+                </ul>
+              </td>
+              <td class="govuk-table__cell ">
+                  <a class="govuk-link" href="{{question.questionId}}" title="Change {{question.title}}">
+                    Change <span class="govuk-visually-hidden">{{question.title}}</span>
+                  </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      
+        <div class="govuk-grid-row">
+          <h2 class="govuk-heading-m">Next steps</h2>
+          <p class="govuk-body">Next, add your business and contact details and submit them to the RPA (you should only do this once).</p>
+          <p>You’ll get an email with your score and answers, and a reference number.</p>
+      
+          <br/><br/>
+          {% block form %}
+            {{ govukButton({
+              text: "Continue",
+              preventDoubleClick: true
+            }) }}
+          {% endblock %}
+        </div>
     </div>
   </div>
 {% endblock %}
