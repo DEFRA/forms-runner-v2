@@ -33,7 +33,7 @@
                 Average
               </dt>
               <dd class="govuk-summary-list__value govuk-!-font-size-16">
-              Based on your answers, a grant application might be successful.
+                Based on your answers, a grant application might be successful.
               </dd>
             </div>
             <div class="govuk-summary-list__row">
@@ -70,7 +70,6 @@
               <th scope="col" class="govuk-table__header">Change</th>
             </tr>
           </thead>
-  
           <tbody class="govuk-table__body">
             {% for question in questions %}
             <tr class="govuk-table__row">
@@ -82,7 +81,6 @@
                     {% endfor %}
                 </ul>
               </td>
-  
               <td class="govuk-table__cell">
                 <p class="govuk-!-font-size-16 govuk-!-margin-top-0">
                   {{ question.scoreBand }}
@@ -104,12 +102,10 @@
             {% endfor %}
           </tbody>
         </table>
-      
         <div class="govuk-grid-row">
           <h2 class="govuk-heading-m">Next steps</h2>
           <p class="govuk-body">Next, add your business and contact details and submit them to the RPA (you should only do this once).</p>
           <p>You’ll get an email with your score and answers, and a reference number.</p>
-      
           <br/><br/>
           {% block form %}
             {{ govukButton({

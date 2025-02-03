@@ -26,12 +26,6 @@ export default class ScorePageController extends QuestionPageController {
   }
 
   /**
-   * Handle GET requests to the score page.
-   * @param {FormRequest} request
-   * @param {FormContext} context
-   * @param {Pick<ResponseToolkit, 'redirect' | 'view'>} h
-   * @returns {Promise<ResponseObject>}
-   * @description
    * This method is called when there is a GET request to the score page.
    * It gets the view model for the page using the `getViewModel` method,
    * and then adds two properties to the view model: `scoreChance` and
@@ -44,25 +38,27 @@ export default class ScorePageController extends QuestionPageController {
    */
   makeGetRouteHandler() {
     /**
+     * Handle GET requests to the score page.
      * @param {FormRequest} request
      * @param {FormContext} context
      * @param {Pick<ResponseToolkit, 'redirect' | 'view'>} h
-     * @returns {ResponseObject}
      */
-    const fn = (request, context, h) => {
+    const fn = async (request, context, h) => {
       const { collection, viewName, model } = this
+      const score = await Promise.resolve(scoreResponse)
+
       const viewModel = {
         ...super.getViewModel(request, context),
         errors: collection.getErrors(collection.getErrors()),
-        scoreChance: this.getScoreChance(scoreResponse.scoreBand),
-        scoreBand: scoreResponse.scoreBand,
-        questions: scoreResponse.questions.map(
+        scoreChance: this.getScoreChance(score.scoreBand),
+        scoreBand: score.scoreBand,
+        questions: score.questions.map(
           ({ category, answers, score, fundingPriorities, questionId }) => ({
             category,
             answers,
             scoreBand: score.band,
             fundingPriorities,
-            title: findPage(model, questionId).title
+            title: findPage(model, questionId)?.title
           })
         )
       }
