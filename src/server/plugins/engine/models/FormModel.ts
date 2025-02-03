@@ -21,6 +21,7 @@ import {
   getPage
 } from '~/src/server/plugins/engine/helpers.js'
 import { type ExecutableCondition } from '~/src/server/plugins/engine/models/types.js'
+import { type PageController } from '~/src/server/plugins/engine/pageControllers/PageController.js'
 import {
   createPage,
   type PageControllerClass
@@ -57,10 +58,13 @@ export class FormModel {
     version: string
   }
 
+  controllers?: Record<string, typeof PageController>
+
   constructor(
     def: typeof this.def,
     options: { basePath: string },
-    services: Services = defaultServices
+    services: Services = defaultServices,
+    controllers?: Record<string, typeof PageController>
   ) {
     const result = formDefinitionSchema.validate(def, { abortEarly: false })
 
@@ -103,6 +107,7 @@ export class FormModel {
       audience: 'human',
       version: '1'
     }
+    this.controllers = controllers
 
     def.conditions.forEach((conditionDef) => {
       const condition = this.makeCondition(conditionDef)
@@ -237,7 +242,8 @@ export class FormModel {
       payload: page.getFormDataFromState(request, state),
       state,
       paths: [],
-      isForceAccess
+      isForceAccess,
+      data: {}
     }
 
     // Validate current page
