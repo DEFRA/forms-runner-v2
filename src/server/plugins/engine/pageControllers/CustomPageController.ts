@@ -13,8 +13,6 @@ export class CustomPageController extends QuestionPageController {
     context: FormContext,
     h: Pick<ResponseToolkit, 'redirect' | 'view'>
   ) => Promise<ResponseObject> {
-    const score = {}
-
     super.makeGetRouteHandler(request, context, h)
   }
 }

@@ -5,40 +5,68 @@ import { QuestionPageController } from '~/src/server/plugins/engine/pageControll
 export default class ScorePageController extends QuestionPageController {
   viewName = 'grants/score-results'
 
+  /**
+   * Return a string describing the chance of success based on the
+   * scoreBand.
+   * @param {string} scoreBand - The score band returned by the evaluation
+   * @returns {string} A string suitable for inclusion in a sentence
+   * describing the chance of success.
+   * @example
+   * getScoreChance('strong') // 'seems likely to'
+   * getScoreChance('average') // 'might'
+   * getScoreChance('weak') // 'seems unlikely to'
+   */
   getScoreChance(scoreBand) {
-    switch (scoreBand) {
-      case 'Strong':
-        return 'seems likely to'
-      case 'Average':
-        return 'might'
-      default:
-        return 'seems unlikely to'
+    const scoreMapping = {
+      strong: 'seems likely to',
+      average: 'might'
     }
+
+    return scoreMapping[scoreBand.toLowerCase()] || 'seems unlikely to'
   }
 
+  /**
+   * Handle GET requests to the score page.
+   * @param {FormRequest} request
+   * @param {FormContext} context
+   * @param {Pick<ResponseToolkit, 'redirect' | 'view'>} h
+   * @returns {Promise<ResponseObject>}
+   * @description
+   * This method is called when there is a GET request to the score page.
+   * It gets the view model for the page using the `getViewModel` method,
+   * and then adds two properties to the view model: `scoreChance` and
+   * `scoreBand`. `scoreChance` is a string that describes the chance of
+   * success based on the scoreBand, and is used in a sentence in the page.
+   * `scoreBand` is the score band returned by the evaluation, and is used
+   * to determine whether the project is eligible or not.
+   * The method then uses the `h.view` method to render the page using the
+   * view name and the view model.
+   */
   makeGetRouteHandler() {
     /**
-     *
      * @param {FormRequest} request
      * @param {FormContext} context
      * @param {Pick<ResponseToolkit, 'redirect' | 'view'>} h
+     * @returns {ResponseObject}
      */
     const fn = (request, context, h) => {
-      const { collection, viewName } = this
-      const viewModel = super.getViewModel(request, context)
-      viewModel.errors = collection.getErrors(viewModel.errors)
-      viewModel.scoreChance = this.getScoreChance(scoreResponse.scoreBand)
-      viewModel.scoreBand = scoreResponse.scoreBand
+      const { collection, viewName, model } = this
+      const viewModel = {
+        ...super.getViewModel(request, context),
+        errors: collection.getErrors(collection.getErrors()),
+        scoreChance: this.getScoreChance(scoreResponse.scoreBand),
+        scoreBand: scoreResponse.scoreBand,
+        questions: scoreResponse.questions.map(
+          ({ category, answers, score, fundingPriorities, questionId }) => ({
+            category,
+            answers,
+            scoreBand: score.band,
+            fundingPriorities,
+            title: findPage(model, questionId).title
+          })
+        )
+      }
 
-      const questions = scoreResponse.questions.map((question) => ({
-        category: question.category,
-        answers: question.answers,
-        scoreBand: question.score.band,
-        fundingPriorities: question.fundingPriorities,
-        title: findPage(this.model, question.questionId).title
-      }))
-
-      viewModel.questions = questions
       return h.view(viewName, viewModel)
     }
 
