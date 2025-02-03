@@ -17,6 +17,9 @@ export default class ScorePageController extends QuestionPageController {
    * getScoreChance('weak') // 'seems unlikely to'
    */
   getScoreChance(scoreBand) {
+    /**
+     * @type {Record<string, string>}
+     */
     const scoreMapping = {
       strong: 'seems likely to',
       average: 'might'
