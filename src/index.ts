@@ -11,16 +11,11 @@ import { createLogger } from '~/src/server/common/helpers/logging/logger.js'
 import ScorePageController from '~/src/server/controllers/score-page.js'
 import { createServer } from '~/src/server/index.js'
 import { getForm } from '~/src/server/plugins/engine/configureEnginePlugin.js'
-import { type FormModel } from '~/src/server/plugins/engine/models/index.js'
-import { type DetailItem } from '~/src/server/plugins/engine/models/types.js'
-import {
-  type FormRequestPayload,
-  type FormStatus
-} from '~/src/server/routes/types.js'
+import * as outputService from '~/src/server/plugins/engine/services/notifyService.js'
+import { type FormStatus } from '~/src/server/routes/types.js'
 import {
   type FormSubmissionService,
-  type FormsService,
-  type OutputService
+  type FormsService
 } from '~/src/server/types.js'
 
 const logger = createLogger()
@@ -138,18 +133,6 @@ async function startServer() {
           }
         }
       })
-    }
-  }
-
-  const outputService: OutputService = {
-    submit: function (
-      _request: FormRequestPayload,
-      _model: FormModel,
-      _emailAddress: string,
-      _items: DetailItem[],
-      _submitResponse: SubmitResponsePayload
-    ): Promise<void> {
-      throw new Error('Function not implemented.')
     }
   }
 
