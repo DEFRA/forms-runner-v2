@@ -65,7 +65,7 @@
       "path": "/what-is-your-business",
       "next": [
         {
-          "path": "/summary"
+          "path": "/information"
         }
       ],
       "components": [
@@ -75,6 +75,25 @@
           "type": "RadiosField",
           "list": "dfdGFY",
           "hint": "",
+          "options": {},
+          "schema": {}
+        }
+      ]
+    },
+    {
+      "title": "What is your business: In England? {{TKsWbP}}?",
+      "path": "/information",
+      "next": [
+        {
+          "path": "/summary"
+        }
+      ],
+      "components": [
+        {
+          "name": "Bcrhst",
+          "title": "Html",
+          "type": "Html",
+          "content": "<p class=\"govuk-body\">Welcome to Grants.{%- assign inEngland = \"/are-you-in-england\" | page -%}{{ inEngland.title }}<br>{{ 'TKsWbP' | answer }}</p>\n",
           "options": {},
           "schema": {}
         }
