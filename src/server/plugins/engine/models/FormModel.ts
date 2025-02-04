@@ -4,17 +4,21 @@ import {
   ControllerType,
   Engine,
   formDefinitionSchema,
+  hasComponents,
   hasRepeater,
+  type ComponentDef,
   type ConditionWrapper,
   type ConditionsModelData,
   type DateUnits,
   type FormDefinition,
-  type List
+  type List,
+  type Page
 } from '@defra/forms-model'
 import { add } from 'date-fns'
 import { Parser, type Value } from 'expr-eval'
 import joi from 'joi'
 
+import { type Component } from '~/src/server/plugins/engine/components/helpers.js'
 import {
   findPage,
   getError,
@@ -59,6 +63,11 @@ export class FormModel {
   }
 
   controllers?: Record<string, typeof PageController>
+  pageDefMap: Map<string, Page>
+  listDefMap: Map<string, List>
+  componentDefMap: Map<string, ComponentDef>
+  pageMap: Map<string, PageControllerClass>
+  componentMap: Map<string, Component>
 
   constructor(
     def: typeof this.def,
@@ -131,6 +140,26 @@ export class FormModel {
         })
       )
     }
+
+    this.pageDefMap = new Map(def.pages.map((page) => [page.path, page]))
+    this.listDefMap = new Map(def.lists.map((list) => [list.name, list]))
+    this.componentDefMap = new Map(
+      def.pages
+        .filter(hasComponents)
+        .flatMap((page) =>
+          page.components.map((component) => [component.name, component])
+        )
+    )
+
+    this.pageMap = new Map(this.pages.map((page) => [page.path, page]))
+    this.componentMap = new Map(
+      this.pages.flatMap((page) =>
+        page.collection.components.map((component) => [
+          component.name,
+          component
+        ])
+      )
+    )
   }
 
   /**
@@ -243,7 +272,13 @@ export class FormModel {
       state,
       paths: [],
       isForceAccess,
-      data: {}
+      data: {},
+      model: this,
+      pageDefMap: this.pageDefMap,
+      listDefMap: this.listDefMap,
+      componentDefMap: this.componentDefMap,
+      pageMap: this.pageMap,
+      componentMap: this.componentMap
     }
 
     // Validate current page

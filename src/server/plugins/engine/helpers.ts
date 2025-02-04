@@ -4,10 +4,18 @@ import { type ResponseToolkit } from '@hapi/hapi'
 import { format, parseISO } from 'date-fns'
 import { StatusCodes } from 'http-status-codes'
 import joi, { type Schema, type ValidationErrorItem } from 'joi'
+import {
+  Liquid,
+  Value,
+  type Context,
+  type TagToken,
+  type TopLevelToken
+} from 'liquidjs'
 import upperFirst from 'lodash/upperFirst.js'
 
 import { createLogger } from '~/src/server/common/helpers/logging/logger.js'
 import { PREVIEW_PATH_PREFIX } from '~/src/server/constants.js'
+import { getAnswer } from '~/src/server/plugins/engine/components/helpers.js' /*  */
 import { type FormModel } from '~/src/server/plugins/engine/models/FormModel.js'
 import { type PageControllerClass } from '~/src/server/plugins/engine/pageControllers/helpers.js'
 import {
@@ -24,6 +32,55 @@ import {
 } from '~/src/server/routes/types.js'
 
 const logger = createLogger()
+
+const engine = new Liquid({
+  outputEscape: 'escape'
+})
+
+engine.registerFilter('page', function (path) {
+  return this.context.globals.pages.get(path)
+})
+
+engine.registerFilter('pagedef', function (path) {
+  return this.context.globals.context.pageDefMap.get(path)
+})
+
+engine.registerFilter('field', function (name) {
+  return this.context.globals.components.get(name)
+})
+
+engine.registerFilter('fielddef', function (name) {
+  return this.context.globals.context.componentDefMap.get(name)
+})
+
+engine.registerFilter('answer', function (name) {
+  const component = this.context.globals.components.get(name)
+  const answer = getAnswer(component, this.context.globals.context.state)
+
+  return answer
+})
+
+engine.registerTag('page', {
+  parse: function (token: TagToken, _remainTokens: TopLevelToken[]) {
+    this.value = new Value(token.args, engine)
+  },
+  render: function* (ctx: Context) {
+    const path = yield this.value.value(ctx)
+
+    return ctx.globals.pages.get(path)
+  }
+})
+
+engine.registerTag('field', {
+  parse: function (token: TagToken, _remainTokens: TopLevelToken[]) {
+    this.value = new Value(token.args, engine)
+  },
+  render: function* (ctx: Context) {
+    const name = yield this.value.value(ctx)
+
+    return ctx.globals.components.get(name)
+  }
+})
 
 export function proceed(
   request: Pick<FormContextRequest, 'method' | 'payload' | 'query'>,
@@ -281,4 +338,15 @@ export function interpolate(str: string, context: FormContext): string {
   })
 
   return result.__result
+}
+
+export function evaluateTemplate(
+  template: string,
+  context: FormContext
+): string {
+  const { model } = context
+
+  return engine.parseAndRenderSync(template, context.evaluationState, {
+    globals: { context, pages: model.pageMap, components: model.componentMap }
+  })
 }

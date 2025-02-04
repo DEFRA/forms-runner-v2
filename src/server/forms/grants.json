@@ -12,7 +12,7 @@
           "name": "Jhimsh",
           "title": "Html",
           "type": "Html",
-          "content": "<p class=\"govuk-body\">Use this service to:</p>\n\n<ul class=\"govuk-list govuk-list--bullet\">\n  <li>check if you can apply for a grant for your project (takes about 5 minutes)</li>\n  <li>check how well your project fits the funding priorities (takes about 15 minutes if you have all the project details)</li>\n</ul>\n\n<p class=\"govuk-body\">You can apply if you:</p>\n\n<ul class=\"govuk-list govuk-list--bullet\">\n<li>﻿﻿are a grower or producer of agricultural or horticultural produce</li>\n<li>are a business processing agricultural or horticultural products that is at least 50% owned by agricultural or horticultural producers</li>\n<li>﻿﻿will do the grant-funded work in England</li>\n<li>﻿﻿estimate the project costs are over £62,500</li>\n</ul>",
+          "content": "<p class=\"govuk-body\">Welcome to Grants.{%- assign inEngland = \"/are-you-in-england\" | page -%}{{ inEngland.title }}<br>{{ 'TKsWbP' | answer }}</p>\n",
           "options": {},
           "schema": {}
         },
