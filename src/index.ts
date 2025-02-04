@@ -1,16 +1,16 @@
-import path from 'node:path'
-
 import {
   type FormDefinition,
   type FormMetadata,
   type SubmitPayload,
   type SubmitResponsePayload
 } from '@defra/forms-model'
+import Boom from '@hapi/boom'
 
 import { config } from '~/src/config/index.js'
 import { createLogger } from '~/src/server/common/helpers/logging/logger.js'
 import ScorePageController from '~/src/server/controllers/score-page.js'
 import { createServer } from '~/src/server/index.js'
+import { getForm } from '~/src/server/plugins/engine/configureEnginePlugin.js'
 import { type FormModel } from '~/src/server/plugins/engine/models/index.js'
 import { type DetailItem } from '~/src/server/plugins/engine/models/types.js'
 import {
@@ -35,42 +35,80 @@ process.on('unhandledRejection', (error) => {
  * Main entrypoint to the application.
  */
 async function startServer() {
-  const exampleFormFile = new URL('./server/forms/grants.json', import.meta.url)
-    .pathname
+  // Load form definitions
+  const exampleGrantPath = new URL(
+    './server/forms/example-grant.json',
+    import.meta.url
+  ).pathname
+  const exampleGrantDefinition = await getForm(exampleGrantPath)
+
+  const addingValuePath = new URL(
+    './server/forms/adding-value.json',
+    import.meta.url
+  ).pathname
+  const addingValueDefinition = await getForm(addingValuePath)
+
+  // Form metadata
+  const now = new Date()
+  const user = {
+    id: 'grants-user',
+    displayName: 'Grants dev'
+  }
+  const author = {
+    createdAt: now,
+    createdBy: user,
+    updatedAt: now,
+    updatedBy: user
+  }
+
+  const metadata = {
+    organisation: 'Defra',
+    teamName: 'Grants',
+    teamEmail: 'grants@defra.gov.uk',
+    submissionGuidance: "Thanks for your submission, we'll be in touch",
+    notificationEmail:
+      'cl-defra-tactical-grants-test-rpa-email@equalexperts.com',
+    ...author,
+    live: author
+  }
+
+  const exampleGrantMetadata: FormMetadata = {
+    id: '5eeb9f71-44f8-46ed-9412-3d5e2c5ab2bc',
+    slug: 'example-grant',
+    title: 'Example grant',
+    ...metadata
+  }
+
+  const addingValueMetadata: FormMetadata = {
+    id: '95e92559-968d-44ae-8666-2b1ad3dffd31',
+    slug: 'adding-value',
+    title: 'Adding value',
+    ...metadata
+  }
 
   const formsService: FormsService = {
     getFormMetadata: function (slug: string): Promise<FormMetadata> {
-      const now = new Date()
-      const author = {
-        id: 'grants-user',
-        displayName: 'Grants dev'
+      switch (slug) {
+        case exampleGrantMetadata.slug:
+          return Promise.resolve(exampleGrantMetadata)
+        case addingValueMetadata.slug:
+          return Promise.resolve(addingValueMetadata)
+        default:
+          throw Boom.notFound(`Form '${slug}' not found`)
       }
-
-      const metadata: FormMetadata = {
-        id: '95e92559-968d-44ae-8666-2b1ad3dffd31',
-        slug,
-        title: 'Grants (Adding value)',
-        organisation: 'Defra',
-        teamName: 'Grants',
-        teamEmail: 'grants@defra.gov.uk',
-        submissionGuidance: "Thanks for your submission, we'll be in touch",
-        notificationEmail:
-          'cl-defra-tactical-grants-test-rpa-email@equalexperts.com',
-        createdBy: author,
-        createdAt: now,
-        updatedBy: author,
-        updatedAt: now
-      }
-
-      return Promise.resolve(metadata)
     },
     getFormDefinition: function (
       id: string,
-      state: FormStatus
+      _state: FormStatus
     ): Promise<FormDefinition> {
-      throw new Error(
-        `Function not implemented. Params id: ${id}, state: ${state}`
-      )
+      switch (id) {
+        case exampleGrantMetadata.id:
+          return Promise.resolve(exampleGrantDefinition)
+        case addingValueMetadata.id:
+          return Promise.resolve(addingValueDefinition)
+        default:
+          throw Boom.notFound(`Form '${id}' not found`)
+      }
     }
   }
 
@@ -116,8 +154,6 @@ async function startServer() {
   }
 
   const server = await createServer({
-    formFileName: path.basename(exampleFormFile),
-    formFilePath: path.dirname(exampleFormFile),
     services: { formsService, formSubmissionService, outputService },
     controllers: {
       ScorePageController
