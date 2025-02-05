@@ -64,9 +64,9 @@
         <table class="govuk-table govuk-body govuk-!-font-size-16">
           <thead class="govuk-table__head">
             <tr class="govuk-table__row">
-              <th scope="col" class="govuk-table__header">Answers</th>
-              <th scope="col" class="govuk-table__header">Score</th>
-              <th scope="col" class="govuk-table__header govuk-!-width-one-third">Funding priorities</th>
+              <th scope="col" class="govuk-table__header">Topic</th>
+              <th scope="col" class="govuk-table__header">Your answer</th>
+              <th scope="col" class="govuk-table__header govuk-!-width-one-third">Your score</th>
               <th scope="col" class="govuk-table__header">Change</th>
             </tr>
           </thead>
@@ -74,20 +74,19 @@
             {% for question in questions %}
             <tr class="govuk-table__row">
               <td class="govuk-table__cell">
-                <strong class="govuk-!-padding-top-2">{{ question.category }}</strong><br/>
-                <ul class="govuk-list govuk-list--bullet govuk-!-padding-top-2 govuk-!-font-size-16">
-                  {% for answer in question.answers %}
-                    <li>{{ answer.value }}</li>
-                    {% endfor %}
-                </ul>
+                <strong class="govuk-!-padding-top-2">{{ question.category }}</strong>
               </td>
               <td class="govuk-table__cell">
-                <p class="govuk-!-font-size-16 govuk-!-margin-top-0">
-                  {{ question.scoreBand }}
+                  <ul class="govuk-list govuk-!-font-size-16 {% if not question.isSingleAnswer %}govuk-list--bullet{% endif %}">
+                    {% for answer in question.answers %}
+                      <li>{{ answer.value }}</li>
+                      {% endfor %}
+                  </ul>
                 </p>
               </td>
               <td class="govuk-table__cell">
-                <ul class="govuk-list govuk-!-font-size-16">
+                <strong class="govuk-tag govuk-!-padding-0">{{ question.scoreBand }}</strong>
+                <ul class="govuk-list govuk-!-font-size-16 govuk-!-padding-top-2">
                 {% for fundingPriority in question.fundingPriorities %}
                   <li class="govuk-!-margin-bottom-3">{{ fundingPriority }}</li>
                 {% endfor %}
