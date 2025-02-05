@@ -77,7 +77,7 @@
                 <strong class="govuk-!-padding-top-2">{{ question.category }}</strong>
               </td>
               <td class="govuk-table__cell">
-                  <ul class="govuk-list govuk-list--bullet govuk-!-font-size-16">
+                  <ul class="govuk-list govuk-!-font-size-16 {% if not question.isSingleAnswer %}govuk-list--bullet{% endif %}">
                     {% for answer in question.answers %}
                       <li>{{ answer.value }}</li>
                       {% endfor %}
