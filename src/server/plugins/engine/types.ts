@@ -6,7 +6,7 @@ import {
 } from '@defra/forms-model'
 import { type ValidationErrorItem } from 'joi'
 
-import { type FormComponent } from '~/src/server/plugins/engine/components/FormComponent.js'
+import { FormComponent } from '~/src/server/plugins/engine/components/FormComponent.js'
 import { type Component } from '~/src/server/plugins/engine/components/helpers.js'
 import {
   type BackLink,

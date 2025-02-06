@@ -17,12 +17,31 @@
       ],
       "next": [
         {
-          "path": "/are-you-in-england"
+          "path": "/full-name"
         }
       ]
     },
     {
-      "title": "Are you in England?",
+      "title": "What's your name?",
+      "path": "/full-name",
+      "next": [
+        {
+          "path": "/are-you-in-england"
+        }
+      ],
+      "components": [
+        {
+          "name": "WmHfSb",
+          "title": "What's your full name?",
+          "type": "TextField",
+          "hint": "",
+          "options": {},
+          "schema": {}
+        }
+      ]
+    },
+    {
+      "title": "Are you in England, {{ WmHfSb }}?",
       "path": "/are-you-in-england",
       "next": [
         {
@@ -81,7 +100,7 @@
       ]
     },
     {
-      "title": "What is your business: In England? {{TKsWbP}}?",
+      "title": "Information: In England? {{ TKsWbP }}?",
       "path": "/information",
       "next": [
         {

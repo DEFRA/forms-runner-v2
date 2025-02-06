@@ -34,11 +34,17 @@ import {
 const logger = createLogger()
 
 const engine = new Liquid({
-  outputEscape: 'escape'
+  outputEscape: 'escape',
+  jsTruthy: true
 })
 
 engine.registerFilter('page', function (path) {
-  return this.context.globals.pages.get(path)
+  const page = this.context.globals.pages.get(path)
+
+  return {
+    ...page,
+    title: interpolate(page.title, this.context.globals.context)
+  }
 })
 
 engine.registerFilter('pagedef', function (path) {
@@ -60,27 +66,27 @@ engine.registerFilter('answer', function (name) {
   return answer
 })
 
-engine.registerTag('page', {
-  parse: function (token: TagToken, _remainTokens: TopLevelToken[]) {
-    this.value = new Value(token.args, engine)
-  },
-  render: function* (ctx: Context) {
-    const path = yield this.value.value(ctx)
+// engine.registerTag('page', {
+//   parse: function (token: TagToken, _remainTokens: TopLevelToken[]) {
+//     this.value = new Value(token.args, engine)
+//   },
+//   render: function* (ctx: Context) {
+//     const path = yield this.value.value(ctx)
 
-    return ctx.globals.pages.get(path)
-  }
-})
+//     return ctx.globals.pages.get(path)
+//   }
+// })
 
-engine.registerTag('field', {
-  parse: function (token: TagToken, _remainTokens: TopLevelToken[]) {
-    this.value = new Value(token.args, engine)
-  },
-  render: function* (ctx: Context) {
-    const name = yield this.value.value(ctx)
+// engine.registerTag('field', {
+//   parse: function (token: TagToken, _remainTokens: TopLevelToken[]) {
+//     this.value = new Value(token.args, engine)
+//   },
+//   render: function* (ctx: Context) {
+//     const name = yield this.value.value(ctx)
 
-    return ctx.globals.components.get(name)
-  }
-})
+//     return ctx.globals.components.get(name)
+//   }
+// })
 
 export function proceed(
   request: Pick<FormContextRequest, 'method' | 'payload' | 'query'>,

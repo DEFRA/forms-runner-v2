@@ -16,12 +16,14 @@ import { type ComponentCollection } from '~/src/server/plugins/engine/components
 import {
   encodeUrl,
   getStartPath,
+  interpolate,
   normalisePath
 } from '~/src/server/plugins/engine/helpers.js'
 import { type FormModel } from '~/src/server/plugins/engine/models/index.js'
 import { type ExecutableCondition } from '~/src/server/plugins/engine/models/types.js'
 import {
   type FormContext,
+  type FormContextRequest,
   type PageViewModelBase
 } from '~/src/server/plugins/engine/types.js'
 import {
@@ -99,11 +101,14 @@ export class PageController {
     return {}
   }
 
-  get viewModel(): PageViewModelBase {
+  getViewModel(
+    request: FormContextRequest,
+    context: FormContext
+  ): PageViewModelBase {
     const { name, section, title } = this
 
     const showTitle = true
-    const pageTitle = title
+    const pageTitle = interpolate(title, context)
     const sectionTitle = section?.hideTitle !== true ? section?.title : ''
 
     return {
@@ -161,7 +166,9 @@ export class PageController {
     h: Pick<ResponseToolkit, 'redirect' | 'view'>
   ) => ReturnType<Lifecycle.Method<FormRequestRefs>> {
     return (request, context, h) => {
-      const { viewModel, viewName } = this
+      const { viewName } = this
+      const viewModel = this.getViewModel(request, context)
+
       return h.view(viewName, viewModel)
     }
   }
