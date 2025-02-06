@@ -224,16 +224,16 @@ export const plugin = {
           const { options } = events.onLoad
           const { url } = options
 
+          // TODO: Update structured data POST payload with when helper
+          // is updated to removing the dependency on `SummaryViewModel` etc.
           const viewModel = new SummaryViewModel(request, page, context)
           const items = getFormSubmissionData(
             viewModel.context,
             viewModel.details
           )
           const formStatus = checkFormStatus(page.path)
+          const payload = format(items, model, undefined, formStatus)
 
-          const payload = format(items, model, null, formStatus)
-          // TODO: Replace POST payload with structured data when helper
-          // is available from https://github.com/DEFRA/forms-runner/pull/679
           const { payload: response } = await httpService.postJson(url, {
             payload
           })
