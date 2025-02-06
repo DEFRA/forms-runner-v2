@@ -42,16 +42,7 @@
           "options": {},
           "schema": {}
         }
-      ],
-      "events": {
-        "onLoad": {
-          "type": "http",
-          "options": {
-            "method": "POST",
-            "url": "https://b952261a32b94f5597d36a0234e95ab1.api.mockbin.io"
-          }
-        }
-      }
+      ]
     },
     {
       "title": "You must be in England",
