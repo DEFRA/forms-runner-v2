@@ -53,10 +53,6 @@ export class FormModel {
   conditions: Partial<Record<string, ExecutableCondition>>
   pages: PageControllerClass[]
   services: Services
-  output: {
-    audience: 'human' | 'machine'
-    version: string
-  }
 
   controllers?: Record<string, typeof PageController>
 
@@ -102,11 +98,6 @@ export class FormModel {
     this.basePath = options.basePath
     this.conditions = {}
     this.services = services
-    this.output = {
-      // TODO do this conditionally
-      audience: 'human',
-      version: '1'
-    }
     this.controllers = controllers
 
     def.conditions.forEach((conditionDef) => {
