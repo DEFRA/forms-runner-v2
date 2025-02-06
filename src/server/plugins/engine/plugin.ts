@@ -231,8 +231,9 @@ export const plugin = {
             viewModel.context,
             viewModel.details
           )
-          const formStatus = checkFormStatus(page.path)
-          const payload = format(items, model, undefined, formStatus)
+
+          // @ts-expect-error - function signature will be refactored in the next iteration of the formatter
+          const payload = format(items, model, undefined, undefined)
 
           const { payload: response } = await httpService.postJson(url, {
             payload
