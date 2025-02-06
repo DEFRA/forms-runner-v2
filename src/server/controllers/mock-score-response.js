@@ -91,7 +91,7 @@ export default {
     },
     {
       questionId: '/environmental-impact',
-      category: 'Environmental Impact',
+      category: 'Environmental impact',
       fundingPriorities: ['Improve the environment'],
       answers: [
         {

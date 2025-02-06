@@ -59,8 +59,10 @@ export default class ScorePageController extends QuestionPageController {
           ({ category, answers, score, fundingPriorities, questionId }) => ({
             category,
             answers,
+            isSingleAnswer: answers.length === 1,
             scoreBand: score.band,
             fundingPriorities,
+            questionPath: '/' + request.params.slug + questionId,
             title: findPage(model, questionId)?.title
           })
         )
