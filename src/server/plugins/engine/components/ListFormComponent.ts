@@ -72,7 +72,7 @@ export class ListFormComponent extends FormComponent {
 
     let formSchema = joi[this.listType]()
       .valid(...this.values)
-      .label(title.toLowerCase())
+      .label(title)
       .required()
 
     if (options.customValidationMessages) {

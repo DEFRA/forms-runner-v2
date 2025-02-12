@@ -28,7 +28,7 @@ export class TelephoneNumberField extends FormComponent {
       .string()
       .trim()
       .pattern(PATTERN)
-      .label(title.toLowerCase())
+      .label(title)
       .required()
 
     if (options.required === false) {
