@@ -1,9 +1,8 @@
 import { type FormComponentsDef, type Item } from '@defra/forms-model'
 
-
 import { ComponentBase } from '~/src/server/plugins/engine/components/ComponentBase.js'
 import { optionalText } from '~/src/server/plugins/engine/components/constants.js'
-import { interpolate } from '~/src/server/plugins/engine/helpers.js'
+import { evaluateTemplate } from '~/src/server/plugins/engine/helpers.js'
 import {
   type FileState,
   type FormContext,
@@ -114,7 +113,7 @@ export class FormComponent extends ComponentBase {
   ) {
     const { hint, name, options = {}, viewModel } = this
 
-    const title = interpolate(this.title, context)
+    const title = evaluateTemplate(this.title, context)
     const isRequired = !('required' in options) || options.required !== false
     const hideOptional = 'optionalText' in options && options.optionalText
     const label = `${title}${!isRequired && !hideOptional ? optionalText : ''}`

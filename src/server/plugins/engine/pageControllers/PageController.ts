@@ -15,8 +15,8 @@ import {
 import { type ComponentCollection } from '~/src/server/plugins/engine/components/ComponentCollection.js'
 import {
   encodeUrl,
+  evaluateTemplate,
   getStartPath,
-  interpolate,
   normalisePath
 } from '~/src/server/plugins/engine/helpers.js'
 import { type FormModel } from '~/src/server/plugins/engine/models/index.js'
@@ -108,7 +108,7 @@ export class PageController {
     const { name, section, title } = this
 
     const showTitle = true
-    const pageTitle = interpolate(title, context)
+    const pageTitle = evaluateTemplate(title, context)
     const sectionTitle = section?.hideTitle !== true ? section?.title : ''
 
     return {

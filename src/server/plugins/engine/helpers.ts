@@ -3,19 +3,13 @@ import Boom from '@hapi/boom'
 import { type ResponseToolkit } from '@hapi/hapi'
 import { format, parseISO } from 'date-fns'
 import { StatusCodes } from 'http-status-codes'
-import joi, { type Schema, type ValidationErrorItem } from 'joi'
-import {
-  Liquid,
-  Value,
-  type Context,
-  type TagToken,
-  type TopLevelToken
-} from 'liquidjs'
+import { type Schema, type ValidationErrorItem } from 'joi'
+import { Liquid } from 'liquidjs'
 import upperFirst from 'lodash/upperFirst.js'
 
 import { createLogger } from '~/src/server/common/helpers/logging/logger.js'
 import { PREVIEW_PATH_PREFIX } from '~/src/server/constants.js'
-import { getAnswer } from '~/src/server/plugins/engine/components/helpers.js' /*  */
+import { getAnswer } from '~/src/server/plugins/engine/components/helpers.js'
 import { type FormModel } from '~/src/server/plugins/engine/models/FormModel.js'
 import { type PageControllerClass } from '~/src/server/plugins/engine/pageControllers/helpers.js'
 import {
@@ -41,22 +35,25 @@ const engine = new Liquid({
 engine.registerFilter('page', function (path) {
   const page = this.context.globals.pages.get(path)
 
-  return {
-    ...page,
-    title: interpolate(page.title, this.context.globals.context)
-  }
+  return page
 })
 
 engine.registerFilter('pagedef', function (path) {
-  return this.context.globals.context.pageDefMap.get(path)
+  const pageDef = this.context.globals.context.pageDefMap.get(path)
+
+  return pageDef
 })
 
 engine.registerFilter('field', function (name) {
-  return this.context.globals.components.get(name)
+  const component = this.context.globals.components.get(name)
+
+  return component
 })
 
 engine.registerFilter('fielddef', function (name) {
-  return this.context.globals.context.componentDefMap.get(name)
+  const componentDef = this.context.globals.context.componentDefMap.get(name)
+
+  return componentDef
 })
 
 engine.registerFilter('answer', function (name) {
@@ -65,28 +62,6 @@ engine.registerFilter('answer', function (name) {
 
   return answer
 })
-
-// engine.registerTag('page', {
-//   parse: function (token: TagToken, _remainTokens: TopLevelToken[]) {
-//     this.value = new Value(token.args, engine)
-//   },
-//   render: function* (ctx: Context) {
-//     const path = yield this.value.value(ctx)
-
-//     return ctx.globals.pages.get(path)
-//   }
-// })
-
-// engine.registerTag('field', {
-//   parse: function (token: TagToken, _remainTokens: TopLevelToken[]) {
-//     this.value = new Value(token.args, engine)
-//   },
-//   render: function* (ctx: Context) {
-//     const name = yield this.value.value(ctx)
-
-//     return ctx.globals.components.get(name)
-//   }
-// })
 
 export function proceed(
   request: Pick<FormContextRequest, 'method' | 'payload' | 'query'>,
@@ -327,23 +302,6 @@ export function safeGenerateCrumb(
   }
 
   return request.server.plugins.crumb.generate(request)
-}
-
-export function interpolate(str: string, context: FormContext): string {
-  if (!str.includes('{{')) {
-    return str
-  }
-
-  const expr = joi.object<{ __result: string }>().keys({
-    __result: joi.string().default(joi.expression(str))
-  })
-
-  const result = joi.attempt(context.evaluationState, expr, {
-    allowUnknown: true,
-    stripUnknown: true
-  })
-
-  return result.__result
 }
 
 export function evaluateTemplate(
