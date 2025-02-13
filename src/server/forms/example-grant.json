@@ -17,31 +17,12 @@
       ],
       "next": [
         {
-          "path": "/full-name"
-        }
-      ]
-    },
-    {
-      "title": "What's your name?",
-      "path": "/full-name",
-      "next": [
-        {
           "path": "/are-you-in-england"
         }
-      ],
-      "components": [
-        {
-          "name": "WmHfSb",
-          "title": "What's your full name?",
-          "type": "TextField",
-          "hint": "",
-          "options": {},
-          "schema": {}
-        }
       ]
     },
     {
-      "title": "Are you in England, {{ WmHfSb }}?",
+      "title": "Are you in England?",
       "path": "/are-you-in-england",
       "next": [
         {
@@ -84,7 +65,7 @@
       "path": "/what-is-your-business",
       "next": [
         {
-          "path": "/information"
+          "path": "/summary"
         }
       ],
       "components": [
@@ -94,25 +75,6 @@
           "type": "RadiosField",
           "list": "dfdGFY",
           "hint": "",
-          "options": {},
-          "schema": {}
-        }
-      ]
-    },
-    {
-      "title": "Information: In England? {{ TKsWbP }}?",
-      "path": "/information",
-      "next": [
-        {
-          "path": "/summary"
-        }
-      ],
-      "components": [
-        {
-          "name": "Bcrhst",
-          "title": "Html",
-          "type": "Html",
-          "content": "<p class=\"govuk-body\">Welcome to Grants.{%- assign inEngland = \"/are-you-in-england\" | page -%}{{ inEngland.title }}<br>{{ 'TKsWbP' | answer }}</p>\n",
           "options": {},
           "schema": {}
         }
