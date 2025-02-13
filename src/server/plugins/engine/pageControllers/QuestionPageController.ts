@@ -276,8 +276,8 @@ export class QuestionPageController extends PageController {
     return this.collection.getStateFromValidForm(payload)
   }
 
-  getErrors(details?: ValidationErrorItem[]) {
-    return getErrors(details)
+  getErrors(context: FormContext, details?: ValidationErrorItem[]) {
+    return getErrors(context, details)
   }
 
   async getState(request: FormRequest | FormRequestPayload) {

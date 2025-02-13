@@ -5,7 +5,6 @@ import { format, parseISO } from 'date-fns'
 import { StatusCodes } from 'http-status-codes'
 import { type Schema, type ValidationErrorItem } from 'joi'
 import { Liquid } from 'liquidjs'
-import upperFirst from 'lodash/upperFirst.js'
 
 import { createLogger } from '~/src/server/common/helpers/logging/logger.js'
 import { PREVIEW_PATH_PREFIX } from '~/src/server/constants.js'
@@ -43,6 +42,13 @@ engine.registerFilter('pagedef', function (path) {
 
   return pageDef
 })
+
+engine.registerFilter(
+  'href',
+  function (page: PageControllerClass, query?: FormQuery) {
+    return getPageHref(page, query)
+  }
+)
 
 engine.registerFilter('field', function (name) {
   const component = this.context.globals.components.get(name)
@@ -244,30 +250,33 @@ export function checkEmailAddressForLiveFormSubmission(
 
 /**
  * Parses the errors from {@link Schema.validate} so they can be rendered by govuk-frontend templates
+ * @param context - the form context
  * @param [details] - provided by {@link Schema.validate}
  */
 export function getErrors(
+  context: FormContext,
   details?: ValidationErrorItem[]
 ): FormSubmissionError[] | undefined {
   if (!details?.length) {
     return
   }
 
-  return details.map(getError)
+  return details.map((detail) => getError(context, detail))
 }
 
-export function getError(detail: ValidationErrorItem): FormSubmissionError {
-  const { context, message, path } = detail
+export function getError(
+  context: FormContext,
+  detail: ValidationErrorItem
+): FormSubmissionError {
+  const { context: ctx, message, path } = detail
 
-  const name = context?.key ?? ''
+  const name = ctx?.key ?? ''
   const href = `#${name}`
-
-  const text = upperFirst(
-    message.replace(
-      /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/,
-      (text) => format(parseISO(text), 'd MMMM yyyy')
-    )
+  const template = message.replace(
+    /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/,
+    (text) => format(parseISO(text), 'd MMMM yyyy')
   )
+  const text = evaluateTemplate(template, context)
 
   return {
     path,
@@ -310,7 +319,7 @@ export function evaluateTemplate(
 ): string {
   const { model } = context
 
-  return engine.parseAndRenderSync(template, context.evaluationState, {
+  return engine.parseAndRenderSync(template, context.state, {
     globals: { context, pages: model.pageMap, components: model.componentMap }
   })
 }

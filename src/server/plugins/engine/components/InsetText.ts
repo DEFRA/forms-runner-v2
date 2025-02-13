@@ -17,7 +17,7 @@ export class InsetText extends ComponentBase {
     this.content = content
   }
 
-  getViewModel(context: FormContext) {
+  getViewModel(_context: FormContext) {
     const { content, viewModel } = this
 
     return {

@@ -195,7 +195,7 @@ export class FileUploadPageController extends QuestionPageController {
     }
   }
 
-  getErrors(details?: ValidationErrorItem[]) {
+  getErrors(context: FormContext, details?: ValidationErrorItem[]) {
     const { fileUpload } = this
 
     if (details) {
@@ -208,7 +208,7 @@ export class FileUploadPageController extends QuestionPageController {
         if (!isUploadError || isUploadRootError) {
           // The error is for the root of the upload or another
           // field on the page so defer to the getError helper
-          errors.push(getError(error))
+          errors.push(getError(context, error))
         } else {
           const { context, path, type } = error
 

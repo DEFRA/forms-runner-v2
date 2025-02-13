@@ -31,7 +31,7 @@ export class List extends ComponentBase {
     this.options = options
   }
 
-  getViewModel(context: FormContext) {
+  getViewModel(_context: FormContext) {
     const { items: listItems, options, viewModel } = this
 
     let { classes, content, items, type } = viewModel

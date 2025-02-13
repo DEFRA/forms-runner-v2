@@ -259,13 +259,17 @@ export class ComponentCollection {
   /**
    * Validate form payload
    */
-  validate(value: FormPayload = {}): FormValidationResult<FormPayload> {
+  validate(
+    context: FormContext,
+    value: FormPayload = {}
+  ): FormValidationResult<FormPayload> {
     const result = this.formSchema.validate(value, opts)
     const details = result.error?.details
 
     return {
       value: (result.value ?? {}) as typeof value,
-      errors: this.page?.getErrors(details) ?? getErrors(details)
+      errors:
+        this.page?.getErrors(context, details) ?? getErrors(context, details)
     }
   }
 }

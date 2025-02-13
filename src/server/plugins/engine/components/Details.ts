@@ -19,7 +19,7 @@ export class Details extends ComponentBase {
     this.options = options
   }
 
-  getViewModel(context: FormContext) {
+  getViewModel(_context: FormContext) {
     const { content, title, viewModel } = this
 
     return {

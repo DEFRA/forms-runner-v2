@@ -379,7 +379,7 @@ function validateFormPayload(
   }
 
   // Validate form data into payload
-  const { value, errors } = collection.validate({
+  const { value, errors } = collection.validate(context, {
     ...payload,
     ...request.payload
   })
@@ -417,7 +417,7 @@ function validateFormState(
 
   // Add relevant state errors
   if (error) {
-    const errorsState = error.details.map(getError)
+    const errorsState = error.details.map((detail) => getError(context, detail))
     return { ...context, errors: errors.concat(errorsState) }
   }
 
