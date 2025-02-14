@@ -4,13 +4,15 @@ import { type ResponseToolkit } from '@hapi/hapi'
 import { format, parseISO } from 'date-fns'
 import { StatusCodes } from 'http-status-codes'
 import { type Schema, type ValidationErrorItem } from 'joi'
-import upperFirst from 'lodash/upperFirst.js'
+import { Liquid } from 'liquidjs'
 
 import { createLogger } from '~/src/server/common/helpers/logging/logger.js'
 import { PREVIEW_PATH_PREFIX } from '~/src/server/constants.js'
+import { getAnswer } from '~/src/server/plugins/engine/components/helpers.js'
 import { type FormModel } from '~/src/server/plugins/engine/models/FormModel.js'
 import { type PageControllerClass } from '~/src/server/plugins/engine/pageControllers/helpers.js'
 import {
+  type FormContext,
   type FormContextRequest,
   type FormSubmissionError
 } from '~/src/server/plugins/engine/types.js'
@@ -23,6 +25,55 @@ import {
 } from '~/src/server/routes/types.js'
 
 const logger = createLogger()
+
+const engine = new Liquid({
+  outputEscape: 'escape',
+  jsTruthy: true
+})
+
+engine.registerFilter('evaluate', function (template) {
+  const evaluated = evaluateTemplate(template, this.context.globals.context)
+
+  return evaluated
+})
+
+engine.registerFilter('page', function (path) {
+  const page = this.context.globals.pages.get(path)
+
+  return page
+})
+
+engine.registerFilter('pagedef', function (path) {
+  const pageDef = this.context.globals.context.pageDefMap.get(path)
+
+  return pageDef
+})
+
+engine.registerFilter(
+  'href',
+  function (page: PageControllerClass, query?: FormQuery) {
+    return getPageHref(page, query)
+  }
+)
+
+engine.registerFilter('field', function (name) {
+  const component = this.context.globals.components.get(name)
+
+  return component
+})
+
+engine.registerFilter('fielddef', function (name) {
+  const componentDef = this.context.globals.context.componentDefMap.get(name)
+
+  return componentDef
+})
+
+engine.registerFilter('answer', function (name) {
+  const component = this.context.globals.components.get(name)
+  const answer = getAnswer(component, this.context.globals.context.state)
+
+  return answer
+})
 
 export function proceed(
   request: Pick<FormContextRequest, 'method' | 'payload' | 'query'>,
@@ -223,11 +274,9 @@ export function getError(detail: ValidationErrorItem): FormSubmissionError {
   const name = context?.key ?? ''
   const href = `#${name}`
 
-  const text = upperFirst(
-    message.replace(
-      /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/,
-      (text) => format(parseISO(text), 'd MMMM yyyy')
-    )
+  const text = message.replace(
+    /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/,
+    (text) => format(parseISO(text), 'd MMMM yyyy')
   )
 
   return {
@@ -263,4 +312,15 @@ export function safeGenerateCrumb(
   }
 
   return request.server.plugins.crumb.generate(request)
+}
+
+export function evaluateTemplate(
+  template: string,
+  context: FormContext
+): string {
+  const { model } = context
+
+  return engine.parseAndRenderSync(template, context.evaluationState, {
+    globals: { context, pages: model.pageMap, components: model.componentMap }
+  })
 }
