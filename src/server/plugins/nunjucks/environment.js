@@ -32,12 +32,17 @@ for (const [name, nunjucksFilter] of Object.entries(filters)) {
 }
 
 /**
+ * @this {NunjucksContext}
  * @param {FormSubmissionError[]} errors
  */
 function checkErrorTemplates(errors) {
   const { context } = this.ctx
 
-  errors.forEach(error => {
+  if (!context) {
+    return errors
+  }
+
+  errors.forEach((error) => {
     error.text = evaluateTemplate(error.text, context)
   })
 
@@ -47,10 +52,15 @@ function checkErrorTemplates(errors) {
 environment.addGlobal('checkErrorTemplates', checkErrorTemplates)
 
 /**
+ * @this {NunjucksContext}
  * @param {ComponentViewModel} component
  */
 function checkComponentTemplates(component) {
   const { context } = this.ctx
+
+  if (!context) {
+    return component
+  }
 
   if (component.isFormComponent) {
     // Evaluate label/legend text
@@ -82,17 +92,19 @@ function checkComponentTemplates(component) {
 environment.addGlobal('checkComponentTemplates', checkComponentTemplates)
 
 /**
+ * @this {NunjucksContext}
  * @param {string} template
  */
 function evaluate(template) {
   const { context } = this.ctx
 
-  return evaluateTemplate(template, context)
+  return context ? evaluateTemplate(template, context) : template
 }
 
 environment.addGlobal('evaluate', evaluate)
 
 /**
+ * @import { NunjucksContext } from '~/src/server/plugins/nunjucks/types.js'
  * @import { FormSubmissionError } from '~/src/server/plugins/engine/types.js'
  * @import { ComponentViewModel } from '~/src/server/plugins/engine/components/types.js'
  */
