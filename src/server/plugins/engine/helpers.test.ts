@@ -389,7 +389,7 @@ describe('Helpers', () => {
       ])
     })
 
-    it('formats first letter to uppercase', () => {
+    it('does not format the first letter to uppercase', () => {
       const { details } = new ValidationError(
         'Date of marriage example',
         [
@@ -410,7 +410,7 @@ describe('Helpers', () => {
           path: ['yesNoField'],
           href: '#yesNoField',
           name: 'yesNoField',
-          text: 'Something invalid',
+          text: 'something invalid',
           context: {
             key: 'yesNoField'
           }

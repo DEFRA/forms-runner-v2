@@ -3,9 +3,7 @@ import lowerFirst from 'lodash/lowerFirst.js'
 
 const opts = {
   functions: {
-    lowerFirst: (val: string) => {
-      return lowerFirst(val)
-    }
+    lowerFirst
   }
 }
 
@@ -31,7 +29,10 @@ export const messageTemplate = {
 
   // Nested fields use component title
   objectRequired: joi.expression('Enter {{#label}}', opts),
-  objectMissing: joi.expression('{{#title}} must include a {{#label}}', opts),
+  objectMissing: joi.expression(
+    '{{#title}} must include a {{lowerFirst(#label)}}',
+    opts
+  ),
   dateFormat: '{{#title}} must be a real date',
   dateMin: '{{#title}} must be the same as or after {{#limit}}',
   dateMax: '{{#title}} must be the same as or before {{#limit}}'
