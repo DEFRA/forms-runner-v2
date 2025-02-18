@@ -8,7 +8,11 @@ import { Liquid } from 'liquidjs'
 
 import { createLogger } from '~/src/server/common/helpers/logging/logger.js'
 import { PREVIEW_PATH_PREFIX } from '~/src/server/constants.js'
-import { getAnswer } from '~/src/server/plugins/engine/components/helpers.js'
+import {
+  getAnswer,
+  type Component,
+  type Field
+} from '~/src/server/plugins/engine/components/helpers.js'
 import { type FormModel } from '~/src/server/plugins/engine/models/FormModel.js'
 import { type PageControllerClass } from '~/src/server/plugins/engine/pageControllers/helpers.js'
 import {
@@ -31,40 +35,91 @@ const engine = new Liquid({
   jsTruthy: true
 })
 
-engine.registerFilter('page', function (path) {
-  const page = this.context.globals.pages.get(path)
+interface GlobalScope {
+  context: FormContext
+  pages: Map<string, PageControllerClass>
+  components: Map<string, Component>
+}
+
+engine.registerFilter('evaluate', function (template?: string) {
+  if (typeof template !== 'string') {
+    return template
+  }
+
+  const globals = this.context.globals as GlobalScope
+  const evaluated = evaluateTemplate(template, globals.context)
+
+  return evaluated
+})
+
+engine.registerFilter('page', function (path?: string) {
+  if (typeof path !== 'string') {
+    return
+  }
+
+  const globals = this.context.globals as GlobalScope
+  const page = globals.pages.get(path)
 
   return page
 })
 
-engine.registerFilter('pagedef', function (path) {
-  const pageDef = this.context.globals.context.pageDefMap.get(path)
+engine.registerFilter('pagedef', function (path?: string) {
+  if (typeof path !== 'string') {
+    return
+  }
+
+  const globals = this.context.globals as GlobalScope
+  const pageDef = globals.context.pageDefMap.get(path)
 
   return pageDef
 })
 
 engine.registerFilter(
   'href',
-  function (page: PageControllerClass, query?: FormQuery) {
+  function (page?: PageControllerClass, query?: FormQuery) {
+    if (page === undefined) {
+      return
+    }
+
     return getPageHref(page, query)
   }
 )
 
-engine.registerFilter('field', function (name) {
-  const component = this.context.globals.components.get(name)
+engine.registerFilter('field', function (name?: string) {
+  if (typeof name !== 'string') {
+    return
+  }
+
+  const globals = this.context.globals as GlobalScope
+  const component = globals.components.get(name)
 
   return component
 })
 
 engine.registerFilter('fielddef', function (name) {
-  const componentDef = this.context.globals.context.componentDefMap.get(name)
+  if (typeof name !== 'string') {
+    return
+  }
+
+  const globals = this.context.globals as GlobalScope
+  const componentDef = globals.context.componentDefMap.get(name)
 
   return componentDef
 })
 
 engine.registerFilter('answer', function (name) {
-  const component = this.context.globals.components.get(name)
-  const answer = getAnswer(component, this.context.globals.context.state)
+  if (typeof name !== 'string') {
+    return
+  }
+
+  const globals = this.context.globals as GlobalScope
+  const component = globals.components.get(name)
+
+  if (!component?.isFormComponent) {
+    return
+  }
+
+  const answer = getAnswer(component as Field, globals.context.state)
 
   return answer
 })
@@ -250,33 +305,28 @@ export function checkEmailAddressForLiveFormSubmission(
 
 /**
  * Parses the errors from {@link Schema.validate} so they can be rendered by govuk-frontend templates
- * @param context - the form context
  * @param [details] - provided by {@link Schema.validate}
  */
 export function getErrors(
-  context: FormContext,
   details?: ValidationErrorItem[]
 ): FormSubmissionError[] | undefined {
   if (!details?.length) {
     return
   }
 
-  return details.map((detail) => getError(context, detail))
+  return details.map(getError)
 }
 
-export function getError(
-  context: FormContext,
-  detail: ValidationErrorItem
-): FormSubmissionError {
-  const { context: ctx, message, path } = detail
+export function getError(detail: ValidationErrorItem): FormSubmissionError {
+  const { context, message, path } = detail
 
-  const name = ctx?.key ?? ''
+  const name = context?.key ?? ''
   const href = `#${name}`
-  const template = message.replace(
+
+  const text = message.replace(
     /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/,
     (text) => format(parseISO(text), 'd MMMM yyyy')
   )
-  const text = evaluateTemplate(template, context)
 
   return {
     path,
@@ -318,8 +368,14 @@ export function evaluateTemplate(
   context: FormContext
 ): string {
   const { model } = context
+  const globals: GlobalScope = {
+    context,
+    pages: model.pageMap,
+    components: model.componentMap
+  }
 
-  return engine.parseAndRenderSync(template, context.state, {
-    globals: { context, pages: model.pageMap, components: model.componentMap }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  return engine.parseAndRenderSync(template, context.evaluationState, {
+    globals
   })
 }
