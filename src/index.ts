@@ -42,6 +42,19 @@ async function startServer() {
     import.meta.url
   ).pathname
   const addingValueDefinition = await getForm(addingValuePath)
+  const environment = config.get('cdpEnvironment')
+
+  const scoringServiceUrl =
+    environment !== 'local'
+      ? `https://ffc-grants-scoring.${environment}.cdp-int.defra.cloud/scoring/api/v1/example-grant/score`
+      : `http://localhost:3001`
+
+  addingValueDefinition.pages.forEach((page) => {
+    const events = page.events
+    if (events && events.onLoad.options.url === 'SCORING_SERVICE_URL') {
+      events.onLoad.options.url = scoringServiceUrl
+    }
+  })
 
   // Form metadata
   const now = new Date()

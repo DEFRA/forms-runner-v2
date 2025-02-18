@@ -138,10 +138,10 @@
       "next": [],
       "components": [
         {
-          "name": "sdFYHh",
+          "name": "/products-processed",
           "title": "What type of produce is being processed?",
           "type": "RadiosField",
-          "list": "dfdGFZ",
+          "list": "adding-value-produce-list",
           "hint": "",
           "options": {},
           "schema": {}
@@ -152,13 +152,33 @@
       "title": "How will your project add value to the produce?",
       "path": "/adding-value",
       "next": [],
-      "components": []
+      "components": [
+        {
+          "name": "/adding-value",
+          "title": "How will your project add value to the produce?",
+          "type": "RadiosField",
+          "list": "how-will-you-add-value-list",
+          "hint": "",
+          "options": {},
+          "schema": {}
+        }
+      ]
     },
     {
       "title": "What impact will the project have?",
       "path": "/project-impact",
       "next": [],
-      "components": []
+      "components": [
+        {
+          "name": "/project-impact",
+          "title": "What impact will the project have?",
+          "type": "CheckboxesField",
+          "list": "project-impact-list",
+          "hint": "",
+          "options": {},
+          "schema": {}
+        }
+      ]
     },
     {
       "title": "Who will your new customers be after the project?",
@@ -180,10 +200,19 @@
     },
     {
       "title": "Score results",
-      "controller": "ScorePageController",
       "path": "/score-results",
+      "view": "grants/score-results.html",
       "next": [],
-      "components": []
+      "components": [],
+      "events": {
+        "onLoad": {
+          "type": "http",
+          "options": {
+            "method": "POST",
+            "url": "SCORING_SERVICE_URL"
+          }
+        }
+      }
     },
     {
       "title": "/business-details",
@@ -254,39 +283,93 @@
       ]
     },
     {
-      "title": "What type of produce is being processed??",
-      "name": "dfdGFZ",
+      "title": "What type of produce is being processed?",
+      "name": "adding-value-produce-list",
       "type": "string",
       "items": [
         {
           "text": "Arable produce",
           "description": "For example, crushing of oilseeds, rolling or flaking of grains as food ingredients",
-          "value": "sdRGha"
+          "value": "products-processed-A1"
         },
         {
           "text": "Horticultural produce",
           "description": "For example, grading and packing of soft fruit, washing and packing vegetables, packing salad crops",
-          "value": "DSgfyz"
+          "value": "products-processed-A2"
         },
         {
           "text": "Dairy or meat produce",
           "description": "For example, processing and bottling milk or slaughtering, cutting, processing and packing meat",
-          "value": "FThjoa"
+          "value": "products-processed-A3"
         },
         {
           "text": "Fodder produce",
           "description": "For example, processing and repacking hay and straw for specialst markets or retail sale",
-          "value": "noEaae"
+          "value": "products-processed-A4"
         },
         {
           "text": "Non-edible produce",
           "description": "For example, processing and packing ornamental flowers and bulds after harvesting",
-          "value": "noEDae"
+          "value": "products-processed-A5"
         },
         {
           "text": "Fibre produce",
           "description": "For example, processing animal hides and leather, processing fibres such as flax and hemp",
-          "value": "noEDag"
+          "value": "products-processed-A6"
+        }
+      ]
+    },
+    {
+      "title": "How will your project add value to the produce?",
+      "name": "how-will-you-add-value-list",
+      "type": "string",
+      "items": [
+        {
+          "text": "Introducing a new product to your farm",
+          "description": "For example, processing meat to burgers, milk to cheese, cereals to beer or spirits.",
+          "value": "adding-value-A1"
+        },
+        {
+          "text": "Grading or sorting produce",
+          "description": "For example, washing and grading vegetables, egg grading, optical grading of top fruit.",
+          "value": "adding-value-A2"
+        },
+        {
+          "text": "Packing produce",
+          "description": "For example, packing top fruit, bagging vegetables, bottling wine.",
+          "value": "adding-value-A3"
+        },
+        {
+          "text": "A new retail facility to sell direct to consumers",
+          "description": "",
+          "value": "adding-value-A4"
+        }
+      ]
+    },
+    {
+      "title": "What impact will the project have?",
+      "name": "project-impact-list",
+      "type": "string",
+      "items": [
+        {
+          "text": "Increasing range of added-value products",
+          "description": "",
+          "value": "project-impact-A1"
+        },
+        {
+          "text": "Increasing volume of added-value products",
+          "description": "For example, washing and grading vegetables, egg grading, optical grading of top fruit.",
+          "value": "project-impact-A2"
+        },
+        {
+          "text": "Allow selling direct to consumers",
+          "description": "For example, retail and internet sales.",
+          "value": "project-impact-A3"
+        },
+        {
+          "text": "Starting to make adding-value products for the first time",
+          "description": "This only applies if you do not already make adding-value products.",
+          "value": "project-impact-A4"
         }
       ]
     },
