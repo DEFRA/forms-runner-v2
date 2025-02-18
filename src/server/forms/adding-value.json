@@ -209,7 +209,7 @@
           "type": "http",
           "options": {
             "method": "POST",
-            "url": "http://SCORING_SERVICE_URL"
+            "url": "https://ffc-grants-scoring.cdpEnvironment.cdp-int.defra.cloud/scoring/api/v1/adding-value/score?allowPartialScoring=true"
           }
         }
       }

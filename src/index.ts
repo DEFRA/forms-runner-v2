@@ -44,15 +44,16 @@ async function startServer() {
   const addingValueDefinition = await getForm(addingValuePath)
   const environment = config.get('cdpEnvironment')
 
-  const scoringServiceUrl =
-    environment !== 'local'
-      ? `https://ffc-grants-scoring.${environment}.cdp-int.defra.cloud/scoring/api/v1/example-grant/score`
-      : `http://localhost:3001`
-
   addingValueDefinition.pages.forEach((page) => {
     const events = page.events
-    if (events && events.onLoad.options.url === 'http://SCORING_SERVICE_URL') {
-      events.onLoad.options.url = scoringServiceUrl
+    if (events?.onLoad.options.url && environment !== 'local') {
+      events.onLoad.options.url = events.onLoad.options.url.replace(
+        'cdpEnvironment',
+        environment
+      )
+    } else if (events?.onLoad.options.url && environment === 'local') {
+      events.onLoad.options.url =
+        'http://localhost:3001/scoring/api/v1/adding-value/score?allowPartialScoring=true'
     }
   })
 
