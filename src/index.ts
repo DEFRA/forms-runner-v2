@@ -51,7 +51,7 @@ async function startServer() {
 
   addingValueDefinition.pages.forEach((page) => {
     const events = page.events
-    if (events && events.onLoad.options.url === 'SCORING_SERVICE_URL') {
+    if (events && events.onLoad.options.url === 'http://SCORING_SERVICE_URL') {
       events.onLoad.options.url = scoringServiceUrl
     }
   })

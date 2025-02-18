@@ -209,7 +209,7 @@
           "type": "http",
           "options": {
             "method": "POST",
-            "url": "SCORING_SERVICE_URL"
+            "url": "http://SCORING_SERVICE_URL"
           }
         }
       }
