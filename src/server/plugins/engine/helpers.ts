@@ -30,9 +30,10 @@ import {
 
 const logger = createLogger()
 
-const engine = new Liquid({
+export const engine = new Liquid({
   outputEscape: 'escape',
-  jsTruthy: true
+  jsTruthy: true,
+  ownPropertyOnly: false
 })
 
 interface GlobalScope {
@@ -119,7 +120,7 @@ engine.registerFilter('answer', function (name) {
     return
   }
 
-  const answer = getAnswer(component as Field, globals.context.state)
+  const answer = getAnswer(component as Field, globals.context.relevantState)
 
   return answer
 })
@@ -375,7 +376,7 @@ export function evaluateTemplate(
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  return engine.parseAndRenderSync(template, context.evaluationState, {
+  return engine.parseAndRenderSync(template, context.relevantState, {
     globals
   })
 }
