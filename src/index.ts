@@ -42,6 +42,24 @@ async function startServer() {
     import.meta.url
   ).pathname
   const addingValueDefinition = await getForm(addingValuePath)
+  const environment = config.get('cdpEnvironment')
+
+  addingValueDefinition.pages.forEach((page) => {
+    const events = page.events
+    if (events) {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      if (events.onLoad?.options.url && environment !== 'local') {
+        events.onLoad.options.url = events.onLoad.options.url.replace(
+          'cdpEnvironment',
+          environment
+        )
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      } else if (events.onLoad?.options.url && environment === 'local') {
+        events.onLoad.options.url =
+          'http://localhost:3001/scoring/api/v1/adding-value/score?allowPartialScoring=true'
+      }
+    }
+  })
 
   // Form metadata
   const now = new Date()

@@ -6,8 +6,14 @@
 
 {% block content %}
   {% set scoreChanceSection %}
-    <p class="govuk-body govuk-!-font-weight-bold">{{ scoreBand }}</p>
-    This means your project {{scoreChance}} be successful.
+    <p class="govuk-body govuk-!-font-weight-bold">{{ context.data.scoreBand }}</p>
+    {% if context.data.scoreBand == 'Strong' %}
+      <span>This means your project seems likely to be successful.</span>
+    {% elif context.data.scoreBand == 'Average' %}
+      <span>This means your project might be successful.</span>
+    {% else %}
+      <span>This means your project seems unlikely to be successful.</span>
+    {% endif %}
   {% endset %}
 
   <div class="govuk-body">
