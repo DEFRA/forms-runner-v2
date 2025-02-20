@@ -1,7 +1,7 @@
 import { type HtmlComponent } from '@defra/forms-model'
 
 import { ComponentBase } from '~/src/server/plugins/engine/components/ComponentBase.js'
-import { evaluateTemplate } from '~/src/server/plugins/engine/helpers.js'
+import { evaluateTemplate } from '~/src/server/plugins/engine/templates.js'
 import { type FormContext } from '~/src/server/plugins/engine/types.js'
 
 export class Html extends ComponentBase {

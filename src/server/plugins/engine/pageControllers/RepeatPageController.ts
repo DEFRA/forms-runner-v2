@@ -271,7 +271,7 @@ export class RepeatPageController extends QuestionPageController {
       context: FormContext,
       h: Pick<ResponseToolkit, 'redirect' | 'view'>
     ) => {
-      const { viewModel } = this
+      const viewModel = this.getViewModel(request, context)
       const { state } = context
 
       const list = this.getListFromState(state)
@@ -429,7 +429,7 @@ export class RepeatPageController extends QuestionPageController {
     }
 
     return {
-      ...this.viewModel,
+      ...this.getViewModel(request, context),
       backLink: this.getBackLink(request, context),
       repeatTitle: title,
       pageTitle: `You have added ${count} ${title}${count === 1 ? '' : 's'}`,

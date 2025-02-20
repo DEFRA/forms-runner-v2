@@ -1,6 +1,7 @@
 import { FormModel } from '~/src/server/plugins/engine/models/FormModel.js'
 import { RepeatPageController } from '~/src/server/plugins/engine/pageControllers/RepeatPageController.js'
 import {
+  type FormContext,
   type FormContextRequest,
   type FormPageViewModel,
   type FormSubmissionError,
@@ -186,11 +187,14 @@ describe('RepeatPageController', () => {
     'List summary view model ($description)',
     ({ list, viewModel: expected }) => {
       let viewModel: RepeaterSummaryPageViewModel
+      let formContext: FormContext
 
       beforeEach(() => {
+        formContext = model.getFormContext(requestPageSummary, {})
+
         viewModel = controller.getListSummaryViewModel(
           requestPageSummary,
-          model.getFormContext(requestPageSummary, {}),
+          formContext,
           list
         )
       })
@@ -201,11 +205,14 @@ describe('RepeatPageController', () => {
       })
 
       it('should extend default view model', () => {
-        const defaults = controller.viewModel
+        const defaults = controller.getViewModel(
+          requestPageSummary,
+          formContext
+        )
 
         expect(viewModel).toHaveProperty('name', defaults.name)
         expect(viewModel).toHaveProperty('page', defaults.page)
-        expect(viewModel).toHaveProperty('sectionTitle', expected.sectionTitle)
+        expect(viewModel).toHaveProperty('sectionTitle', defaults.sectionTitle)
         expect(viewModel).toHaveProperty('isStartPage', defaults.isStartPage)
         expect(viewModel).toHaveProperty('serviceUrl', defaults.serviceUrl)
         expect(viewModel).toHaveProperty('feedbackLink', defaults.feedbackLink)
@@ -218,7 +225,8 @@ describe('RepeatPageController', () => {
 
   describe('Form validation', () => {
     it('includes title text and errors', () => {
-      const result = controller.collection.validate()
+      const formContext = model.getFormContext(requestPage, {})
+      const result = controller.collection.validate(formContext)
 
       expect(result.errors).toEqual<FormSubmissionError[]>([
         {
@@ -257,7 +265,8 @@ describe('RepeatPageController', () => {
     })
 
     it('includes all field errors', () => {
-      const result = controller.collection.validate()
+      const formContext = model.getFormContext(requestPage, {})
+      const result = controller.collection.validate(formContext)
       expect(result.errors).toHaveLength(3)
     })
   })

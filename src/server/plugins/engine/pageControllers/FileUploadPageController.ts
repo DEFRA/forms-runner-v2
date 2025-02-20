@@ -145,7 +145,7 @@ export class FileUploadPageController extends QuestionPageController {
       context: FormContext,
       h: Pick<ResponseToolkit, 'redirect' | 'view'>
     ) => {
-      const { viewModel } = this
+      const viewModel = this.getViewModel(request, context)
       const { params } = request
       const { state } = context
 
@@ -208,7 +208,7 @@ export class FileUploadPageController extends QuestionPageController {
         if (!isUploadError || isUploadRootError) {
           // The error is for the root of the upload or another
           // field on the page so defer to the getError helper
-          errors.push(getError(context, error))
+          errors.push(getError(error))
         } else {
           const { context, path, type } = error
 

@@ -2,18 +2,20 @@ import { ComponentType, type SelectFieldComponent } from '@defra/forms-model'
 
 import { ComponentCollection } from '~/src/server/plugins/engine/components/ComponentCollection.js'
 import { SelectField } from '~/src/server/plugins/engine/components/SelectField.js'
-import {
-  getAnswer,
-  type Field
-} from '~/src/server/plugins/engine/components/helpers.js'
+import { getAnswer } from '~/src/server/plugins/engine/components/helpers.js'
+import { type Field } from '~/src/server/plugins/engine/components/types.js'
 import { FormModel } from '~/src/server/plugins/engine/models/FormModel.js'
+import {
+  type FormContext,
+  type FormContextRequest
+} from '~/src/server/plugins/engine/types.js'
 import {
   listNumber,
   listNumberExamples,
   listString,
   listStringExamples
 } from '~/test/fixtures/list.js'
-import definition from '~/test/form/definitions/blank.js'
+import definition from '~/test/form/definitions/component-basic.js'
 import { getFormData, getFormState } from '~/test/helpers/component-helpers.js'
 
 describe.each([
@@ -52,6 +54,7 @@ describe.each([
   updated.lists = [options.list]
 
   let model: FormModel
+  let formContext: FormContext
   let collection: ComponentCollection
   let field: Field
 
@@ -59,6 +62,21 @@ describe.each([
     model = new FormModel(updated, {
       basePath: 'test'
     })
+
+    const pageUrl = new URL('/test/page', 'http://example.com')
+    const request: FormContextRequest = {
+      method: 'get',
+      url: pageUrl,
+      path: pageUrl.pathname,
+      params: {
+        path: 'page',
+        slug: 'test'
+      },
+      query: {},
+      app: { model }
+    }
+
+    formContext = model.getFormContext(request, {})
 
     collection = new ComponentCollection([def], { model })
     field = collection.fields[0]
@@ -122,7 +140,7 @@ describe.each([
           })
         )
 
-        const result = collectionOptional.validate(getFormData(''))
+        const result = collectionOptional.validate(formContext, getFormData(''))
         expect(result.errors).toBeUndefined()
       })
 
@@ -142,13 +160,13 @@ describe.each([
       it.each([...options.allow])(
         'accepts valid list item (value: %s)',
         (value) => {
-          const result = collection.validate(getFormData(value))
+          const result = collection.validate(formContext, getFormData(value))
           expect(result.errors).toBeUndefined()
         }
       )
 
       it('adds errors for empty value', () => {
-        const result = collection.validate(getFormData())
+        const result = collection.validate(formContext, getFormData())
 
         expect(result.errors).toEqual([
           expect.objectContaining({
@@ -158,8 +176,9 @@ describe.each([
       })
 
       it('adds errors for invalid values', () => {
-        const result1 = collection.validate(getFormData('invalid'))
+        const result1 = collection.validate(formContext, getFormData('invalid'))
         const result2 = collection.validate(
+          formContext,
           // @ts-expect-error - Allow invalid param for test
           getFormData({ unknown: 'invalid' })
         )
@@ -232,7 +251,10 @@ describe.each([
     describe('View model', () => {
       it('sets Nunjucks component defaults', () => {
         const item = options.examples[0]
-        const viewModel = field.getViewModel(getFormData(item.value))
+        const viewModel = field.getViewModel(
+          formContext,
+          getFormData(item.value)
+        )
 
         expect(viewModel).toEqual(
           expect.objectContaining({
@@ -247,7 +269,10 @@ describe.each([
       it.each([...options.examples])(
         'sets Nunjucks component select options',
         (item) => {
-          const viewModel = field.getViewModel(getFormData(item.value))
+          const viewModel = field.getViewModel(
+            formContext,
+            getFormData(item.value)
+          )
 
           expect(viewModel.items?.[0]).toMatchObject({
             value: '' // First item is always empty

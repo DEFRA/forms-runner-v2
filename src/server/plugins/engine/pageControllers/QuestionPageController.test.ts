@@ -401,8 +401,12 @@ describe('QuestionPageController', () => {
 
   describe('Form validation', () => {
     it('includes all field errors', () => {
-      const result1 = controller1.collection.validate()
-      const result2 = controller2.collection.validate()
+      const result1 = controller1.collection.validate(
+        model.getFormContext(requestPage1, {})
+      )
+      const result2 = controller2.collection.validate(
+        model.getFormContext(requestPage2, {})
+      )
 
       expect(result1.errors).toHaveLength(1)
       expect(result2.errors).toHaveLength(4)
@@ -965,8 +969,12 @@ describe('QuestionPageController V2', () => {
 
   describe('Form validation', () => {
     it('includes all field errors', () => {
-      const result1 = controller1.collection.validate()
-      const result2 = controller2.collection.validate()
+      const result1 = controller1.collection.validate(
+        model.getFormContext(requestPage1, {})
+      )
+      const result2 = controller2.collection.validate(
+        model.getFormContext(requestPage2, {})
+      )
 
       expect(result1.errors).toHaveLength(1)
       expect(result2.errors).toHaveLength(4)

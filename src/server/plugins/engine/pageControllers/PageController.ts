@@ -15,12 +15,12 @@ import {
 import { type ComponentCollection } from '~/src/server/plugins/engine/components/ComponentCollection.js'
 import {
   encodeUrl,
-  evaluateTemplate,
   getStartPath,
   normalisePath
 } from '~/src/server/plugins/engine/helpers.js'
 import { type FormModel } from '~/src/server/plugins/engine/models/index.js'
 import { type ExecutableCondition } from '~/src/server/plugins/engine/models/types.js'
+import { evaluateTemplate } from '~/src/server/plugins/engine/templates.js'
 import {
   type FormContext,
   type FormContextRequest,

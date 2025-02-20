@@ -5,6 +5,10 @@ import { config } from '~/src/config/index.js'
 import { type ComponentBase } from '~/src/server/plugins/engine/components/ComponentBase.js'
 import { ListFormComponent } from '~/src/server/plugins/engine/components/ListFormComponent.js'
 import * as Components from '~/src/server/plugins/engine/components/index.js'
+import {
+  type Component,
+  type Field
+} from '~/src/server/plugins/engine/components/types.js'
 import { type FormState } from '~/src/server/plugins/engine/types.js'
 
 const designerUrl = config.get('designerUrl')
@@ -46,35 +50,6 @@ const markdown = new Marked({
     }
   }
 })
-
-// All component instances
-export type Component = InstanceType<
-  (typeof Components)[keyof typeof Components]
->
-
-// Field component instances only
-export type Field = InstanceType<
-  | typeof Components.AutocompleteField
-  | typeof Components.CheckboxesField
-  | typeof Components.DatePartsField
-  | typeof Components.EmailAddressField
-  | typeof Components.MonthYearField
-  | typeof Components.MultilineTextField
-  | typeof Components.NumberField
-  | typeof Components.SelectField
-  | typeof Components.TelephoneNumberField
-  | typeof Components.TextField
-  | typeof Components.UkAddressField
-  | typeof Components.FileUploadField
->
-
-// Guidance component instances only
-export type Guidance = InstanceType<
-  | typeof Components.Details
-  | typeof Components.Html
-  | typeof Components.InsetText
-  | typeof Components.List
->
 
 /**
  * Create field instance for each {@link ComponentDef} type

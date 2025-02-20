@@ -277,7 +277,7 @@ export class QuestionPageController extends PageController {
   }
 
   getErrors(context: FormContext, details?: ValidationErrorItem[]) {
-    return getErrors(context, details)
+    return getErrors(details)
   }
 
   async getState(request: FormRequest | FormRequestPayload) {

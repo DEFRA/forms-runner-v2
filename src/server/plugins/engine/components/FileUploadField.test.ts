@@ -5,10 +5,8 @@ import {
 
 import { ComponentCollection } from '~/src/server/plugins/engine/components/ComponentCollection.js'
 import { tempItemSchema } from '~/src/server/plugins/engine/components/FileUploadField.js'
-import {
-  getAnswer,
-  type Field
-} from '~/src/server/plugins/engine/components/helpers.js'
+import { getAnswer } from '~/src/server/plugins/engine/components/helpers.js'
+import { type Field } from '~/src/server/plugins/engine/components/types.js'
 import { FormModel } from '~/src/server/plugins/engine/models/FormModel.js'
 import {
   createPage,
@@ -18,6 +16,8 @@ import { validationOptions as opts } from '~/src/server/plugins/engine/pageContr
 import {
   FileStatus,
   UploadStatus,
+  type FormContext,
+  type FormContextRequest,
   type UploadState
 } from '~/src/server/plugins/engine/types.js'
 import definition from '~/test/form/definitions/file-upload-basic.js'
@@ -25,6 +25,7 @@ import { getFormData, getFormState } from '~/test/helpers/component-helpers.js'
 
 describe('FileUploadField', () => {
   let model: FormModel
+  let formContext: FormContext
 
   const validTempState: UploadState = [
     {
@@ -146,6 +147,21 @@ describe('FileUploadField', () => {
     model = new FormModel(definition, {
       basePath: 'test'
     })
+
+    const pageUrl = new URL('/test/file-upload-component', 'http://example.com')
+    const request: FormContextRequest = {
+      method: 'get',
+      url: pageUrl,
+      path: pageUrl.pathname,
+      params: {
+        path: 'file-upload-component',
+        slug: 'test'
+      },
+      query: {},
+      app: { model }
+    }
+
+    formContext = model.getFormContext(request, {})
   })
 
   describe('Defaults', () => {
@@ -227,12 +243,15 @@ describe('FileUploadField', () => {
           })
         )
 
-        const result = collectionOptional.validate(getFormData())
+        const result = collectionOptional.validate(formContext, getFormData())
         expect(result.errors).toBeUndefined()
       })
 
       it('accepts valid values', () => {
-        const result1 = collection.validate(getFormData(validState))
+        const result1 = collection.validate(
+          formContext,
+          getFormData(validState)
+        )
         const result2 = tempItemSchema.validate(validTempState[0], opts)
         const result3 = tempItemSchema.validate(validTempState[1], opts)
         const result4 = tempItemSchema.validate(validTempState[2], opts)
@@ -244,7 +263,7 @@ describe('FileUploadField', () => {
       })
 
       it('adds errors for empty value', () => {
-        const result = collection.validate(getFormData())
+        const result = collection.validate(formContext, getFormData())
 
         expect(result.errors).toEqual([
           expect.objectContaining({
@@ -254,8 +273,12 @@ describe('FileUploadField', () => {
       })
 
       it('adds errors for invalid values', () => {
-        const result1 = collection.validate(getFormData(['invalid']))
+        const result1 = collection.validate(
+          formContext,
+          getFormData(['invalid'])
+        )
         const result2 = collection.validate(
+          formContext,
           // @ts-expect-error - Allow invalid param for test
           getFormData({ unknown: 'invalid' })
         )
@@ -328,7 +351,10 @@ describe('FileUploadField', () => {
 
     describe('View model', () => {
       it('sets Nunjucks component defaults', () => {
-        const viewModel = field.getViewModel(getFormData(validState))
+        const viewModel = field.getViewModel(
+          formContext,
+          getFormData(validState)
+        )
 
         expect(viewModel).toEqual(
           expect.objectContaining({
@@ -409,6 +435,7 @@ describe('FileUploadField', () => {
 
       it('sets Nunjucks component defaults (preview URL direct access)', () => {
         const viewModel = field.getViewModel(
+          formContext,
           getFormData(validState),
           undefined,
 
@@ -470,7 +497,10 @@ describe('FileUploadField', () => {
       })
 
       it('sets Nunjucks component defaults with temp valid state', () => {
-        const viewModel = field.getViewModel(getFormData(validTempState))
+        const viewModel = field.getViewModel(
+          formContext,
+          getFormData(validTempState)
+        )
 
         expect(viewModel).toEqual(
           expect.objectContaining({
@@ -550,7 +580,11 @@ describe('FileUploadField', () => {
       })
 
       it('sets Nunjucks component defaults with temp valid state with errors (on POST)', () => {
-        const viewModel = field.getViewModel(getFormData(validTempState), [])
+        const viewModel = field.getViewModel(
+          formContext,
+          getFormData(validTempState),
+          []
+        )
 
         expect(viewModel).toEqual(
           expect.objectContaining({
@@ -857,7 +891,7 @@ describe('FileUploadField', () => {
       it.each([...assertions])(
         'validates custom example',
         ({ input, output }) => {
-          const result = collection.validate(input)
+          const result = collection.validate(formContext, input)
           expect(result).toEqual(output)
         }
       )

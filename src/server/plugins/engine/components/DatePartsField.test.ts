@@ -2,17 +2,18 @@ import { ComponentType, type DatePartsFieldComponent } from '@defra/forms-model'
 import { addDays, format, startOfDay } from 'date-fns'
 
 import { ComponentCollection } from '~/src/server/plugins/engine/components/ComponentCollection.js'
+import { getAnswer } from '~/src/server/plugins/engine/components/helpers.js'
 import {
-  getAnswer,
+  type DateInputItem,
   type Field
-} from '~/src/server/plugins/engine/components/helpers.js'
-import { type DateInputItem } from '~/src/server/plugins/engine/components/types.js'
+} from '~/src/server/plugins/engine/components/types.js'
 import { FormModel } from '~/src/server/plugins/engine/models/FormModel.js'
 import {
+  type FormContext,
   type FormPayload,
   type FormState
 } from '~/src/server/plugins/engine/types.js'
-import definition from '~/test/form/definitions/blank.js'
+import definition from '~/test/form/definitions/component-basic.js'
 
 describe('DatePartsField', () => {
   let model: FormModel
@@ -27,6 +28,7 @@ describe('DatePartsField', () => {
     let def: DatePartsFieldComponent
     let collection: ComponentCollection
     let field: Field
+    let formContext: FormContext
 
     beforeEach(() => {
       def = {
@@ -38,6 +40,22 @@ describe('DatePartsField', () => {
 
       collection = new ComponentCollection([def], { model })
       field = collection.fields[0]
+      formContext = {
+        evaluationState: {},
+        relevantState: {},
+        relevantPages: [],
+        payload: {},
+        state: {},
+        paths: [],
+        isForceAccess: false,
+        data: {},
+        model,
+        pageDefMap: new Map(),
+        listDefMap: new Map(),
+        componentDefMap: new Map(),
+        pageMap: new Map(),
+        componentMap: new Map()
+      }
     })
 
     describe('Schema', () => {
@@ -144,6 +162,7 @@ describe('DatePartsField', () => {
 
         // Empty optional payload (valid)
         const result1 = collectionOptional.validate(
+          formContext,
           getFormData({
             day: '',
             month: '',
@@ -153,6 +172,7 @@ describe('DatePartsField', () => {
 
         // Partial optional payload (invalid)
         const result2 = collectionOptional.validate(
+          formContext,
           getFormData({
             day: '31',
             month: '',
@@ -170,6 +190,7 @@ describe('DatePartsField', () => {
 
       it('accepts valid values', () => {
         const result1 = collection.validate(
+          formContext,
           getFormData({
             day: '31',
             month: '12',
@@ -178,6 +199,7 @@ describe('DatePartsField', () => {
         )
 
         const result2 = collection.validate(
+          formContext,
           getFormData({
             day: '1',
             month: '2',
@@ -187,6 +209,7 @@ describe('DatePartsField', () => {
 
         // Leap year in 2024
         const result3 = collection.validate(
+          formContext,
           getFormData({
             day: '29',
             month: '2',
@@ -201,6 +224,7 @@ describe('DatePartsField', () => {
 
       it('adds errors for empty value', () => {
         const result = collection.validate(
+          formContext,
           getFormData({
             day: '',
             month: '',
@@ -222,9 +246,13 @@ describe('DatePartsField', () => {
       })
 
       it('adds errors for invalid values', () => {
-        const result1 = collection.validate(getFormData({ unknown: 'invalid' }))
+        const result1 = collection.validate(
+          formContext,
+          getFormData({ unknown: 'invalid' })
+        )
 
         const result2 = collection.validate(
+          formContext,
           getFormData({
             day: ['invalid'],
             month: ['invalid'],
@@ -233,6 +261,7 @@ describe('DatePartsField', () => {
         )
 
         const result3 = collection.validate(
+          formContext,
           getFormData({
             day: 'invalid',
             month: 'invalid',
@@ -315,7 +344,7 @@ describe('DatePartsField', () => {
 
       it('sets Nunjucks component defaults', () => {
         const payload = getFormData(date)
-        const viewModel = field.getViewModel(payload)
+        const viewModel = field.getViewModel(formContext, payload)
 
         expect(viewModel).toEqual(
           expect.objectContaining({
@@ -359,7 +388,7 @@ describe('DatePartsField', () => {
           year: 'YYYY'
         })
 
-        const viewModel = field.getViewModel(payload)
+        const viewModel = field.getViewModel(formContext, payload)
 
         expect(viewModel).toEqual(
           expect.objectContaining({
@@ -382,7 +411,7 @@ describe('DatePartsField', () => {
 
       it('sets Nunjucks component fieldset', () => {
         const payload = getFormData(date)
-        const viewModel = field.getViewModel(payload)
+        const viewModel = field.getViewModel(formContext, payload)
 
         expect(viewModel.fieldset).toEqual({
           legend: {
@@ -402,6 +431,22 @@ describe('DatePartsField', () => {
     const TwoDaysInPast = addDays(today, -2)
     const OneDayInFuture = addDays(today, 1)
     const TwoDaysInFuture = addDays(today, 2)
+    const formContext = {
+      evaluationState: {},
+      relevantState: {},
+      relevantPages: [],
+      payload: {},
+      state: {},
+      paths: [],
+      isForceAccess: false,
+      data: {},
+      model,
+      pageDefMap: new Map(),
+      listDefMap: new Map(),
+      componentDefMap: new Map(),
+      pageMap: new Map(),
+      componentMap: new Map()
+    }
 
     describe.each([
       {
@@ -737,7 +782,7 @@ describe('DatePartsField', () => {
       it.each([...assertions])(
         'validates custom example',
         ({ input, output }) => {
-          const result = collection.validate(input)
+          const result = collection.validate(formContext, input)
           expect(result).toEqual(output)
         }
       )

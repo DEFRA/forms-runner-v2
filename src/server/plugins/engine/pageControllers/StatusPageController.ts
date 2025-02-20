@@ -24,7 +24,8 @@ export class StatusPageController extends QuestionPageController {
       context: FormContext,
       h: Pick<ResponseToolkit, 'redirect' | 'view'>
     ) => {
-      const { viewModel, viewName } = this
+      const viewModel = this.getViewModel(request, context)
+      const { viewName } = this
 
       const { cacheService } = request.services([])
       const confirmationState = await cacheService.getConfirmationState(request)

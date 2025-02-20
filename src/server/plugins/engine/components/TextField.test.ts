@@ -1,21 +1,39 @@
 import { ComponentType, type TextFieldComponent } from '@defra/forms-model'
 
 import { ComponentCollection } from '~/src/server/plugins/engine/components/ComponentCollection.js'
-import {
-  getAnswer,
-  type Field
-} from '~/src/server/plugins/engine/components/helpers.js'
+import { getAnswer } from '~/src/server/plugins/engine/components/helpers.js'
+import { type Field } from '~/src/server/plugins/engine/components/types.js'
 import { FormModel } from '~/src/server/plugins/engine/models/FormModel.js'
-import definition from '~/test/form/definitions/blank.js'
+import {
+  type FormContext,
+  type FormContextRequest
+} from '~/src/server/plugins/engine/types.js'
+import definition from '~/test/form/definitions/component-basic.js'
 import { getFormData, getFormState } from '~/test/helpers/component-helpers.js'
 
 describe('TextField', () => {
   let model: FormModel
+  let formContext: FormContext
 
   beforeEach(() => {
     model = new FormModel(definition, {
       basePath: 'test'
     })
+
+    const pageUrl = new URL('/test/page', 'http://example.com')
+    const request: FormContextRequest = {
+      method: 'get',
+      url: pageUrl,
+      path: pageUrl.pathname,
+      params: {
+        path: 'page',
+        slug: 'test'
+      },
+      query: {},
+      app: { model }
+    }
+
+    formContext = model.getFormContext(request, {})
   })
 
   describe('Defaults', () => {
@@ -91,20 +109,23 @@ describe('TextField', () => {
           expect.objectContaining({ allow: [''] })
         )
 
-        const result = collectionOptional.validate(getFormData(''))
+        const result = collectionOptional.validate(formContext, getFormData(''))
         expect(result.errors).toBeUndefined()
       })
 
       it('accepts valid values', () => {
-        const result1 = collection.validate(getFormData('Text'))
-        const result2 = collection.validate(getFormData('Text field'))
+        const result1 = collection.validate(formContext, getFormData('Text'))
+        const result2 = collection.validate(
+          formContext,
+          getFormData('Text field')
+        )
 
         expect(result1.errors).toBeUndefined()
         expect(result2.errors).toBeUndefined()
       })
 
       it('adds errors for empty value', () => {
-        const result = collection.validate(getFormData(''))
+        const result = collection.validate(formContext, getFormData(''))
 
         expect(result.errors).toEqual([
           expect.objectContaining({
@@ -114,8 +135,12 @@ describe('TextField', () => {
       })
 
       it('adds errors for invalid values', () => {
-        const result1 = collection.validate(getFormData(['invalid']))
+        const result1 = collection.validate(
+          formContext,
+          getFormData(['invalid'])
+        )
         const result2 = collection.validate(
+          formContext,
           // @ts-expect-error - Allow invalid param for test
           getFormData({ unknown: 'invalid' })
         )
@@ -184,7 +209,10 @@ describe('TextField', () => {
 
     describe('View model', () => {
       it('sets Nunjucks component defaults', () => {
-        const viewModel = field.getViewModel(getFormData('Text field'))
+        const viewModel = field.getViewModel(
+          formContext,
+          getFormData('Text field')
+        )
 
         expect(viewModel).toEqual(
           expect.objectContaining({
@@ -480,7 +508,7 @@ describe('TextField', () => {
       it.each([...assertions])(
         'validates custom example',
         ({ input, output }) => {
-          const result = collection.validate(input)
+          const result = collection.validate(formContext, input)
           expect(result).toEqual(output)
         }
       )

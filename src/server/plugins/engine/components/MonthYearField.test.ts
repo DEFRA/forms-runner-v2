@@ -2,25 +2,43 @@ import { ComponentType, type MonthYearFieldComponent } from '@defra/forms-model'
 import { startOfDay } from 'date-fns'
 
 import { ComponentCollection } from '~/src/server/plugins/engine/components/ComponentCollection.js'
+import { getAnswer } from '~/src/server/plugins/engine/components/helpers.js'
 import {
-  getAnswer,
+  type DateInputItem,
   type Field
-} from '~/src/server/plugins/engine/components/helpers.js'
-import { type DateInputItem } from '~/src/server/plugins/engine/components/types.js'
+} from '~/src/server/plugins/engine/components/types.js'
 import { FormModel } from '~/src/server/plugins/engine/models/FormModel.js'
 import {
+  type FormContext,
+  type FormContextRequest,
   type FormPayload,
   type FormState
 } from '~/src/server/plugins/engine/types.js'
-import definition from '~/test/form/definitions/blank.js'
+import definition from '~/test/form/definitions/component-basic.js'
 
 describe('MonthYearField', () => {
   let model: FormModel
+  let formContext: FormContext
 
   beforeEach(() => {
     model = new FormModel(definition, {
       basePath: 'test'
     })
+
+    const pageUrl = new URL('/test/page', 'http://example.com')
+    const request: FormContextRequest = {
+      method: 'get',
+      url: pageUrl,
+      path: pageUrl.pathname,
+      params: {
+        path: 'page',
+        slug: 'test'
+      },
+      query: {},
+      app: { model }
+    }
+
+    formContext = model.getFormContext(request, {})
   })
 
   describe('Defaults', () => {
@@ -119,6 +137,7 @@ describe('MonthYearField', () => {
 
         // Empty optional payload (valid)
         const result1 = collectionOptional.validate(
+          formContext,
           getFormData({
             month: '',
             year: ''
@@ -127,6 +146,7 @@ describe('MonthYearField', () => {
 
         // Partial optional payload (invalid)
         const result2 = collectionOptional.validate(
+          formContext,
           getFormData({
             month: '12',
             year: ''
@@ -143,6 +163,7 @@ describe('MonthYearField', () => {
 
       it('accepts valid values', () => {
         const result1 = collection.validate(
+          formContext,
           getFormData({
             month: '12',
             year: '2024'
@@ -150,6 +171,7 @@ describe('MonthYearField', () => {
         )
 
         const result2 = collection.validate(
+          formContext,
           getFormData({
             month: '2',
             year: '2024'
@@ -162,6 +184,7 @@ describe('MonthYearField', () => {
 
       it('adds errors for empty value', () => {
         const result = collection.validate(
+          formContext,
           getFormData({
             month: '',
             year: ''
@@ -179,9 +202,13 @@ describe('MonthYearField', () => {
       })
 
       it('adds errors for invalid values', () => {
-        const result1 = collection.validate(getFormData({ unknown: 'invalid' }))
+        const result1 = collection.validate(
+          formContext,
+          getFormData({ unknown: 'invalid' })
+        )
 
         const result2 = collection.validate(
+          formContext,
           getFormData({
             month: ['invalid'],
             year: ['invalid']
@@ -189,6 +216,7 @@ describe('MonthYearField', () => {
         )
 
         const result3 = collection.validate(
+          formContext,
           getFormData({
             month: 'invalid',
             year: 'invalid'
@@ -269,7 +297,7 @@ describe('MonthYearField', () => {
 
       it('sets Nunjucks component defaults', () => {
         const payload = getFormData(date)
-        const viewModel = field.getViewModel(payload)
+        const viewModel = field.getViewModel(formContext, payload)
 
         expect(viewModel).toEqual(
           expect.objectContaining({
@@ -304,7 +332,7 @@ describe('MonthYearField', () => {
           year: 'YYYY'
         })
 
-        const viewModel = field.getViewModel(payload)
+        const viewModel = field.getViewModel(formContext, payload)
 
         expect(viewModel).toEqual(
           expect.objectContaining({
@@ -323,7 +351,7 @@ describe('MonthYearField', () => {
 
       it('sets Nunjucks component fieldset', () => {
         const payload = getFormData(date)
-        const viewModel = field.getViewModel(payload)
+        const viewModel = field.getViewModel(formContext, payload)
 
         expect(viewModel.fieldset).toEqual({
           legend: {
@@ -488,7 +516,7 @@ describe('MonthYearField', () => {
       it.each([...assertions])(
         'validates custom example',
         ({ input, output }) => {
-          const result = collection.validate(input)
+          const result = collection.validate(formContext, input)
           expect(result).toEqual(output)
         }
       )

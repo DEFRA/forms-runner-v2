@@ -2,10 +2,15 @@ import { ComponentType, type ComponentDef } from '@defra/forms-model'
 
 import { FormModel } from '~/src/server/plugins/engine/models/FormModel.js'
 import { FileUploadPageController } from '~/src/server/plugins/engine/pageControllers/FileUploadPageController.js'
+import {
+  type FormContext,
+  type FormContextRequest
+} from '~/src/server/plugins/engine/types.js'
 import definition from '~/test/form/definitions/file-upload-basic.js'
 
 describe('FileUploadPageController', () => {
   let model: FormModel
+  let formContext: FormContext
   let controller: FileUploadPageController
 
   beforeEach(() => {
@@ -14,6 +19,21 @@ describe('FileUploadPageController', () => {
     model = new FormModel(definition, {
       basePath: 'test'
     })
+
+    const pageUrl = new URL('/test/page', 'http://example.com')
+    const request: FormContextRequest = {
+      method: 'get',
+      url: pageUrl,
+      path: pageUrl.pathname,
+      params: {
+        path: 'file-upload-component',
+        slug: 'test'
+      },
+      query: {},
+      app: { model }
+    }
+
+    formContext = model.getFormContext(request, {})
 
     controller = new FileUploadPageController(model, pages[0])
   })
@@ -52,7 +72,7 @@ describe('FileUploadPageController', () => {
 
   describe('Form validation', () => {
     it('includes title text and error', () => {
-      const result = controller.collection.validate()
+      const result = controller.collection.validate(formContext)
 
       expect(result.errors).toEqual([
         {
@@ -70,7 +90,7 @@ describe('FileUploadPageController', () => {
     })
 
     it('includes all field errors', () => {
-      const result = controller.collection.validate()
+      const result = controller.collection.validate(formContext)
       expect(result.errors).toHaveLength(1)
     })
   })

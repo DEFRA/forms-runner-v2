@@ -7,9 +7,9 @@ import {
 import { type ValidationErrorItem } from 'joi'
 
 import { FormComponent } from '~/src/server/plugins/engine/components/FormComponent.js'
-import { type Component } from '~/src/server/plugins/engine/components/helpers.js'
 import {
   type BackLink,
+  type Component,
   type ComponentText,
   type ComponentViewModel
 } from '~/src/server/plugins/engine/components/types.js'

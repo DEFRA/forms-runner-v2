@@ -18,7 +18,7 @@ import { add } from 'date-fns'
 import { Parser, type Value } from 'expr-eval'
 import joi from 'joi'
 
-import { type Component } from '~/src/server/plugins/engine/components/helpers.js'
+import { type Component } from '~/src/server/plugins/engine/components/types.js'
 import {
   findPage,
   getError,
@@ -417,7 +417,7 @@ function validateFormState(
 
   // Add relevant state errors
   if (error) {
-    const errorsState = error.details.map((detail) => getError(context, detail))
+    const errorsState = error.details.map(getError)
     return { ...context, errors: errors.concat(errorsState) }
   }
 

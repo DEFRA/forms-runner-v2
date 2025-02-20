@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { FileUploadField } from '~/src/server/plugins/engine/components/FileUploadField.js'
-import { type Field } from '~/src/server/plugins/engine/components/helpers.js'
+import { type Field } from '~/src/server/plugins/engine/components/types.js'
 import { FormModel } from '~/src/server/plugins/engine/models/index.js'
 import {
   type DetailItem,

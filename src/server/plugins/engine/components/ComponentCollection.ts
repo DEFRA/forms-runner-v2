@@ -10,13 +10,13 @@ import {
   isFormState,
   isFormValue
 } from '~/src/server/plugins/engine/components/FormComponent.js'
+import { createComponent } from '~/src/server/plugins/engine/components/helpers.js'
 import {
-  createComponent,
   type Component,
+  type ComponentViewModel,
   type Field,
   type Guidance
-} from '~/src/server/plugins/engine/components/helpers.js'
-import { type ComponentViewModel } from '~/src/server/plugins/engine/components/types.js'
+} from '~/src/server/plugins/engine/components/types.js'
 import { getErrors } from '~/src/server/plugins/engine/helpers.js'
 import { type FormModel } from '~/src/server/plugins/engine/models/index.js'
 import { type PageControllerClass } from '~/src/server/plugins/engine/pageControllers/helpers.js'
@@ -115,7 +115,7 @@ export class ComponentCollection {
 
         // Update error with child label
         if (child && (!error.local.label || error.local.label === 'value')) {
-          error.local.label = child.title.toLowerCase()
+          error.local.label = child.title
         }
 
         // Fix error summary links for missing fields
@@ -268,8 +268,7 @@ export class ComponentCollection {
 
     return {
       value: (result.value ?? {}) as typeof value,
-      errors:
-        this.page?.getErrors(context, details) ?? getErrors(context, details)
+      errors: this.page?.getErrors(context, details) ?? getErrors(details)
     }
   }
 }

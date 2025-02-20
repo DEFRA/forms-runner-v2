@@ -1,10 +1,10 @@
 import { type Section } from '@defra/forms-model'
 
+import { getAnswer } from '~/src/server/plugins/engine/components/helpers.js'
 import {
-  getAnswer,
+  type BackLink,
   type Field
-} from '~/src/server/plugins/engine/components/helpers.js'
-import { type BackLink } from '~/src/server/plugins/engine/components/types.js'
+} from '~/src/server/plugins/engine/components/types.js'
 import { getError, getPageHref } from '~/src/server/plugins/engine/helpers.js'
 import {
   type Detail,

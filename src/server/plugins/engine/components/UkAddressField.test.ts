@@ -1,25 +1,43 @@
 import { ComponentType, type UkAddressFieldComponent } from '@defra/forms-model'
 
 import { ComponentCollection } from '~/src/server/plugins/engine/components/ComponentCollection.js'
+import { getAnswer } from '~/src/server/plugins/engine/components/helpers.js'
 import {
-  getAnswer,
-  type Field
-} from '~/src/server/plugins/engine/components/helpers.js'
-import { type ViewModel } from '~/src/server/plugins/engine/components/types.js'
+  type Field,
+  type ViewModel
+} from '~/src/server/plugins/engine/components/types.js'
 import { FormModel } from '~/src/server/plugins/engine/models/FormModel.js'
 import {
+  type FormContext,
+  type FormContextRequest,
   type FormPayload,
   type FormState
 } from '~/src/server/plugins/engine/types.js'
-import definition from '~/test/form/definitions/blank.js'
+import definition from '~/test/form/definitions/component-basic.js'
 
 describe('UkAddressField', () => {
   let model: FormModel
+  let formContext: FormContext
 
   beforeEach(() => {
     model = new FormModel(definition, {
       basePath: 'test'
     })
+
+    const pageUrl = new URL('/test/page', 'http://example.com')
+    const request: FormContextRequest = {
+      method: 'get',
+      url: pageUrl,
+      path: pageUrl.pathname,
+      params: {
+        path: 'page',
+        slug: 'test'
+      },
+      query: {},
+      app: { model }
+    }
+
+    formContext = model.getFormContext(request, {})
   })
 
   describe('Defaults', () => {
@@ -163,6 +181,7 @@ describe('UkAddressField', () => {
         )
 
         const result = collectionOptional.validate(
+          formContext,
           getFormData({
             addressLine1: '',
             addressLine2: '',
@@ -176,6 +195,7 @@ describe('UkAddressField', () => {
 
       it('accepts valid values', () => {
         const result1 = collection.validate(
+          formContext,
           getFormData({
             addressLine1: 'Richard Fairclough House',
             addressLine2: 'Knutsford Road',
@@ -185,6 +205,7 @@ describe('UkAddressField', () => {
         )
 
         const result2 = collection.validate(
+          formContext,
           getFormData({
             addressLine1: 'Richard Fairclough House',
             addressLine2: '', // Optional field
@@ -199,6 +220,7 @@ describe('UkAddressField', () => {
 
       it('adds errors for empty value', () => {
         const result = collection.validate(
+          formContext,
           getFormData({
             addressLine1: '',
             addressLine2: '',
@@ -221,9 +243,13 @@ describe('UkAddressField', () => {
       })
 
       it('adds errors for invalid values', () => {
-        const result1 = collection.validate(getFormData({ unknown: 'invalid' }))
+        const result1 = collection.validate(
+          formContext,
+          getFormData({ unknown: 'invalid' })
+        )
 
         const result2 = collection.validate(
+          formContext,
           getFormData({
             addressLine1: ['invalid'],
             addressLine2: ['invalid'],
@@ -233,6 +259,7 @@ describe('UkAddressField', () => {
         )
 
         const result3 = collection.validate(
+          formContext,
           getFormData({
             addressLine1: 'invalid',
             addressLine2: 'invalid',
@@ -330,7 +357,7 @@ describe('UkAddressField', () => {
 
       it('sets Nunjucks component defaults', () => {
         const payload = getFormData(address)
-        const viewModel = field.getViewModel(payload)
+        const viewModel = field.getViewModel(formContext, payload)
 
         expect(viewModel).toEqual(
           expect.objectContaining({
@@ -378,7 +405,7 @@ describe('UkAddressField', () => {
 
       it('sets Nunjucks component fieldset', () => {
         const payload = getFormData(address)
-        const viewModel = field.getViewModel(payload)
+        const viewModel = field.getViewModel(formContext, payload)
 
         expect(viewModel.fieldset).toEqual({
           legend: {
@@ -559,7 +586,7 @@ describe('UkAddressField', () => {
       it.each([...assertions])(
         'validates custom example',
         ({ input, output }) => {
-          const result = collection.validate(input)
+          const result = collection.validate(formContext, input)
           expect(result).toEqual(output)
         }
       )
