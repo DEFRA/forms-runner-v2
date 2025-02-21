@@ -27,7 +27,6 @@ There are a number of `LiquidJS` filters available to you from within the templa
 ### Examples
 
 ```json
-...
 "pages": [
   {
     "title": "What's your name?",
@@ -36,13 +35,11 @@ There are a number of `LiquidJS` filters available to you from within the templa
       {
         "name": "WmHfSb",
         "title": "What's your full name?",
-        "type": "TextField",
-        "hint": "",
-        "options": {},
-        "schema": {}
+        "type": "TextField"
       }
     ]
   },
+  // This example shows how a component can use an answer to a previous question (What's your full name) in it's title
   {
     "title": "Are you in England?",
     "path": "/are-you-in-england",
@@ -50,19 +47,16 @@ There are a number of `LiquidJS` filters available to you from within the templa
       {
         "name": "TKsWbP",
         "title": "Are you in England, {{ WmHfSb }}?",
-        "type": "YesNoField",
-        "hint": "",
-        "options": {},
-        "schema": {}
+        "type": "YesNoField"
       }
     ]
   },
+  // This example shows how a Html (guidance) component can use the available filters to get the form definition and user answers and display them
   {
-    "title": "Information: In England? {{ TKsWbP }}?",
-    "path": "/information",
+    "title": "Template example for {{ WmHfSb }}?",
+    "path": "/example",
     "components": [
       {
-        "name": "Bcrhst",
         "title": "Html",
         "type": "Html",
         "content": "<p class=\"govuk-body\">
@@ -72,16 +66,14 @@ There are a number of `LiquidJS` filters available to you from within the templa
           // Use the reference to `evaluate` the title
           {{ inEngland.title | evaluate }}<br>
 
-          // Use the href filter to display the page path
+          // Use the href filter to display the full page path
           {{ \"/are-you-in-england\" | href }}<br>
 
           // Use the `answer` filter to render the user provided answer to a question
           {{ 'TKsWbP' | answer }}
-        </p>\n",
-        "options": {},
-        "schema": {}
+        </p>\n"
       }
     ]
   }
-],...
+]
 ```
