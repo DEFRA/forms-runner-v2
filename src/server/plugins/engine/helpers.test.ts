@@ -535,6 +535,19 @@ describe('Helpers', () => {
       expect(result).toBe('Are you in England, Enrique Chase?')
     })
 
+    it('should replace placeholders with values from form context data', () => {
+      Object.assign(formContext.data, {
+        score: 'Low'
+      })
+
+      const result = evaluateTemplate(
+        'Your score is: {{ context.data.score }}',
+        formContext
+      )
+
+      expect(result).toBe('Your score is: Low')
+    })
+
     it('evaluate filter should evaluate a liquid template', () => {
       Object.assign(formContext.relevantState, {
         WmHfSb: 'Enrique Chase'
