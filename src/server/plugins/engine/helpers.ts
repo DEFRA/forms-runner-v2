@@ -1,4 +1,9 @@
-import { ControllerPath, Engine } from '@defra/forms-model'
+import {
+  ControllerPath,
+  Engine,
+  type ComponentDef,
+  type Page
+} from '@defra/forms-model'
 import Boom from '@hapi/boom'
 import { type ResponseToolkit } from '@hapi/hapi'
 import { format, parseISO } from 'date-fns'
@@ -10,7 +15,6 @@ import { createLogger } from '~/src/server/common/helpers/logging/logger.js'
 import { PREVIEW_PATH_PREFIX } from '~/src/server/constants.js'
 import {
   getAnswer,
-  type Component,
   type Field
 } from '~/src/server/plugins/engine/components/helpers.js'
 import { type FormModel } from '~/src/server/plugins/engine/models/FormModel.js'
@@ -38,8 +42,8 @@ export const engine = new Liquid({
 
 interface GlobalScope {
   context: FormContext
-  pages: Map<string, PageControllerClass>
-  components: Map<string, Component>
+  pages: Map<string, Page>
+  components: Map<string, ComponentDef>
 }
 
 engine.registerFilter('evaluate', function (template?: string) {
@@ -59,51 +63,33 @@ engine.registerFilter('page', function (path?: string) {
   }
 
   const globals = this.context.globals as GlobalScope
-  const page = globals.pages.get(path)
+  const pageDef = globals.pages.get(path)
 
-  return page
+  return pageDef
 })
 
-engine.registerFilter('pagedef', function (path?: string) {
+engine.registerFilter('href', function (path: string, query?: FormQuery) {
   if (typeof path !== 'string') {
     return
   }
 
   const globals = this.context.globals as GlobalScope
-  const pageDef = globals.context.pageDefMap.get(path)
+  const page = globals.context.pageMap.get(path)
 
-  return pageDef
+  if (page === undefined) {
+    return
+  }
+
+  return getPageHref(page, query)
 })
 
-engine.registerFilter(
-  'href',
-  function (page?: PageControllerClass, query?: FormQuery) {
-    if (page === undefined) {
-      return
-    }
-
-    return getPageHref(page, query)
-  }
-)
-
-engine.registerFilter('field', function (name?: string) {
+engine.registerFilter('field', function (name) {
   if (typeof name !== 'string') {
     return
   }
 
   const globals = this.context.globals as GlobalScope
-  const component = globals.components.get(name)
-
-  return component
-})
-
-engine.registerFilter('fielddef', function (name) {
-  if (typeof name !== 'string') {
-    return
-  }
-
-  const globals = this.context.globals as GlobalScope
-  const componentDef = globals.context.componentDefMap.get(name)
+  const componentDef = globals.components.get(name)
 
   return componentDef
 })
@@ -114,7 +100,7 @@ engine.registerFilter('answer', function (name) {
   }
 
   const globals = this.context.globals as GlobalScope
-  const component = globals.components.get(name)
+  const component = globals.context.componentMap.get(name)
 
   if (!component?.isFormComponent) {
     return
@@ -368,11 +354,10 @@ export function evaluateTemplate(
   template: string,
   context: FormContext
 ): string {
-  const { model } = context
   const globals: GlobalScope = {
     context,
-    pages: model.pageMap,
-    components: model.componentMap
+    pages: context.pageDefMap,
+    components: context.componentDefMap
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return

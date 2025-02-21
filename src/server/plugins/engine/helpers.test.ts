@@ -515,7 +515,6 @@ describe('Helpers', () => {
         paths: [],
         isForceAccess: false,
         data: {},
-        model,
         pageDefMap: model.pageDefMap,
         listDefMap: model.listDefMap,
         componentDefMap: model.componentDefMap,
@@ -549,46 +548,11 @@ describe('Helpers', () => {
       expect(result).toBe('Hello, Enrique Chase!')
     })
 
-    it('page filter should return the page', () => {
+    it('page filter should return the page definition', () => {
       // @ts-expect-error - spyOn type issue
       const filterSpy = jest.spyOn(engine.filters, 'page')
       const result = evaluateTemplate(
-        '{%- assign inEnglandPage = "/are-you-in-england" | page -%}{{ inEnglandPage.path }}',
-        formContext
-      )
-
-      expect(filterSpy).toHaveBeenCalledWith('/are-you-in-england')
-      expect(result).toBe('/are-you-in-england')
-    })
-
-    it('page filter should return empty when anything but a string is passed', () => {
-      // @ts-expect-error - spyOn type issue
-      const filterSpy = jest.spyOn(engine.filters, 'page')
-
-      let result = evaluateTemplate('{{ 0 | page }}', formContext)
-      expect(filterSpy).toHaveBeenLastCalledWith(0)
-      expect(result).toBe('')
-
-      result = evaluateTemplate('{{ undefined | page }}', formContext)
-      expect(filterSpy).toHaveBeenLastCalledWith(undefined)
-      expect(result).toBe('')
-
-      result = evaluateTemplate('{{ null | page }}', formContext)
-      expect(result).toBe('')
-
-      result = evaluateTemplate('{{ false | page }}', formContext)
-      expect(filterSpy).toHaveBeenLastCalledWith(false)
-      expect(result).toBe('')
-
-      result = evaluateTemplate('{{ [] | page }}', formContext)
-      expect(result).toBe('')
-    })
-
-    it('pagedef filter should return the page definition', () => {
-      // @ts-expect-error - spyOn type issue
-      const filterSpy = jest.spyOn(engine.filters, 'pagedef')
-      const result = evaluateTemplate(
-        '{%- assign startPageDef = "/start" | pagedef -%}{{ startPageDef.title }}',
+        '{%- assign startPageDef = "/start" | page -%}{{ startPageDef.title }}',
         formContext
       )
 
@@ -596,38 +560,35 @@ describe('Helpers', () => {
       expect(result).toBe('Start page')
     })
 
-    it('pagedef filter should return empty when anything but a string is passed', () => {
+    it('page filter should return empty when anything but a string is passed', () => {
       // @ts-expect-error - spyOn type issue
-      const pageFilterSpy = jest.spyOn(engine.filters, 'pagedef')
+      const pageFilterSpy = jest.spyOn(engine.filters, 'page')
 
-      let result = evaluateTemplate('{{ 0 | pagedef }}', formContext)
+      let result = evaluateTemplate('{{ 0 | page }}', formContext)
       expect(pageFilterSpy).toHaveBeenLastCalledWith(0)
       expect(result).toBe('')
 
-      result = evaluateTemplate('{{ undefined | pagedef }}', formContext)
+      result = evaluateTemplate('{{ undefined | page }}', formContext)
       expect(pageFilterSpy).toHaveBeenLastCalledWith(undefined)
       expect(result).toBe('')
 
-      result = evaluateTemplate('{{ null | pagedef }}', formContext)
+      result = evaluateTemplate('{{ null | page }}', formContext)
       expect(result).toBe('')
 
-      result = evaluateTemplate('{{ false | pagedef }}', formContext)
+      result = evaluateTemplate('{{ false | page }}', formContext)
       expect(pageFilterSpy).toHaveBeenLastCalledWith(false)
       expect(result).toBe('')
 
-      result = evaluateTemplate('{{ [] | pagedef }}', formContext)
+      result = evaluateTemplate('{{ [] | page }}', formContext)
       expect(result).toBe('')
     })
 
     it('href filter should return the page href', () => {
       // @ts-expect-error - spyOn type issue
       const filterSpy = jest.spyOn(engine.filters, 'href')
-      const result = evaluateTemplate(
-        '{{ "/full-name" | page | href }}',
-        formContext
-      )
+      const result = evaluateTemplate('{{ "/full-name" | href }}', formContext)
 
-      expect(filterSpy).toHaveBeenCalledWith(model.pageMap.get('/full-name'))
+      expect(filterSpy).toHaveBeenCalledWith('/full-name')
       expect(result).toBe('/template/full-name')
     })
 
@@ -640,46 +601,11 @@ describe('Helpers', () => {
       expect(result).toBe('')
     })
 
-    it('field filter should return the component', () => {
+    it('field filter should return the component definition', () => {
       // @ts-expect-error - spyOn type issue
       const filterSpy = jest.spyOn(engine.filters, 'field')
       const result = evaluateTemplate(
-        '{%- assign inEnglandComponent = "TKsWbP" | field -%}{{ inEnglandComponent.type }}',
-        formContext
-      )
-
-      expect(filterSpy).toHaveBeenCalledWith('TKsWbP')
-      expect(result).toBe('YesNoField')
-    })
-
-    it('field filter should return empty when anything but a string is passed', () => {
-      // @ts-expect-error - spyOn type issue
-      const filterSpy = jest.spyOn(engine.filters, 'field')
-
-      let result = evaluateTemplate('{{ 0 | field }}', formContext)
-      expect(filterSpy).toHaveBeenLastCalledWith(0)
-      expect(result).toBe('')
-
-      result = evaluateTemplate('{{ undefined | field }}', formContext)
-      expect(filterSpy).toHaveBeenLastCalledWith(undefined)
-      expect(result).toBe('')
-
-      result = evaluateTemplate('{{ null | field }}', formContext)
-      expect(result).toBe('')
-
-      result = evaluateTemplate('{{ false | field }}', formContext)
-      expect(filterSpy).toHaveBeenLastCalledWith(false)
-      expect(result).toBe('')
-
-      result = evaluateTemplate('{{ [] | field }}', formContext)
-      expect(result).toBe('')
-    })
-
-    it('fielddef filter should return the component definition', () => {
-      // @ts-expect-error - spyOn type issue
-      const filterSpy = jest.spyOn(engine.filters, 'fielddef')
-      const result = evaluateTemplate(
-        '{%- assign fullNameComponentDef = "WmHfSb" | fielddef -%}{{ fullNameComponentDef.title }}',
+        '{%- assign fullNameComponentDef = "WmHfSb" | field -%}{{ fullNameComponentDef.title }}',
         formContext
       )
 
@@ -687,26 +613,26 @@ describe('Helpers', () => {
       expect(result).toBe('What&#39;s your full name?')
     })
 
-    it('fielddef filter should return empty when anything but a string is passed', () => {
+    it('field filter should return empty when anything but a string is passed', () => {
       // @ts-expect-error - spyOn type issue
-      const pageFilterSpy = jest.spyOn(engine.filters, 'fielddef')
+      const pageFilterSpy = jest.spyOn(engine.filters, 'field')
 
-      let result = evaluateTemplate('{{ 0 | fielddef }}', formContext)
+      let result = evaluateTemplate('{{ 0 | field }}', formContext)
       expect(pageFilterSpy).toHaveBeenLastCalledWith(0)
       expect(result).toBe('')
 
-      result = evaluateTemplate('{{ undefined | fielddef }}', formContext)
+      result = evaluateTemplate('{{ undefined | field }}', formContext)
       expect(pageFilterSpy).toHaveBeenLastCalledWith(undefined)
       expect(result).toBe('')
 
-      result = evaluateTemplate('{{ null | fielddef }}', formContext)
+      result = evaluateTemplate('{{ null | field }}', formContext)
       expect(result).toBe('')
 
-      result = evaluateTemplate('{{ false | fielddef }}', formContext)
+      result = evaluateTemplate('{{ false | field }}', formContext)
       expect(pageFilterSpy).toHaveBeenLastCalledWith(false)
       expect(result).toBe('')
 
-      result = evaluateTemplate('{{ [] | fielddef }}', formContext)
+      result = evaluateTemplate('{{ [] | field }}', formContext)
       expect(result).toBe('')
     })
 

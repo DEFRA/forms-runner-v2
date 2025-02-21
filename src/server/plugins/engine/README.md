@@ -18,13 +18,11 @@ The following elements support [LiquidJS templates](https://liquidjs.com/):
 
 There are a number of `LiquidJS` filters available to you from within the templates:
 
-- `page` - returns the page for the given path
-- `pagedef` - returns the page definition for the given path
-- `field` - returns the component field for the given name
-- `fielddef` - returns the component field definition for the given name
-- `href` - returns the page href for the given page
-- `answer` - returns the users answer for a given component field
-- `evaluate` - evaluates and returns a Liquid template
+- `page` - returns the page definition for the given path
+- `field` - returns the component definition for the given name
+- `href` - returns the page href for the given page path
+- `answer` - returns the user's answer for a given component
+- `evaluate` - evaluates and returns a Liquid template using the current context
 
 ### Examples
 
@@ -74,8 +72,8 @@ There are a number of `LiquidJS` filters available to you from within the templa
           // Use the reference to `evaluate` the title
           {{ inEngland.title | evaluate }}<br>
 
-          // and to display the page href
-          {{ inEngland | href }}<br>
+          // Use the href filter to display the page path
+          {{ \"/are-you-in-england\" | href }}<br>
 
           // Use the `answer` filter to render the user provided answer to a question
           {{ 'TKsWbP' | answer }}

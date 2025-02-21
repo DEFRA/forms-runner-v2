@@ -66,6 +66,7 @@ function checkComponentTemplates(component) {
     // Evaluate label/legend text
     if (component.model.fieldset?.legend?.text) {
       const legend = component.model.fieldset.legend
+
       legend.text = evaluateTemplate(legend.text, context)
     } else if (component.model.label?.text) {
       const label = component.model.label
@@ -81,6 +82,7 @@ function checkComponentTemplates(component) {
     }
   } else if (component.type === ComponentType.Html) {
     const content = component.model.content
+
     if (typeof content === 'string') {
       component.model.content = evaluateTemplate(content, context)
     }

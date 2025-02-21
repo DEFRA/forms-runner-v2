@@ -264,7 +264,6 @@ export class FormModel {
       paths: [],
       isForceAccess,
       data: {},
-      model: this,
       pageDefMap: this.pageDefMap,
       listDefMap: this.listDefMap,
       componentDefMap: this.componentDefMap,
