@@ -6,7 +6,7 @@ import {
 } from '@defra/forms-model'
 
 export default /** @satisfies {FormDefinition} */ ({
-  name: 'Grants',
+  name: 'Templates',
   pages: [
     {
       title: 'Start page',
@@ -115,7 +115,7 @@ export default /** @satisfies {FormDefinition} */ ({
           title: 'Html',
           type: ComponentType.Html,
           content:
-            '<p class="govuk-body">Welcome to Grants.{%- assign inEngland = "/are-you-in-england" | page -%}{{ inEngland.title | evaluate }}<br>{{ \'TKsWbP\' | answer }}<br>{{ inEngland | href }}</p>\n',
+            '<p class="govuk-body">Welcome to Templates.{%- assign inEngland = "/are-you-in-england" | page -%}<span data-testid="output-1">{{ inEngland.title | evaluate }}</span><br><span data-testid="output-2">{{ \'sdFYHf\' | answer }}</span><br><span data-testid="output-3">{{ \'TKsWbP\' | answer }}</span><br><span data-testid="output-4">{{ inEngland.path | href }}</span></p>\n',
           options: {}
         }
       ]
