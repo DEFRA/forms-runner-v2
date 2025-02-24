@@ -15,6 +15,13 @@ The following elements support [LiquidJS templates](https://liquidjs.com/):
 - Html (guidance) component **content**
 - Summary component **row** key title (check answers and repeater summary)
 
+### Template data
+
+The data the templates are evaluated against is the raw answers the user has provided up to the page they're currently on.
+For example, given a YesNoField component called `TKsWbP`, the template `{{ TKsWbP }}` would render "true" or "false" depending on how the user answered the question.
+
+The current FormContext is also available as `context` in the templates. This allows access to the full data including the path the user has taken in their journey and any miscellaneous data returned from `Page event`s in `context.data`.
+
 ### Liquid Filters
 
 There are a number of `LiquidJS` filters available to you from within the templates:
