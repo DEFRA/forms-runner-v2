@@ -83,7 +83,7 @@ engine.registerFilter('href', function (path: string, query?: FormQuery) {
   return getPageHref(page, query)
 })
 
-engine.registerFilter('field', function (name) {
+engine.registerFilter('field', function (name: string) {
   if (typeof name !== 'string') {
     return
   }
@@ -94,7 +94,7 @@ engine.registerFilter('field', function (name) {
   return componentDef
 })
 
-engine.registerFilter('answer', function (name) {
+engine.registerFilter('answer', function (name: string) {
   if (typeof name !== 'string') {
     return
   }
