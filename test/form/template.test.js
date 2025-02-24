@@ -252,6 +252,35 @@ describe('Form template journey', () => {
     expect($output4).toBeInTheDocument()
     expect($output4.textContent).toBe('/templates/are-you-in-england')
   })
+
+  test('POST /information', async () => {
+    const { response } = await renderResponse(server, {
+      url: `${basePath}/information`,
+      method: 'POST',
+      headers,
+      payload: { crumb: csrfToken }
+    })
+
+    expect(response.statusCode).toBe(StatusCodes.SEE_OTHER)
+    expect(response.headers.location).toBe(`${basePath}/summary`)
+  })
+
+  test('GET /summary', async () => {
+    const { container, response } = await renderResponse(server, {
+      url: `${basePath}/summary`,
+      headers
+    })
+
+    expect(response.statusCode).toBe(StatusCodes.OK)
+
+    const $titles = container.queryAllByRole('term')
+    expect($titles).toHaveLength(3)
+    expect($titles[0]).toHaveTextContent("What's your full name?")
+    expect($titles[1]).toHaveTextContent('Are you in England, Enrique Chase?')
+    expect($titles[2]).toHaveTextContent(
+      'What is your business, Enrique Chase?'
+    )
+  })
 })
 
 /**

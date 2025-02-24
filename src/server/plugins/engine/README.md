@@ -13,6 +13,7 @@ The following elements support [LiquidJS templates](https://liquidjs.com/):
   - Support for fieldset legend text or label text
   - This includes when the title is used in **error messages**
 - Html (guidance) component **content**
+- Summary component **row** key title (check answers and repeater summary)
 
 ### Liquid Filters
 
