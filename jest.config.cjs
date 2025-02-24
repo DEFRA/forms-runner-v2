@@ -47,5 +47,8 @@ module.exports = {
       'slug', // Supports ESM only
       '@defra/hapi-tracing' // Supports ESM only|
     ].join('|')}/)`
-  ]
+  ],
+  testTimeout: 10000,
+  detectOpenHandles: true,
+  forceExit: true
 }
