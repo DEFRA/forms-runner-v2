@@ -1,11 +1,13 @@
-import { getAnswer } from '~/src/server/plugins/engine/components/helpers.js'
-
 /**
  * Nunjucks filter to get the answer for a component
  * @this {NunjucksContext}
- * @param {string} name - The name of the component to check
+ * @param {string} name - The name of the component
  */
-export function answer(name) {
+export function field(name) {
+  if (typeof name !== 'string') {
+    return
+  }
+
   const { context } = this.ctx
 
   if (!context) {
@@ -18,10 +20,9 @@ export function answer(name) {
     return
   }
 
-  return getAnswer(/** @type {Field} */ (component), context.relevantState)
+  return component
 }
 
 /**
  * @import { NunjucksContext } from '~/src/server/plugins/nunjucks/types.js'
- * @import { Field } from '~/src/server/plugins/engine/components/helpers.js'
  */

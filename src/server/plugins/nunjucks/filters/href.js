@@ -1,10 +1,9 @@
 import { getPageHref } from '~/src/server/plugins/engine/index.js'
 
 /**
- * Nunjucks filter to get the href for a page
- * @this {import('../types.js').NunjucksContext}
- * @param {string} path
- * @returns {string}
+ * Nunjucks filter to get the answer for a component
+ * @this {NunjucksContext}
+ * @param {string} path - The name of the component to check
  */
 export function href(path) {
   if (typeof path !== 'string') {
@@ -12,6 +11,11 @@ export function href(path) {
   }
 
   const { context } = this.ctx
+
+  if (!context) {
+    return
+  }
+
   const page = context.pageMap.get(path)
 
   if (page === undefined) {
@@ -20,3 +24,7 @@ export function href(path) {
 
   return getPageHref(page)
 }
+
+/**
+ * @import { NunjucksContext } from '~/src/server/plugins/nunjucks/types.js'
+ */
