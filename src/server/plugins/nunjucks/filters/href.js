@@ -3,7 +3,7 @@ import { getPageHref } from '~/src/server/plugins/engine/index.js'
 /**
  * Nunjucks filter to get the answer for a component
  * @this {NunjucksContext}
- * @param {string} path - The name of the component to check
+ * @param {string} path - The name of the component
  */
 export function href(path) {
   if (typeof path !== 'string') {
