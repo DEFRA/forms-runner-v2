@@ -119,7 +119,16 @@ export class DatePartsField extends FormComponent {
   getContextValueFromState(state: FormSubmissionState) {
     const value = this.getFormValueFromState(state)
 
-    if (!value) {
+    if (
+      !value ||
+      !isValid(
+        parse(
+          `${value.year}-${value.month}-${value.day}`,
+          'yyyy-MM-dd',
+          new Date()
+        )
+      )
+    ) {
       return null
     }
 
@@ -195,7 +204,7 @@ export class DatePartsField extends FormComponent {
   }
 }
 
-interface DatePartsState extends Record<string, number> {
+export interface DatePartsState extends Record<string, number> {
   day: number
   month: number
   year: number

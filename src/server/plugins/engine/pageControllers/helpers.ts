@@ -44,6 +44,10 @@ export function createPage(model: FormModel, pageDef: Page) {
       controller = new PageControllers.QuestionPageController(model, pageDef)
       break
 
+    case ControllerType.Terminal:
+      controller = new PageControllers.TerminalPageController(model, pageDef)
+      break
+
     case ControllerType.Summary:
       controller = new PageControllers.SummaryPageController(model, pageDef)
       break
@@ -58,10 +62,6 @@ export function createPage(model: FormModel, pageDef: Page) {
 
     case ControllerType.Repeat:
       controller = new PageControllers.RepeatPageController(model, pageDef)
-      break
-
-    case ControllerType.Terminal:
-      controller = new PageControllers.TerminalPageController(model, pageDef)
       break
   }
 
@@ -78,4 +78,25 @@ export function createPage(model: FormModel, pageDef: Page) {
   }
 
   return controller
+}
+
+/**
+ * In local development environments, we sometimes need to rewrite the
+ * CDP upload URL to work with CSP/CORS restrictions.
+ * This helper function rewrites localhost URLs to use the sslip.io proxy
+ * This is only used when running locally with a development proxy.
+ * In non-local environments, this function returns null
+ * @param uploadUrl - The original upload URL from CDP
+ */
+export function getProxyUrlForLocalDevelopment(
+  uploadUrl?: string
+): string | null {
+  if (!uploadUrl?.includes('localhost:7337')) {
+    return null
+  }
+
+  return uploadUrl.replace(
+    /localhost:7337/g,
+    'uploader.127.0.0.1.sslip.io:7300'
+  )
 }
