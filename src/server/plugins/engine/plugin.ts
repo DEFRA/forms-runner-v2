@@ -24,13 +24,14 @@ import {
   FormModel,
   SummaryViewModel
 } from '~/src/server/plugins/engine/models/index.js'
-import { format } from '~/src/server/plugins/engine/outputFormatters/machine/v1.js'
+import { format } from '~/src/server/plugins/engine/outputFormatters/machine/v2.js'
 import { FileUploadPageController } from '~/src/server/plugins/engine/pageControllers/FileUploadPageController.js'
 import { type PageController } from '~/src/server/plugins/engine/pageControllers/PageController.js'
 import { RepeatPageController } from '~/src/server/plugins/engine/pageControllers/RepeatPageController.js'
 import { getFormSubmissionData } from '~/src/server/plugins/engine/pageControllers/SummaryPageController.js'
 import { type PageControllerClass } from '~/src/server/plugins/engine/pageControllers/helpers.js'
 import * as defaultServices from '~/src/server/plugins/engine/services/index.js'
+import { getUploadStatus } from '~/src/server/plugins/engine/services/uploadService.js'
 import { type FormContext } from '~/src/server/plugins/engine/types.js'
 import {
   type FormRequest,
@@ -177,10 +178,11 @@ export const plugin = {
         throw Boom.notFound(`No model found for /${params.path}`)
       }
 
+      const { cacheService } = request.services([])
       const page = getPage(model, request)
       const state = await page.getState(request)
-      const context = model.getFormContext(request, state)
-
+      const flash = cacheService.getFlash(request)
+      const context = model.getFormContext(request, state, flash?.errors)
       const relevantPath = page.getRelevantPath(request, context)
       const summaryPath = page.getSummaryPath()
 
@@ -630,6 +632,40 @@ export const plugin = {
               confirm: confirmSchema
             })
             .required()
+        }
+      }
+    })
+
+    server.route({
+      method: 'get',
+      path: '/upload-status/{uploadId}',
+      handler: async (request, h) => {
+        try {
+          const { uploadId } = request.params as { uploadId: string }
+          const status = await getUploadStatus(uploadId)
+
+          if (!status) {
+            return h.response({ error: 'Status check failed' }).code(400)
+          }
+
+          return h.response(status)
+        } catch (error) {
+          request.logger.error(
+            ['upload-status'],
+            'Upload status check failed',
+            error
+          )
+          return h.response({ error: 'Status check error' }).code(500)
+        }
+      },
+      options: {
+        plugins: {
+          crumb: false
+        },
+        validate: {
+          params: Joi.object().keys({
+            uploadId: Joi.string().guid().required()
+          })
         }
       }
     })

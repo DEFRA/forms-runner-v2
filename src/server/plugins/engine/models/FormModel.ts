@@ -1,4 +1,5 @@
 import {
+  ComponentType,
   ConditionsModel,
   ControllerPath,
   ControllerType,
@@ -36,6 +37,7 @@ import {
   type FormContext,
   type FormContextRequest,
   type FormState,
+  type FormSubmissionError,
   type FormSubmissionState
 } from '~/src/server/plugins/engine/types.js'
 import { FormAction } from '~/src/server/routes/types.js'
@@ -243,7 +245,11 @@ export class FormModel {
   /**
    * Form context for the current page
    */
-  getFormContext(request: FormContextRequest, state: FormState): FormContext {
+  getFormContext(
+    request: FormContextRequest,
+    state: FormState,
+    errors?: FormSubmissionError[]
+  ): FormContext {
     const { query } = request
 
     const page = getPage(this, request)
@@ -268,7 +274,8 @@ export class FormModel {
       listDefMap: this.listDefMap,
       componentDefMap: this.componentDefMap,
       pageMap: this.pageMap,
-      componentMap: this.componentMap
+      componentMap: this.componentMap,
+      errors
     }
 
     // Validate current page
@@ -377,10 +384,22 @@ function validateFormPayload(
     return context
   }
 
-  // Validate form data into payload
+  // For checkbox fields missing in the payload (i.e. unchecked),
+  // explicitly set their value to undefined so that any previously
+  // stored value is cleared and required field validation is enforced.
+  const update = { ...request.payload }
+  collection.fields.forEach((field) => {
+    if (
+      field.type === ComponentType.CheckboxesField &&
+      !(field.name in update)
+    ) {
+      update[field.name] = undefined
+    }
+  })
+
   const { value, errors } = collection.validate({
     ...payload,
-    ...request.payload
+    ...update
   })
 
   // Add sanitised payload (ready to save)

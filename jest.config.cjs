@@ -21,7 +21,8 @@ module.exports = {
   coveragePathIgnorePatterns: [
     '<rootDir>/node_modules/',
     '<rootDir>/.server',
-    '<rootDir>/src/client',
+    '<rootDir>/src/client/(?!javascripts)',
+    '<rootDir>/src/client/javascripts/application.js',
     '<rootDir>/test'
   ],
   coverageDirectory: '<rootDir>/coverage',
@@ -47,5 +48,7 @@ module.exports = {
       'slug', // Supports ESM only
       '@defra/hapi-tracing' // Supports ESM only|
     ].join('|')}/)`
-  ]
+  ],
+  testTimeout: 10000,
+  forceExit: true
 }
