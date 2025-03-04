@@ -20,7 +20,3 @@ export function applyTraceHeaders(existingHeaders) {
 
   return existingHeaders ? Object.assign(existingHeaders, headers) : headers
 }
-
-/**
- * @import Wreck from '@hapi/wreck'
- */
