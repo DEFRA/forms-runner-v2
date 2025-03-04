@@ -4,8 +4,9 @@ import { getAnswer } from '~/src/server/plugins/engine/components/helpers.js'
  * Nunjucks filter to get the answer for a component
  * @this {NunjucksContext}
  * @param {string} name - The name of the component to check
+ * @param {'data'|'email'|'summary'} format
  */
-export function answer(name) {
+export function answer(name, format = 'summary') {
   const { context } = this.ctx
 
   if (!context) {
@@ -18,7 +19,9 @@ export function answer(name) {
     return
   }
 
-  return getAnswer(/** @type {Field} */ (component), context.relevantState)
+  return getAnswer(/** @type {Field} */ (component), context.relevantState, {
+    format
+  })
 }
 
 /**
