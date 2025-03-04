@@ -94,22 +94,29 @@ engine.registerFilter('field', function (name: string) {
   return componentDef
 })
 
-engine.registerFilter('answer', function (name: string) {
-  if (typeof name !== 'string') {
-    return
+engine.registerFilter(
+  'answer',
+  function (name: string, format: 'data' | 'summary' | 'email' = 'summary') {
+    if (typeof name !== 'string') {
+      return
+    }
+
+    const globals = this.context.globals as GlobalScope
+    const component = globals.context.componentMap.get(name)
+
+    if (!component?.isFormComponent) {
+      return
+    }
+
+    const answer = getAnswer(
+      component as Field,
+      globals.context.relevantState,
+      { format }
+    )
+
+    return answer
   }
-
-  const globals = this.context.globals as GlobalScope
-  const component = globals.context.componentMap.get(name)
-
-  if (!component?.isFormComponent) {
-    return
-  }
-
-  const answer = getAnswer(component as Field, globals.context.relevantState)
-
-  return answer
-})
+)
 
 export function proceed(
   request: Pick<FormContextRequest, 'method' | 'payload' | 'query'>,
