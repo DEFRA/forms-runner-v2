@@ -1,3 +1,4 @@
+import { merge } from '@hapi/hoek'
 import Wreck from '@hapi/wreck'
 
 import { getHeaders } from '~/src/server/utils/utils.js'
@@ -10,12 +11,17 @@ export const request = async <BodyType = Buffer>(
   url: string,
   options?: RequestOptions
 ) => {
-  const mergedOptions = {
-    ...options,
-    ...getHeaders()
+  const headers = getHeaders()
+
+  if (headers) {
+    if (options?.headers) {
+      merge(options.headers, headers)
+    } else {
+      options = merge(options ?? {}, { headers })
+    }
   }
 
-  const { res, payload } = await Wreck[method]<BodyType>(url, mergedOptions)
+  const { res, payload } = await Wreck[method]<BodyType>(url, options)
 
   if (!res.statusCode || res.statusCode < 200 || res.statusCode > 299) {
     return { res, error: payload || new Error('Unknown error') }

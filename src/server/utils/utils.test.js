@@ -11,9 +11,7 @@ describe('Header helper functions', () => {
 
     const result = getHeaders()
     expect(result).toEqual({
-      headers: {
-        [config.get('tracing').header]: 'my-trace-id'
-      }
+      [config.get('tracing').header]: 'my-trace-id'
     })
   })
 
@@ -21,6 +19,6 @@ describe('Header helper functions', () => {
     jest.mocked(getTraceId).mockReturnValue(null)
 
     const result = getHeaders()
-    expect(result).toEqual({})
+    expect(result).toBeUndefined()
   })
 })
