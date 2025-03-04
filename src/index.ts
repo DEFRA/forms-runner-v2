@@ -13,11 +13,17 @@ import ScorePageController from '~/src/server/controllers/score-page.js'
 import { createServer } from '~/src/server/index.js'
 import { getForm } from '~/src/server/plugins/engine/configureEnginePlugin.js'
 import { engine } from '~/src/server/plugins/engine/helpers.js'
-import * as outputService from '~/src/server/plugins/engine/services/notifyService.js'
-import { type FormStatus } from '~/src/server/routes/types.js'
+import { type FormModel } from '~/src/server/plugins/engine/models/FormModel.js'
+import { type DetailItem } from '~/src/server/plugins/engine/models/types.js'
+import * as defaultOutputService from '~/src/server/plugins/engine/services/notifyService.js'
+import {
+  type FormRequestPayload,
+  type FormStatus
+} from '~/src/server/routes/types.js'
 import {
   type FormSubmissionService,
-  type FormsService
+  type FormsService,
+  type OutputService
 } from '~/src/server/types.js'
 
 const logger = createLogger()
@@ -174,6 +180,39 @@ async function startServer() {
           }
         }
       })
+    }
+  }
+
+  const outputService: OutputService = {
+    submit: async function (
+      request: FormRequestPayload,
+      model: FormModel,
+      emailAddress: string,
+      items: DetailItem[],
+      submitResponse: SubmitResponsePayload
+    ): Promise<void> {
+      // Send default email
+      await defaultOutputService.submit(
+        request,
+        model,
+        emailAddress,
+        items,
+        submitResponse
+      )
+
+      if (model.basePath === 'adding-value') {
+        const additionalEmailAddress = '' // <- TODO: Extract the email(s) from the answers in `items`
+
+        if (additionalEmailAddress) {
+          await defaultOutputService.submit(
+            request,
+            model,
+            additionalEmailAddress,
+            items,
+            submitResponse
+          )
+        }
+      }
     }
   }
 
