@@ -1,5 +1,4 @@
 import { getTraceId } from '@defra/hapi-tracing'
-import { merge } from 'lodash'
 
 import { config } from '~/src/config/index.js'
 
@@ -19,7 +18,7 @@ export function applyTraceHeaders(existingHeaders) {
 
   const headers = traceId ? { [tracingHeader]: traceId } : undefined
 
-  return existingHeaders ? merge(existingHeaders, headers) : headers
+  return existingHeaders ? Object.assign(existingHeaders, headers) : headers
 }
 
 /**
