@@ -11,6 +11,7 @@ import { createLogger } from '~/src/server/common/helpers/logging/logger.js'
 import ScorePageController from '~/src/server/controllers/score-page.js'
 import { createServer } from '~/src/server/index.js'
 import { getForm } from '~/src/server/plugins/engine/configureEnginePlugin.js'
+import { engine } from '~/src/server/plugins/engine/helpers.js'
 import * as outputService from '~/src/server/plugins/engine/services/notifyService.js'
 import { type FormStatus } from '~/src/server/routes/types.js'
 import {
@@ -59,6 +60,11 @@ async function startServer() {
           'http://localhost:3001/scoring/api/v1/adding-value/score?allowPartialScoring=true'
       }
     }
+  })
+
+  engine.registerFilter('money', (value) => {
+    if (typeof value !== 'number') return
+    return value.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })
   })
 
   // Form metadata
