@@ -28,26 +28,26 @@
       <div class="scoring-block">
         <dl class="govuk-body govuk-!-margin-bottom-0">
           <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key govuk-!-font-size-16">
+            <dt class="govuk-summary-list__key">
               Strong
             </dt>
-            <dd class="govuk-summary-list__value govuk-!-font-size-16">
+            <dd class="govuk-summary-list__value">
               Based on your answers, a grant application is likely to be successful.
             </dd>
           </div>
           <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key govuk-!-font-size-16">
+            <dt class="govuk-summary-list__key">
               Average
             </dt>
-            <dd class="govuk-summary-list__value govuk-!-font-size-16">
+            <dd class="govuk-summary-list__value">
               Based on your answers, a grant application might be successful.
             </dd>
           </div>
           <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key govuk-!-font-size-16">
+            <dt class="govuk-summary-list__key">
               Weak
             </dt>
-            <dd class="govuk-summary-list__value govuk-!-font-size-16">
+            <dd class="govuk-summary-list__value">
               Based on your answers, a grant application is unlikely to be successful.
             </dd>
           </div>
@@ -69,7 +69,7 @@
       <h2 class="govuk-heading-m">Your answers</h2>
       <p class="govuk-body">You can go back to change scoring questions as many times as you like but you can only
         submit your details once.</p>
-      <table class="govuk-table govuk-body govuk-!-font-size-16">
+      <table class="govuk-table govuk-body">
         <thead class="govuk-table__head">
         <tr class="govuk-table__row">
           <th scope="col" class="govuk-table__header">Topic</th>
@@ -89,7 +89,7 @@
             </td>
             <td class="govuk-table__cell">
               <strong class="govuk-tag govuk-!-padding-0">{{ answer.score.band }}</strong>
-              <ul class="govuk-list govuk-!-font-size-16 govuk-!-padding-top-2">
+              <ul class="govuk-list govuk-!-padding-top-2">
                 {% for fundingPriority in answer.fundingPriorities %}
                   <li class="govuk-!-margin-bottom-3">{{ fundingPriority }}</li>
                 {% endfor %}
