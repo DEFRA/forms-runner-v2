@@ -11,6 +11,7 @@ import { createLogger } from '~/src/server/common/helpers/logging/logger.js'
 import ScorePageController from '~/src/server/controllers/score-page.js'
 import { createServer } from '~/src/server/index.js'
 import { getForm } from '~/src/server/plugins/engine/configureEnginePlugin.js'
+import { engine } from '~/src/server/plugins/engine/helpers.js'
 import * as outputService from '~/src/server/plugins/engine/services/notifyService.js'
 import { type FormStatus } from '~/src/server/routes/types.js'
 import {
@@ -60,6 +61,8 @@ async function startServer() {
       }
     }
   })
+
+  engine.registerFilter('money', (value) => `£ ${value}`)
 
   // Form metadata
   const now = new Date()
