@@ -133,6 +133,83 @@
       "condition": "DerTRE"
     },
     {
+      "title": "What is the estimated cost of the items?",
+      "path": "/what-is-the-estimated-cost-of-the-items",
+      "next": [],
+      "components": [
+        {
+          "type": "Html",
+          "name": "PkklMN",
+          "title": "Html",
+          "content": "<p class=\"govuk-hint\">[if project items only] Do not include VAT<br><br>[if with solar] Do not include the solar PV system costs or VAT<br><br>Enter cost of items, for example 695,000</p>",
+          "options": {},
+          "schema": {}
+        },
+        {
+          "type": "NumberField",
+          "name": "PkdRee",
+          "title": "Enter amount",
+          "options": {
+            "prefix": "£",
+            "required": true,
+            "classes": "govuk-input--width-6"
+          },
+          "schema": {
+            "min": 0,
+            "precision": 2
+          }
+        }
+      ]
+    },
+    {
+      "title": "You cannot apply for a grant from this scheme",
+      "path": "/you-cannot-apply-for-a-grant-from-this-scheme-estimated-items-cost",
+      "controller": "TerminalPageController",
+      "next": [],
+      "components": [
+        {
+          "name": "plOIUS",
+          "title": "Html",
+          "type": "Html",
+          "content": "<p class=\"govuk-body\">The minimum grant you can apply for is £25,000 (40% of £62,500).</p>\n\n<p class='govuk-body'><a href='https://www.gov.uk/call-charges' class='govuk-link govuk-link--no-visited-state'>See other grants you may be eligible for</a></p>\n",
+          "options": {},
+          "schema": {}
+        }
+      ],
+      "condition": "LlMCgd"
+    },
+    {
+      "title": "{%- assign estimatedCost = 'PkdRee' | answer -%} {%- assign applicantPayMultiplier = 0.6 -%} {%- assign applicantPayAmount = estimatedCost | times: applicantPayMultiplier -%} Can you pay the remaining costs of £{{ applicantPayAmount | money }}?",
+      "path": "/can-you-pay-the-remaining-costs",
+      "next": [],
+      "components": [
+        {
+          "type": "YesNoField",
+          "name": "mncHGD",
+          "title": " ",
+          "options": {},
+          "schema": {}
+        }
+      ]
+    },
+    {
+      "title": "You cannot apply for a grant from this scheme",
+      "path": "/you-cannot-apply-for-a-grant-from-this-scheme-remaining-costs",
+      "controller": "TerminalPageController",
+      "next": [],
+      "components": [
+        {
+          "name": "VVCFre",
+          "title": "Html",
+          "type": "Html",
+          "content": "<p class=\"govuk-body\">You cannot use public money (for example, grant funding from government or local authorities) towards the project costs.</br></br>You also cannot use money from a producer organisation under the Fresh Fruit and Vegetable Aid Scheme.</br></br>For example, you can use:</p>\n\n<ul class=\"govuk-list govuk-list--bullet\">\n  <li>loans</li>\n<li>overdrafts</li>\n<li>delinked payments</li></ul>\n\n<p class='govuk-body'><a href='https://www.gov.uk/call-charges' class='govuk-link govuk-link--no-visited-state'>See other grants you may be eligible for</a></p>\n",
+          "options": {},
+          "schema": {}
+        }
+      ],
+      "condition": "orTDGE"
+    },
+    {
       "title": "What type of produce is being processed?",
       "path": "/products-processed",
       "next": [],
@@ -492,6 +569,50 @@
               "name": "dfRSaq",
               "type": "YesNoField",
               "display": "Is the planned project in England?"
+            },
+            "operator": "is",
+            "value": {
+              "type": "Value",
+              "value": "false",
+              "display": "No"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "LlMCgd",
+      "displayName": "estimatedCostThresholdNotReached",
+      "value": {
+        "name": "estimatedCostThresholdNotReached",
+        "conditions": [
+          {
+            "field": {
+              "name": "PkdRee",
+              "type": "NumberField",
+              "display": "What is the estimated cost of the items?"
+            },
+            "operator": "is less than",
+            "value": {
+              "type": "Value",
+              "value": "62500",
+              "display": "Enter amount"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "orTDGE",
+      "displayName": "canYouPayTheRemainingCosts",
+      "value": {
+        "name": "canYouPayTheRemainingCosts",
+        "conditions": [
+          {
+            "field": {
+              "name": "mncHGD",
+              "type": "YesNoField",
+              "display": "Can you pay the remaining costs of £x?"
             },
             "operator": "is",
             "value": {
