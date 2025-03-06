@@ -179,7 +179,7 @@
       "condition": "LlMCgd"
     },
     {
-      "title": "{%- assign estimatedCost = 'PkdRee' | answer -%} {%- assign applicantPayMultiplier = 0.6 -%} {%- assign applicantPayAmount = estimatedCost | times: applicantPayMultiplier -%} Can you pay the remaining costs of £{{ applicantPayAmount | money }}?",
+      "title": "{%- assign estimatedCost = 'PkdRee' | answer -%} {%- assign applicantPayMultiplier = 0.6 -%} {%- assign applicantPayAmount = estimatedCost | times: applicantPayMultiplier -%} Can you pay the remaining costs of {{ applicantPayAmount | money }}?",
       "path": "/can-you-pay-the-remaining-costs",
       "next": [],
       "components": [
