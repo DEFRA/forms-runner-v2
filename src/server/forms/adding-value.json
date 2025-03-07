@@ -286,7 +286,7 @@
           "type": "http",
           "options": {
             "method": "POST",
-            "url": "https://ffc-grants-scoring.cdpEnvironment.cdp-int.defra.cloud/scoring/api/v1/adding-value/score?allowPartialScoring=true"
+            "url": "https://fg-gas-backend.cdpEnvironment.cdp-int.defra.cloud/grants/67c6f005b253a336b09748e9/endpoints/calculate-score/invoke"
           }
         }
       }
