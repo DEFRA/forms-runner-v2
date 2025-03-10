@@ -8,6 +8,7 @@ import Boom from '@hapi/boom'
 
 import { config } from '~/src/config/index.js'
 import { createLogger } from '~/src/server/common/helpers/logging/logger.js'
+import LandGrantsController from '~/src/server/controllers/land-grants.js'
 import ScorePageController from '~/src/server/controllers/score-page.js'
 import { createServer } from '~/src/server/index.js'
 import { getForm } from '~/src/server/plugins/engine/configureEnginePlugin.js'
@@ -36,7 +37,12 @@ async function startServer() {
     './server/forms/example-grant.json',
     import.meta.url
   ).pathname
+  const landGrantsPath = new URL(
+    './server/forms/find-funding-for-land-or-farms.json',
+    import.meta.url
+  ).pathname
   const exampleGrantDefinition = await getForm(exampleGrantPath)
+  const landGrantsDefinition = await getForm(landGrantsPath)
 
   const addingValuePath = new URL(
     './server/forms/adding-value.json',
@@ -105,6 +111,13 @@ async function startServer() {
     ...metadata
   }
 
+  const landGrantsMetadata: FormMetadata = {
+    id: '5c67688f-3c61-4839-a6e1-d48b598257f1',
+    slug: 'find-funding-for-land-or-farms',
+    title: 'Find Funding for Land or Farms',
+    ...metadata
+  }
+
   const formsService: FormsService = {
     getFormMetadata: function (slug: string): Promise<FormMetadata> {
       switch (slug) {
@@ -112,6 +125,8 @@ async function startServer() {
           return Promise.resolve(exampleGrantMetadata)
         case addingValueMetadata.slug:
           return Promise.resolve(addingValueMetadata)
+        case landGrantsMetadata.slug:
+          return Promise.resolve(landGrantsMetadata)
         default:
           throw Boom.notFound(`Form '${slug}' not found`)
       }
@@ -125,6 +140,8 @@ async function startServer() {
           return Promise.resolve(exampleGrantDefinition)
         case addingValueMetadata.id:
           return Promise.resolve(addingValueDefinition)
+        case landGrantsMetadata.id:
+          return Promise.resolve(landGrantsDefinition)
         default:
           throw Boom.notFound(`Form '${id}' not found`)
       }
@@ -163,6 +180,7 @@ async function startServer() {
   const server = await createServer({
     services: { formsService, formSubmissionService, outputService },
     controllers: {
+      LandGrantsController,
       ScorePageController
     }
   })
