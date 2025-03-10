@@ -8,9 +8,8 @@ import Boom from '@hapi/boom'
 
 import { config } from '~/src/config/index.js'
 import { createLogger } from '~/src/server/common/helpers/logging/logger.js'
-import ScorePageController from '~/src/server/controllers/score-page.js'
-// eslint-disable-next-line
 import LandGrantsController from '~/src/server/controllers/land-grants.js'
+import ScorePageController from '~/src/server/controllers/score-page.js'
 import { createServer } from '~/src/server/index.js'
 import { getForm } from '~/src/server/plugins/engine/configureEnginePlugin.js'
 import { engine } from '~/src/server/plugins/engine/helpers.js'
@@ -181,8 +180,8 @@ async function startServer() {
   const server = await createServer({
     services: { formsService, formSubmissionService, outputService },
     controllers: {
-      ScorePageController,
-      LandGrantsController
+      LandGrantsController,
+      ScorePageController
     }
   })
 

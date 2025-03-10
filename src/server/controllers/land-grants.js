@@ -1,4 +1,5 @@
 import { fetchBusinessDetails } from '~/src/server/common/helpers/consolidated-view/consolidated-view.js'
+import { findPage } from '~/src/server/plugins/engine/helpers.js'
 import { QuestionPageController } from '~/src/server/plugins/engine/pageControllers/QuestionPageController.js'
 
 export default class LandGrantsController extends QuestionPageController {
@@ -20,7 +21,8 @@ export default class LandGrantsController extends QuestionPageController {
       let business = null
       const sbi = 117235001
       const crn = 1100598138
-      const { collection, viewName } = this
+      const { collection, viewName, model } = this
+      const { params } = request
 
       try {
         const result = await fetchBusinessDetails(sbi, crn)
@@ -29,10 +31,12 @@ export default class LandGrantsController extends QuestionPageController {
         request.logger.error(error, `Failed to fetch business details ${sbi}`)
       }
 
+      const page = findPage(model, `/${params.path}`)
       const viewModel = {
         ...super.getViewModel(request, context),
+        errors: collection.getErrors(collection.getErrors()),
         business,
-        errors: collection.getErrors(collection.getErrors())
+        title: page?.title
       }
 
       return h.view(viewName, viewModel)
