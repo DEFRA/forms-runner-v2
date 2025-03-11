@@ -108,6 +108,20 @@ describe('Token Manager', () => {
       await expect(refreshToken()).rejects.toThrow('Invalid credentials')
     })
 
+    test('throws error for a malformed token response', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: () =>
+          Promise.resolve({
+            malformed_response: null
+          })
+      })
+
+      await expect(refreshToken()).rejects.toThrow(
+        'Invalid token response: missing or invalid access_token'
+      )
+    })
+
     test('throws error on network failure', async () => {
       mockFetch.mockRejectedValueOnce(new Error('Network error'))
 
