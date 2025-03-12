@@ -58,7 +58,46 @@ export const config = convict({
     default: isProduction,
     env: 'ENFORCE_CSRF'
   },
-
+  entra: {
+    tokenEndpoint: {
+      doc: 'Microsoft entra token endpoint',
+      format: String,
+      default: '',
+      env: 'ENTRA_INTERNAL_TOKEN_URL'
+    },
+    tenantId: {
+      doc: 'Microsoft tenant ID',
+      format: String,
+      default: '',
+      env: 'ENTRA_INTERNAL_TENANT_ID'
+    },
+    clientId: {
+      doc: 'Microsoft client ID',
+      format: String,
+      default: '',
+      env: 'ENTRA_INTERNAL_CLIENT_ID'
+    },
+    clientSecret: {
+      doc: 'Microsoft client secret',
+      format: String,
+      default: '',
+      env: 'ENTRA_INTERNAL_CLIENT_SECRET'
+    }
+  },
+  consolidatedView: {
+    apiEndpoint: {
+      doc: 'Consolidated View API endpoint',
+      format: String,
+      default: '',
+      env: 'CV_API_ENDPOINT'
+    },
+    authEmail: {
+      doc: 'Consolidated View AuthEmail',
+      format: String,
+      default: '',
+      env: 'CV_API_AUTH_EMAIL'
+    }
+  },
   /**
    * Helper flags
    */

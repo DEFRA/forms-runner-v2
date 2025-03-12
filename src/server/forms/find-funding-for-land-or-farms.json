@@ -1,0 +1,32 @@
+{
+  "engine": "V2",
+  "name": "Find Funding for Land or Farms",
+  "pages": [
+    {
+      "title": "Check if you can apply for Funding for Land or Farms",
+      "path": "/start",
+      "controller": "StartPageController",
+      "next": [],
+      "components": [
+        {
+          "name": "Jhimsh",
+          "title": "Html",
+          "type": "Html",
+          "content": "<p class=\"govuk-body\">Some text here</p>",
+          "options": {},
+          "schema": {}
+        }
+      ]
+    },
+    {
+      "title": "Business details",
+      "controller": "LandGrantsController",
+      "path": "/business-details",
+      "next": [],
+      "components": []
+    }
+  ],
+  "lists": [],
+  "sections": [],
+  "conditions": []
+}
