@@ -65,7 +65,7 @@ export async function fetchBusinessDetails(sbi, crn) {
       throw error
     }
   } catch (error) {
-    logger.error(error, `Failed to refresh token`)
+    logger.error(error, `Failed to fetch business details for sbi ${sbi}`)
     throw error
   }
 
