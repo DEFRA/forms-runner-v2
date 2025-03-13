@@ -8,16 +8,23 @@ import Boom from '@hapi/boom'
 
 import { config } from '~/src/config/index.js'
 import { createLogger } from '~/src/server/common/helpers/logging/logger.js'
+import DeclarationPageController from '~/src/server/controllers/declaration-page.js'
 import LandGrantsController from '~/src/server/controllers/land-grants.js'
 import ScorePageController from '~/src/server/controllers/score-page.js'
 import { createServer } from '~/src/server/index.js'
 import { getForm } from '~/src/server/plugins/engine/configureEnginePlugin.js'
 import { engine } from '~/src/server/plugins/engine/helpers.js'
-import * as outputService from '~/src/server/plugins/engine/services/notifyService.js'
-import { type FormStatus } from '~/src/server/routes/types.js'
+import { type FormModel } from '~/src/server/plugins/engine/models/FormModel.js'
+import { type DetailItem } from '~/src/server/plugins/engine/models/types.js'
+import * as defaultOutputService from '~/src/server/plugins/engine/services/notifyService.js'
+import {
+  type FormRequestPayload,
+  type FormStatus
+} from '~/src/server/routes/types.js'
 import {
   type FormSubmissionService,
-  type FormsService
+  type FormsService,
+  type OutputService
 } from '~/src/server/types.js'
 
 const logger = createLogger()
@@ -177,11 +184,61 @@ async function startServer() {
     }
   }
 
+  const outputService: OutputService = {
+    submit: async function (
+      request: FormRequestPayload,
+      model: FormModel,
+      emailAddress: string,
+      items: DetailItem[],
+      submitResponse: SubmitResponsePayload
+    ): Promise<void> {
+      // Send default email
+      await defaultOutputService.submit(
+        request,
+        model,
+        emailAddress,
+        items,
+        submitResponse
+      )
+
+      if (model.basePath === 'adding-value') {
+        const agentEmailAddress = items.find(
+          (item) => item.name === 'agentEmailAddress'
+        )?.value
+
+        if (agentEmailAddress) {
+          await defaultOutputService.submit(
+            request,
+            model,
+            agentEmailAddress,
+            items,
+            submitResponse
+          )
+        }
+
+        const applicantEmailAddress = items.find(
+          (item) => item.name === 'applicantEmailAddress'
+        )?.value
+
+        if (applicantEmailAddress) {
+          await defaultOutputService.submit(
+            request,
+            model,
+            applicantEmailAddress,
+            items,
+            submitResponse
+          )
+        }
+      }
+    }
+  }
+
   const server = await createServer({
     services: { formsService, formSubmissionService, outputService },
     controllers: {
       LandGrantsController,
-      ScorePageController
+      ScorePageController,
+      DeclarationPageController
     }
   })
 
