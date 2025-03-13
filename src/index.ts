@@ -204,7 +204,7 @@ async function startServer() {
       if (model.basePath === 'adding-value') {
         const agentEmailAddress = items.find(
           (item) => item.name === 'agentEmailAddress'
-        ).value
+        )?.value
 
         if (agentEmailAddress) {
           await defaultOutputService.submit(
@@ -218,7 +218,7 @@ async function startServer() {
 
         const applicantEmailAddress = items.find(
           (item) => item.name === 'applicantEmailAddress'
-        ).value
+        )?.value
 
         if (applicantEmailAddress) {
           await defaultOutputService.submit(
