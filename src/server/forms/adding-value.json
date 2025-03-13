@@ -152,7 +152,10 @@
           "options": {
             "prefix": "£",
             "required": true,
-            "classes": "govuk-input--width-6"
+            "classes": "govuk-!-width-one-third",
+            "customValidationMessages": {
+              "any.required": "Enter amount"
+            }
           },
           "schema": {
             "min": 0,
@@ -171,7 +174,7 @@
           "name": "plOIUS",
           "title": "Html",
           "type": "Html",
-          "content": "<p class=\"govuk-body\">The minimum grant you can apply for is £25,000 (40% of £62,500).</p>\n\n<p class='govuk-body'><a href='https://www.gov.uk/call-charges' class='govuk-link govuk-link--no-visited-state'>See other grants you may be eligible for</a></p>\n",
+          "content": "<p class=\"govuk-body\">The minimum grant you can apply for is £25,000 (40% of £62,500).</p>\n\n<p class='govuk-body'><a href='https://www.gov.uk/guidance/funding-for-farmers' class='govuk-link govuk-link--no-visited-state'>See other grants you may be eligible for</a></p>\n",
           "options": {},
           "schema": {}
         }
@@ -187,7 +190,11 @@
           "type": "YesNoField",
           "name": "mncHGD",
           "title": " ",
-          "options": {},
+          "options": {
+            "customValidationMessages": {
+              "any.required": "Select yes if you can pay the remaining costs"
+            }
+          },
           "schema": {}
         }
       ]
@@ -202,7 +209,7 @@
           "name": "VVCFre",
           "title": "Html",
           "type": "Html",
-          "content": "<p class=\"govuk-body\">You cannot use public money (for example, grant funding from government or local authorities) towards the project costs.</br></br>You also cannot use money from a producer organisation under the Fresh Fruit and Vegetable Aid Scheme.</br></br>For example, you can use:</p>\n\n<ul class=\"govuk-list govuk-list--bullet\">\n  <li>loans</li>\n<li>overdrafts</li>\n<li>delinked payments</li></ul>\n\n<p class='govuk-body'><a href='https://www.gov.uk/call-charges' class='govuk-link govuk-link--no-visited-state'>See other grants you may be eligible for</a></p>\n",
+          "content": "<p class=\"govuk-body\">You cannot use public money (for example, grant funding from government or local authorities) towards the project costs.</br></br>You also cannot use money from a producer organisation under the Fresh Fruit and Vegetable Aid Scheme.</br></br>For example, you can use:</p>\n\n<ul class=\"govuk-list govuk-list--bullet\">\n  <li>loans</li>\n<li>overdrafts</li>\n<li>delinked payments</li></ul>\n\n<p class='govuk-body'><a href='https://www.gov.uk/guidance/funding-for-farmers' class='govuk-link govuk-link--no-visited-state'>See other grants you may be eligible for</a></p>\n",
           "options": {},
           "schema": {}
         }
