@@ -8,9 +8,17 @@ const CV_API_AUTH_EMAIL = config.get('consolidatedView.authEmail')
 const logger = createLogger()
 
 /**
+ * @typedef {object} LandParcel
+ * @property {object} [parcelId] - The parcel identifier
+ * @property {object} [sheetId] - The sheet identifier
+ */
+
+/**
  * @typedef {object} BusinessResponse
  * @property {object} [data] - The response data object
  * @property {object} [data.business] - Business information
+ * @property {object} [data.business.land] - Land information
+ * @property {Array<LandParcel>} [data.business.land.parcels] - parcels information
  * @property {string} [data.business.sbi] - Standard Business Identifier
  * @property {string} [data.business.organisationId] - Organisation identifier
  * @property {object} [data.business.customer] - Customer details
@@ -28,11 +36,18 @@ const logger = createLogger()
  */
 export async function fetchBusinessDetails(sbi, crn) {
   let response
+  const now = new Date().toISOString()
   const query = `
     query Business {
         business(sbi: "${sbi}") {
             sbi
             organisationId
+            land {
+              parcels(date: "${now}") {
+                parcelId
+                sheetId
+              }
+            }
             customer(crn: "${crn}") {
                 firstName
                 lastName
@@ -69,5 +84,7 @@ export async function fetchBusinessDetails(sbi, crn) {
     throw error
   }
 
-  return /** @type {Promise<BusinessResponse>} */ (response.json())
+  const data = /** @type {Promise<BusinessResponse>} */ (response.json())
+
+  return data
 }

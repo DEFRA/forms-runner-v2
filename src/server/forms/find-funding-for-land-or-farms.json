@@ -12,18 +12,68 @@
           "name": "Jhimsh",
           "title": "Html",
           "type": "Html",
-          "content": "<p class=\"govuk-body\">Some text here</p>",
+          "content": "<p class=\"govuk-body\">Find out about grants and funding for farmers and land managers in England. We will add more grants and funding as we develop this tool.</p><p class=\"govuk-body\">You can search for actions you can get paid for as part of the Sustainable Farming Incentive (SFI). The tool does not confirm your eligibility. <a href=\"https://www.gov.uk/government/collections/sustainable-farming-incentive-guidance\">Read the SFI guidance to check if you're eligible and how you can apply</a>.</p><p class=\"govuk-body\">Search by keyword, action name or code if you know it. Use the filters to search by land types or areas of interest.</p>",
           "options": {},
           "schema": {}
         }
       ]
     },
     {
-      "title": "Business details",
-      "controller": "LandGrantsController",
-      "path": "/business-details",
+      "title": "Select Land Actions",
+      "controller": "LandActionsController",
+      "path": "/select-land-actions",
+      "next": [{ "path": "/select-land-parcel" }],
+      "components": [
+        {
+          "type": "TextField",
+          "name": "actionId",
+          "title": "Action ID",
+          "options": {
+            "required": true
+          },
+          "schema": {}
+        },
+        {
+          "type": "TextField",
+          "name": "actionName",
+          "title": "Action Name",
+          "options": {
+            "required": true
+          },
+          "schema": {}
+        }
+      ]
+    },
+    {
+      "title": "Select Land Parcel",
+      "controller": "LandParcelController",
+      "path": "/select-land-parcel",
       "next": [],
-      "components": []
+      "components": [
+        {
+          "type": "TextField",
+          "name": "landParcelId",
+          "title": "Parcel ID",
+          "options": {
+            "required": true
+          },
+          "schema": {}
+        },
+        {
+          "type": "TextField",
+          "name": "hectars",
+          "title": "Parcel cover (ha.)",
+          "options": {
+            "required": true
+          },
+          "schema": {}
+        }
+      ]
+    },
+    {
+      "path": "/summary",
+      "controller": "SummaryPageController",
+      "title": "Check your answers before submitting your form"
     }
   ],
   "lists": [],

@@ -8,7 +8,8 @@ import Boom from '@hapi/boom'
 
 import { config } from '~/src/config/index.js'
 import { createLogger } from '~/src/server/common/helpers/logging/logger.js'
-import LandGrantsController from '~/src/server/controllers/land-grants.js'
+import LandActionsController from '~/src/server/controllers/land-actions.js'
+import LandParcelController from '~/src/server/controllers/land-parcel.js'
 import ScorePageController from '~/src/server/controllers/score-page.js'
 import { createServer } from '~/src/server/index.js'
 import { getForm } from '~/src/server/plugins/engine/configureEnginePlugin.js'
@@ -180,7 +181,8 @@ async function startServer() {
   const server = await createServer({
     services: { formsService, formSubmissionService, outputService },
     controllers: {
-      LandGrantsController,
+      LandParcelController,
+      LandActionsController,
       ScorePageController
     }
   })

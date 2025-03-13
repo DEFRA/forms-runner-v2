@@ -1,0 +1,20 @@
+[
+  {
+    "id": "CSAM1",
+    "title": "CSAM1: Assess soil, produce a soil management plan and test soil organic matter",
+    "duration": "3 years",
+    "funding": "£6 per hectare (ha) per year and £97 per SFI agreement per year",
+    "landTypes": "Arable and 1 others",
+    "areasOfInterest": "Flood risk and 3 others",
+    "paymentTypes": "Revenue"
+  },
+  {
+    "id": "BND1",
+    "title": "BND1: Maintain dry stone walls",
+    "duration": "3 years",
+    "funding": "£27 per 100 metres (m) for both sides",
+    "landTypes": "Arable and 2 others",
+    "areasOfInterest": "Boundaries",
+    "paymentTypes": "Revenue"
+  }
+]

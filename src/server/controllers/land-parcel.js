@@ -1,12 +1,37 @@
+import { Boom } from '@hapi/boom'
+
 import { fetchBusinessDetails } from '~/src/server/common/helpers/consolidated-view/consolidated-view.js'
 import { findPage } from '~/src/server/plugins/engine/helpers.js'
 import { QuestionPageController } from '~/src/server/plugins/engine/pageControllers/QuestionPageController.js'
 
-export default class LandGrantsController extends QuestionPageController {
-  viewName = 'grants/land-grants'
+export default class LandParcelController extends QuestionPageController {
+  viewName = 'grants/select-land-parcel'
+
+  makePostRouteHandler() {
+    /**
+     * Handle GET requests to the score page.
+     * @param {FormRequest} request
+     * @param {FormContext} context
+     * @param {Pick<ResponseToolkit, 'redirect' | 'view'>} h
+     * @returns {Promise<import('@hapi/boom').Boom<any> | import('@hapi/hapi').ResponseObject>}
+     */
+    const fn = async (request, context, h) => {
+      const { state } = context
+      const payload = request.payload ?? {}
+      const { landParcelId, hectars } = payload
+      await this.setState(request, {
+        ...state,
+        landParcelId,
+        hectars
+      })
+      return this.proceed(request, h, this.getNextPath(context))
+    }
+
+    return fn
+  }
 
   /**
-   * This method is called when there is a GET request to the land grants home page.
+   * This method is called when there is a GET request to the select land parcel page.
    * It gets the view model for the page using the `getViewModel` method,
    * and then adds business details to the view model
    */
@@ -33,11 +58,17 @@ export default class LandGrantsController extends QuestionPageController {
         request.logger.error(error, `Failed to fetch business details ${sbi}`)
       }
 
+      if (!business) {
+        throw Boom.notFound(`No business information found for sbi ${sbi}`)
+      }
+
       const page = findPage(model, `/${params.path}`)
       const viewModel = {
         ...super.getViewModel(request, context),
         errors: collection.getErrors(collection.getErrors()),
         business,
+        actionName: context.state.actionName,
+        landParcelId: context.state.landParcelId,
         title: page?.title
       }
 
