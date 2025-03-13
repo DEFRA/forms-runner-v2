@@ -8,6 +8,7 @@ import Boom from '@hapi/boom'
 
 import { config } from '~/src/config/index.js'
 import { createLogger } from '~/src/server/common/helpers/logging/logger.js'
+import DeclarationPageController from '~/src/server/controllers/declaration-page.js'
 import LandGrantsController from '~/src/server/controllers/land-grants.js'
 import ScorePageController from '~/src/server/controllers/score-page.js'
 import { createServer } from '~/src/server/index.js'
@@ -201,13 +202,29 @@ async function startServer() {
       )
 
       if (model.basePath === 'adding-value') {
-        const additionalEmailAddress = '' // <- TODO: Extract the email(s) from the answers in `items`
+        const agentEmailAddress = items.find(
+          (item) => item.name === 'agentEmailAddress'
+        ).value
 
-        if (additionalEmailAddress) {
+        if (agentEmailAddress) {
           await defaultOutputService.submit(
             request,
             model,
-            additionalEmailAddress,
+            agentEmailAddress,
+            items,
+            submitResponse
+          )
+        }
+
+        const applicantEmailAddress = items.find(
+          (item) => item.name === 'applicantEmailAddress'
+        ).value
+
+        if (applicantEmailAddress) {
+          await defaultOutputService.submit(
+            request,
+            model,
+            applicantEmailAddress,
             items,
             submitResponse
           )
@@ -220,7 +237,8 @@ async function startServer() {
     services: { formsService, formSubmissionService, outputService },
     controllers: {
       LandGrantsController,
-      ScorePageController
+      ScorePageController,
+      DeclarationPageController
     }
   })
 
