@@ -26,17 +26,8 @@
       "components": [
         {
           "type": "TextField",
-          "name": "actionId",
-          "title": "Action ID",
-          "options": {
-            "required": true
-          },
-          "schema": {}
-        },
-        {
-          "type": "TextField",
-          "name": "actionName",
-          "title": "Action Name",
+          "name": "actions",
+          "title": "Actions",
           "options": {
             "required": true
           },

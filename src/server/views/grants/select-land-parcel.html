@@ -21,7 +21,7 @@
         Org ID: {{ business.organisationId }}
       </p>
       {% endif %} #}
-      <p>Action: {{actionName}}</p>
+      <p>Action(s): {{actionName}}</p>
       {% if business and business.land and business.land.parcels %}
         <form method="post" novalidate>
           {% set radioItems = [] %}

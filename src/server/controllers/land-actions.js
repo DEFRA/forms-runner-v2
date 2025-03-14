@@ -1,7 +1,4 @@
-import {
-  fetchActions,
-  findActionById
-} from '~/src/server/common/helpers/grant-application-service/grant-application-service.js'
+import { fetchActions } from '~/src/server/common/helpers/grant-application-service/grant-application-service.js'
 import { findPage } from '~/src/server/plugins/engine/helpers.js'
 import { QuestionPageController } from '~/src/server/plugins/engine/pageControllers/QuestionPageController.js'
 
@@ -24,12 +21,11 @@ export default class LandActionsController extends QuestionPageController {
     const fn = async (request, context, h) => {
       const { state } = context
       const payload = request.payload ?? {}
-      const { actionId } = payload
-      const action = findActionById(actionId)
+      const { actions } = payload
+
       await this.setState(request, {
         ...state,
-        actionId,
-        actionName: action.title
+        actions: actions.toString()
       })
       return this.proceed(request, h, this.getNextPath(context))
     }
@@ -60,6 +56,7 @@ export default class LandActionsController extends QuestionPageController {
         errors: collection.getErrors(collection.getErrors()),
         landParcelId: state.landParcelId,
         actions: fetchActions(),
+        selectedActions: state.actions,
         title: page?.title
       }
 

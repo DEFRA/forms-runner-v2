@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
@@ -9,33 +9,36 @@
 <div class="govuk-body">
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-l">Please select an action</h1>
+      <h1 class="govuk-heading-l">Choosing an action</h1>
 
       {% if actions %}
         <form method="post" novalidate>
-          {% set radioItems = [] %}
+          {% set listItems = [] %}
           {% set action = actionId or actions[0].id %}
 
           {% for action in actions %}
-            {% set radioItems = radioItems.concat([{
+            {% set listItems = listItems.concat([{
               value: action.id,
-              text: action.title
+              text: action.title,
+              checked: selectedActions and selectedActions.includes(action.id)
             }]) %}
           {% endfor %}
           
-          {% if radioItems.length > 0 %}
-            {{ govukRadios({
-                name: "actionId",
-                fieldset: {
-                  legend: {
-                    text: "Action name",
-                    classes: "govuk-fieldset__legend--s"
-                  }
-                },
-                items: radioItems,
-                value: actionid or actions[0].id
-              }) 
-            }}
+          {% if listItems.length > 0 %}
+            {{ govukCheckboxes({
+              name: "actions",
+              fieldset: {
+                legend: {
+                  text: "Which actions do you want to apply for?",
+                  isPageHeading: true,
+                  classes: "govuk-fieldset__legend--l"
+                }
+              },
+              hint: {
+                text: "Select all that apply"
+              },
+              items: listItems
+            }) }}
             
             <div class="govuk-button-group">
               <input type="hidden" name="crumb" value="{{ crumb }}">

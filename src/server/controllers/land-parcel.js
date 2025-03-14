@@ -67,7 +67,7 @@ export default class LandParcelController extends QuestionPageController {
         ...super.getViewModel(request, context),
         errors: collection.getErrors(collection.getErrors()),
         business,
-        actionName: context.state.actionName,
+        actionName: context.state.actions?.toString(),
         landParcelId: context.state.landParcelId,
         title: page?.title
       }
