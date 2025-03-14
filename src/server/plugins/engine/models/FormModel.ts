@@ -444,9 +444,12 @@ function validateFormState(
 }
 
 function getReferenceNumber(state: FormState): string {
-  if (!state.referenceNumber || typeof state.referenceNumber !== 'string') {
+  if (
+    !state.$$__referenceNumber ||
+    typeof state.$$__referenceNumber !== 'string'
+  ) {
     throw Error('Reference number not found in form state')
   }
 
-  return state.referenceNumber
+  return state.$$__referenceNumber
 }

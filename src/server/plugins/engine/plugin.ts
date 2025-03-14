@@ -183,7 +183,7 @@ export const plugin = {
       const page = getPage(model, request)
       let state = await page.getState(request)
 
-      if (!state.referenceNumber) {
+      if (!state.$$__referenceNumber) {
         const prefix = model.def.metadata?.referenceNumberPrefix ?? ''
 
         if (typeof prefix !== 'string') {
@@ -193,7 +193,9 @@ export const plugin = {
         }
 
         const referenceNumber = generateReferenceNumber(prefix)
-        state = await page.mergeState(request, state, { referenceNumber })
+        state = await page.mergeState(request, state, {
+          $$__referenceNumber: referenceNumber
+        })
       }
 
       const flash = cacheService.getFlash(request)
