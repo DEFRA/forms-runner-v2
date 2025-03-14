@@ -141,7 +141,7 @@
           "type": "Html",
           "name": "PkklMN",
           "title": "Html",
-          "content": "<p class=\"govuk-hint\">Do not include VAT<br><br>Enter cost of items, for example 695,000</p>",
+          "content": "<p class=\"govuk-hint\">Do not include VAT<br><br>Enter cost of items, for example 695000</p>",
           "options": {},
           "schema": {}
         },
@@ -154,12 +154,15 @@
             "required": true,
             "classes": "govuk-!-width-one-third",
             "customValidationMessages": {
-              "any.required": "Enter amount"
+              "any.required": "Enter the estimated cost of the items",
+              "number.max": "Enter a whole number with a maximum of 7 digits",
+              "number.min": "Enter a whole number with a maximum of 7 digits"
             }
           },
           "schema": {
-            "min": 0,
-            "precision": 2
+            "min": 1,
+            "max": 9999999,
+            "precision": 0
           }
         }
       ]
