@@ -163,10 +163,7 @@ export type FormContextRequest = (
       payload?: object | undefined
     }
 ) &
-  Pick<
-    FormRequest,
-    'app' | 'method' | 'params' | 'path' | 'query' | 'url' | 'yar'
-  >
+  Pick<FormRequest, 'app' | 'method' | 'params' | 'path' | 'query' | 'url'>
 
 export interface UploadInitiateResponse {
   uploadId: string
