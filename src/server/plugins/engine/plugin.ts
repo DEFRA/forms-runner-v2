@@ -181,9 +181,9 @@ export const plugin = {
 
       const { cacheService } = request.services([])
       const page = getPage(model, request)
-      const state = await page.getState(request)
+      let state = await page.getState(request)
 
-      if (!request.yar.get('referenceNumber')) {
+      if (!state.referenceNumber) {
         const prefix = model.def.metadata?.referenceNumberPrefix ?? ''
 
         if (typeof prefix !== 'string') {
@@ -193,8 +193,7 @@ export const plugin = {
         }
 
         const referenceNumber = generateReferenceNumber(prefix)
-
-        request.yar.set('referenceNumber', referenceNumber) // TODO move this in the state when integrated into the plugin
+        state = await page.mergeState(request, state, { referenceNumber })
       }
 
       const flash = cacheService.getFlash(request)

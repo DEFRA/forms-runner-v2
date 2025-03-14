@@ -276,8 +276,7 @@ export class FormModel {
       pageMap: this.pageMap,
       componentMap: this.componentMap,
       errors,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call -- TODO fix when we move to state
-      referenceNumber: request.yar.get('referenceNumber')
+      referenceNumber: getReferenceNumber(state)
     }
 
     // Validate current page
@@ -442,4 +441,12 @@ function validateFormState(
   }
 
   return context
+}
+
+function getReferenceNumber(state: FormState): string {
+  if (!state.referenceNumber || typeof state.referenceNumber !== 'string') {
+    throw Error('Reference number not found in form state')
+  }
+
+  return state.referenceNumber
 }
