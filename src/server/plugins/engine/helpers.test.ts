@@ -520,7 +520,8 @@ describe('Helpers', () => {
         listDefMap: model.listDefMap,
         componentDefMap: model.componentDefMap,
         pageMap: model.pageMap,
-        componentMap: model.componentMap
+        componentMap: model.componentMap,
+        referenceNumber: 'foobar'
       }
     })
 
