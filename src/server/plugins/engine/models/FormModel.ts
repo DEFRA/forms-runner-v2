@@ -275,7 +275,9 @@ export class FormModel {
       componentDefMap: this.componentDefMap,
       pageMap: this.pageMap,
       componentMap: this.componentMap,
-      errors
+      errors,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call -- TODO fix when we move to state
+      referenceNumber: request.yar.get('referenceNumber')
     }
 
     // Validate current page

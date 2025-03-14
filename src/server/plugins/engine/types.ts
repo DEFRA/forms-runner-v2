@@ -146,6 +146,7 @@ export interface FormContext {
   componentDefMap: Map<string, ComponentDef>
   pageMap: Map<string, PageControllerClass>
   componentMap: Map<string, Component>
+  referenceNumber: string
 }
 
 export type FormContextRequest = (
@@ -162,7 +163,10 @@ export type FormContextRequest = (
       payload?: object | undefined
     }
 ) &
-  Pick<FormRequest, 'app' | 'method' | 'params' | 'path' | 'query' | 'url'>
+  Pick<
+    FormRequest,
+    'app' | 'method' | 'params' | 'path' | 'query' | 'url' | 'yar'
+  >
 
 export interface UploadInitiateResponse {
   uploadId: string

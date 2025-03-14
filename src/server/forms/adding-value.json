@@ -1,6 +1,9 @@
 {
   "engine": "V2",
   "name": "Adding value",
+  "metadata": {
+    "referenceNumberPrefix": "AV"
+  },
   "pages": [
     {
       "title": "Check if you can apply for a Farming Transformation Fund Adding Value Grant",
@@ -325,7 +328,16 @@
       "title": "Confirmation",
       "path": "/confirmation",
       "next": [],
-      "components": []
+      "components": [
+        {
+          "name": "Jhimsh",
+          "title": "Html",
+          "type": "Html",
+          "content": "<p class=\"govuk-body\">{{ context.referenceNumber }}</p>\n",
+          "options": {},
+          "schema": {}
+        }
+      ]
     },
     {
       "path": "/summary",
