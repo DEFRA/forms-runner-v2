@@ -98,8 +98,7 @@ async function startServer() {
     teamName: 'Grants',
     teamEmail: 'grants@defra.gov.uk',
     submissionGuidance: "Thanks for your submission, we'll be in touch",
-    notificationEmail:
-      'cl-defra-tactical-grants-test-rpa-email@equalexperts.com',
+    notificationEmail: 'cl-defra-gae-test-rpa-email@equalexperts.com',
     ...author,
     live: author
   }
