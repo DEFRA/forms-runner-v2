@@ -663,8 +663,8 @@
           "value": "products-processed-A1"
         },
         {
-          "text": "Horticultural produce",
-          "description": "For example, grading and packing of soft fruit, washing and packing vegetables, packing salad crops",
+          "text": "Wild venison meat produce",
+          "description": "For example, processing and packing wild venison meat",
           "value": "products-processed-A2"
         },
         {
@@ -673,19 +673,24 @@
           "value": "products-processed-A3"
         },
         {
-          "text": "Fodder produce",
-          "description": "For example, processing and repacking hay and straw for specialst markets or retail sale",
+          "text": "Fibre produce",
+          "description": "For example, processing animal hides and leather, processing fibres such as flax and hemp",
           "value": "products-processed-A4"
         },
         {
-          "text": "Non-edible produce",
-          "description": "For example, processing and packing ornamental flowers and bulds after harvesting",
+          "text": "Fodder produce",
+          "description": "For example, processing and repacking hay and straw for specialist markets or retail sale",
           "value": "products-processed-A5"
         },
         {
-          "text": "Fibre produce",
-          "description": "For example, processing animal hides and leather, processing fibres such as flax and hemp",
+          "text": "Horticultural produce",
+          "description": "For example, grading and packing of soft fruit, washing and packing vegetables, packing salad crops",
           "value": "products-processed-A6"
+        },
+        {
+          "text": "Non-edible produce",
+          "description": "For example, processing and packing ornamental flowers and builds after harvesting",
+          "value": "products-processed-A7"
         }
       ]
     },
@@ -737,8 +742,8 @@
           "value": "project-impact-A3"
         },
         {
-          "text": "Starting to make adding-value products for the first time",
-          "description": "This only applies if you do not already make adding-value products.",
+          "text": "Starting to make added-value products for the first time",
+          "description": "This only applies if you do not already make added-value products.",
           "value": "project-impact-A4"
         }
       ]
@@ -777,7 +782,7 @@
           "value": "asdfTH"
         },
         {
-          "text": "Limited Partnership",
+          "text": "Limited partnership",
           "value": "dgUMfd"
         },
         {
