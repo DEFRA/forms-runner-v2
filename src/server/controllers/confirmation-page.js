@@ -30,6 +30,10 @@ export default class ConfirmationPageController extends StatusPageController {
     return fn
   }
 
+  /**
+   * Gets the path to the status page (in this case /confirmation page) for the GET handler.
+   * @returns {string} path to the status page
+   */
   getStatusPath() {
     return '/confirmation'
   }

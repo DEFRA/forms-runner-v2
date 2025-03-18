@@ -605,11 +605,6 @@
       "controller": "ConfirmationPageController",
       "next": [],
       "components": []
-    },
-    {
-      "path": "/summary",
-      "controller": "SummaryPageController",
-      "title": "Check your answers before submitting your form"
     }
   ],
   "lists": [
