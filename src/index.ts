@@ -8,6 +8,7 @@ import Boom from '@hapi/boom'
 
 import { config } from '~/src/config/index.js'
 import { createLogger } from '~/src/server/common/helpers/logging/logger.js'
+import ConfirmationPageController from '~/src/server/controllers/confirmation-page.js'
 import DeclarationPageController from '~/src/server/controllers/declaration-page.js'
 import LandGrantsController from '~/src/server/controllers/land-grants.js'
 import ScorePageController from '~/src/server/controllers/score-page.js'
@@ -237,7 +238,8 @@ async function startServer() {
     controllers: {
       LandGrantsController,
       ScorePageController,
-      DeclarationPageController
+      DeclarationPageController,
+      ConfirmationPageController
     }
   })
 

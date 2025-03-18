@@ -602,6 +602,7 @@
     {
       "title": "Confirmation",
       "path": "/confirmation",
+      "controller": "ConfirmationPageController",
       "next": [],
       "components": []
     },

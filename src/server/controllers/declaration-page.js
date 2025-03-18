@@ -9,6 +9,10 @@ export default class DeclarationPageController extends SummaryPageController {
     super(model, pageDef)
     this.viewName = 'grants/declaration'
   }
+
+  getStatusPath() {
+    return '/confirmation'
+  }
 }
 
 /**
