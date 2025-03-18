@@ -44,7 +44,7 @@
           "title": "What is your business?",
           "type": "RadiosField",
           "list": "what-is-your-business-list",
-          "hint": "",
+          "hint": "Select one option",
           "options": {},
           "schema": {}
         }
@@ -229,7 +229,7 @@
           "title": "What type of produce is being processed?",
           "type": "RadiosField",
           "list": "adding-value-produce-list",
-          "hint": "",
+          "hint": "Select one option",
           "options": {},
           "schema": {}
         }
@@ -245,7 +245,7 @@
           "title": "How will your project add value to the produce?",
           "type": "RadiosField",
           "list": "how-will-you-add-value-list",
-          "hint": "",
+          "hint": "Select the main option that applies",
           "options": {},
           "schema": {}
         }
@@ -261,7 +261,7 @@
           "title": "What impact will the project have?",
           "type": "CheckboxesField",
           "list": "project-impact-list",
-          "hint": "",
+          "hint": "Select all that apply",
           "options": {},
           "schema": {}
         }
