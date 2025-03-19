@@ -1,6 +1,9 @@
 {
   "engine": "V2",
   "name": "Adding value",
+  "metadata": {
+    "referenceNumberPrefix": "AV"
+  },
   "pages": [
     {
       "title": "Check if you can apply for a Farming Transformation Fund Adding Value Grant",
@@ -600,11 +603,89 @@
       "components": []
     },
     {
-      "title": "Confirmation",
+      "title": "",
       "path": "/confirmation",
       "controller": "ConfirmationPageController",
       "next": [],
-      "components": []
+      "components": [
+        {
+          "title": "Details submitted",
+          "type": "Html",
+          "name": "detailsSubmitted",
+          "content": "<div class=\"govuk-panel govuk-panel--confirmation\"><h2 class=\"govuk-panel__title\">Details submitted</h2><p class=\"govuk-panel__body\">Your reference number <br><strong>{{ context.referenceNumber }}</strong></p></div>",
+          "options": {},
+          "schema": {}
+        },
+        {
+          "title": "Confirmation Message",
+          "type": "Html",
+          "name": "confirmationMessage",
+          "content": "<p class=\"govuk-body\">We have sent you a confirmation email with a record of your answers.</p>",
+          "options": {},
+          "schema": {}
+        },
+        {
+          "title": "Email Follow-Up",
+          "type": "Html",
+          "name": "emailFollowUp",
+          "content": "<p class=\"govuk-body\">If you do not get an email within 72 hours, call the RPA helpline and follow the options for the Farming Investment Fund scheme.</p>",
+          "options": {},
+          "schema": {}
+        },
+        {
+          "title": "Additional Application",
+          "type": "Html",
+          "name": "additionalApplication",
+          "content": "<p class=\"govuk-body\">You can <a href=\"https://example.com/apply-for-another-adding-value-project\">check if you can apply for another Adding Value project</a> in addition to top fruit storage.</p>",
+          "options": {},
+          "schema": {}
+        },
+        {
+          "title": "RPA Helpline",
+          "type": "Html",
+          "name": "rpaHelpline",
+          "content": "<p class=\"govuk-body govuk-!-font-weight-bold\">RPA helpline</p><p class=\"govuk-body govuk-!-font-weight-bold\">Telephone</p><p class=\"govuk-body govuk-!-margin-bottom-0\">Telephone: 03000 200 301</p><p class=\"govuk-body\">Monday to Friday, 9am to 5pm (except public holidays)</p><p class=\"govuk-body\"><a href=\"https://example.com/call-charges\">Find out about call charges</a></p><p class=\"govuk-body govuk-!-font-weight-bold\">Email</p><p class=\"govuk-body\"><a href=\"mailto:FTF@rpa.gov.uk\">FTF@rpa.gov.uk</a></p>",
+          "options": {},
+          "schema": {}
+        },
+        {
+          "title": "What Happens Next",
+          "type": "Html",
+          "name": "whatHappensNext",
+          "content": "<p class=\"govuk-body govuk-!-font-weight-bold\">What happens next</p>\n\n<ol class=\"govuk-list govuk-list--number\">\n<li class=\"govuk-body govuk-!-margin-left-3\">The RPA will contact you when the full application period opens. They will tell you if your project scored well enough to get the full application form.</li><li class=\"govuk-body govuk-!-margin-left-3\">If you submit an application, the RPA will assess it against other projects and value for money. You will not automatically get a grant. The grant is expected to be highly competitive and you are competing against other projects.</li><li class=\"govuk-body govuk-!-margin-left-3\">If your application is successful, you'll be sent a funding agreement and can begin work on the project.</li></ol>",
+          "options": {},
+          "schema": {}
+        },
+        {
+          "title": "Important Notice",
+          "type": "Html",
+          "name": "importantNotice",
+          "content": "<div class=\"govuk-warning-text\"><span class=\"govuk-warning-text__icon\" aria-hidden=\"true\">!</span><strong class=\"govuk-warning-text__text\">You must not start the project</strong></div><p class=\"govuk-body\">Starting the project or committing to any costs (such as placing orders) before you receive a funding agreement will invalidate your application.</p>",
+          "options": {},
+          "schema": {}
+        },
+        {
+          "title": "Before You Start",
+          "type": "Html",
+          "name": "beforeYouStart",
+          "content": "<p class=\"govuk-body govuk-!-font-weight-bold\">Before you start the project, you can:</p><ul class=\"govuk-list govuk-list--bullet\"><li>get quotes from suppliers</li><li>apply for planning permission</li></ul>",
+          "options": {},
+          "schema": {}
+        },
+        {
+          "title": "Feedback",
+          "type": "Html",
+          "name": "feedback",
+          "content": "<div class=\"govuk-body govuk-!-margin-top-9\"><p class=\"govuk-body\"><a href=\"https://example.com/feedback\">What do you think of this service?</a></p></div>",
+          "options": {},
+          "schema": {}
+        }
+      ]
+    },
+    {
+      "path": "/summary",
+      "controller": "SummaryPageController",
+      "title": "Check your answers before submitting your form"
     }
   ],
   "lists": [
