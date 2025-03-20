@@ -22,7 +22,7 @@ export default class ConfirmationPageController extends StatusPageController {
       const viewModel = {
         ...super.getViewModel(request, context),
         errors: collection.getErrors(collection.getErrors()),
-        referenceNumber: 'AV-EA9-942'
+        referenceNumber: context.referenceNumber
       }
       return h.view(viewName, viewModel)
     }
