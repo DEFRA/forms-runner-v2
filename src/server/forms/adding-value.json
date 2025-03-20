@@ -255,7 +255,7 @@
       ]
     },
     {
-      "title": "What impact will the project have?",
+      "title": "What impact will this the project have?",
       "path": "/project-impact",
       "next": [],
       "components": [
@@ -673,7 +673,7 @@
         },
         {
           "text": "Fibre produce",
-          "description": "For example, processing animal hides and leather, processing fibres such as flax and hemp",
+          "description": "For example, processing animal hides and leather, processing fibres such as wool, flax and hemp",
           "value": "products-processed-A4"
         },
         {
@@ -688,13 +688,13 @@
         },
         {
           "text": "Non-edible produce",
-          "description": "For example, processing and packing ornamental flowers and builds after harvesting",
+          "description": "For example, processing and packing ornamental flowers and bulbs after harvesting",
           "value": "products-processed-A7"
         }
       ]
     },
     {
-      "title": "How will your project add value to the produce?",
+      "title": "How will this project add value to the produce?",
       "name": "how-will-you-add-value-list",
       "type": "string",
       "items": [
@@ -721,7 +721,7 @@
       ]
     },
     {
-      "title": "What impact will the project have?",
+      "title": "What impact will this project have?",
       "name": "project-impact-list",
       "type": "string",
       "items": [
@@ -732,7 +732,7 @@
         },
         {
           "text": "Increasing volume of added-value products",
-          "description": "For example, washing and grading vegetables, egg grading, optical grading of top fruit.",
+          "description": "",
           "value": "project-impact-A2"
         },
         {
