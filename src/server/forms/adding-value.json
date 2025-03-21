@@ -239,13 +239,13 @@
       ]
     },
     {
-      "title": "How will your project add value to the produce?",
+      "title": "How will this project add value to the produce?",
       "path": "/adding-value",
       "next": [],
       "components": [
         {
           "name": "addingValue",
-          "title": "How will your project add value to the produce?",
+          "title": "How will this project add value to the produce?",
           "type": "RadiosField",
           "list": "how-will-you-add-value-list",
           "hint": "Select the main option that applies",
@@ -283,7 +283,7 @@
       "components": []
     },
     {
-      "title": "How will the project improve the environment?",
+      "title": "How will this project improve the environment?",
       "path": "/environmental-impact",
       "next": [],
       "components": []
