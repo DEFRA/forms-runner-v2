@@ -336,10 +336,16 @@
           "name": "agentFirstName",
           "title": "First name",
           "options": {
-            "required": true
+            "required": true,
+            "customValidationMessages": {
+              "string.empty": "Enter your first name",
+              "string.max": "First name must be 30 characters or fewer",
+              "string.pattern.base": "First name must only include letters, hyphens and apostrophes"
+            }
           },
           "schema": {
-            "regex": "/^[a-zA-Z,' -]*$/"
+            "regex": "^[a-zA-Z' -]*$",
+            "max": 30
           }
         },
         {
@@ -347,10 +353,16 @@
           "name": "agentLastName",
           "title": "Last name",
           "options": {
-            "required": true
+            "required": true,
+            "customValidationMessages": {
+              "string.empty": "Enter your last name",
+              "string.max": "Last name must be 30 characters or fewer",
+              "string.pattern.base": "Last name must only include letters, hyphens and apostrophes"
+            }
           },
           "schema": {
-            "regex": "/^[a-zA-Z,' -]*$/"
+            "regex": "^[a-zA-Z' -]*$",
+            "max": 30
           }
         },
         {
@@ -358,50 +370,78 @@
           "name": "agentBusinessName",
           "title": "Business name",
           "options": {
-            "required": true
+            "required": true,
+            "customValidationMessages": {
+              "string.empty": "Enter your business name",
+              "string.max": "Business name must be 30 characters or fewer"
+            }
           },
-          "schema": {}
+          "schema": {
+            "max": 30
+          }
         },
         {
-          "type": "TextField",
+          "type": "EmailAddressField",
           "name": "agentEmailAddress",
           "title": "Email address",
           "hint": "We will only use this to send you a confirmation",
           "options": {
-            "required": true
+            "required": true,
+            "customValidationMessages": {
+              "string.empty": "Enter your email address",
+              "string.email": "Enter an email address in the correct format, like name@example.com"
+            }
           },
           "schema": {
-            "regex": "/^\\w+([.-](\\w+))*@[a-zA-Z0-9]+([_-][a-zA-Z0-9]+)*(\\.[a-zA-Z]{2,5})+$/"
+            "regex": "^\\w+([.-]\\w+)*@[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*(\\.[a-zA-Z]{2,})+$"
           }
         },
         {
-          "type": "TextField",
+          "type": "EmailAddressField",
           "name": "agentConfirmEmailAddress",
           "title": "Confirm email address",
           "options": {
-            "required": true
+            "required": true,
+            "customValidationMessages": {
+              "string.empty": "Confirm your email address",
+              "string.email": "Enter an email address that matches"
+            }
           },
-          "schema": {}
+          "schema": {
+            "regex": "^\\w+([.-]\\w+)*@[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*(\\.[a-zA-Z]{2,})+$"
+          }
         },
         {
-          "type": "TextField",
+          "type": "TelephoneNumberField",
           "name": "agentMobileNumber",
           "title": "Mobile number",
           "hint": "We will only use this to contact you about your application",
           "options": {
-            "required": true
+            "required": true,
+            "customValidationMessages": {
+              "string.empty": "Enter a mobile number",
+              "string.pattern.base": "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192"
+            }
           },
-          "schema": {}
+          "schema": {
+            "regex": "^\\+?[0-9\\s()-]{10,}$"
+          }
         },
         {
-          "type": "TextField",
+          "type": "TelephoneNumberField",
           "name": "agentLandlineNumber",
           "title": "Landline number",
           "hint": "We will only use this to contact you about your application",
           "options": {
-            "required": true
+            "required": true,
+            "customValidationMessages": {
+              "string.empty": "Enter a landline number",
+              "string.pattern.base": "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192"
+            }
           },
-          "schema": {}
+          "schema": {
+            "regex": "^\\+?[0-9\\s()-]{10,}$"
+          }
         },
         {
           "type": "Html",
@@ -416,33 +456,55 @@
           "name": "agentAddressLineOne",
           "title": "Address line 1",
           "options": {
-            "required": true
+            "required": true,
+            "customValidationMessages": {
+              "string.empty": "Enter your address line 1",
+              "string.min": "Address must include at least 3 letters",
+              "string.pattern.base": "Address must only include letters, numbers, hyphens and apostrophes"
+            }
           },
-          "schema": {}
+          "schema": {
+            "regex": "^[a-zA-Z0-9' -]*$",
+            "min": 3
+          }
         },
         {
           "type": "TextField",
           "name": "agentAddressLineTwo",
           "title": "Address line 2",
           "options": {
-            "required": false
+            "required": false,
+            "customValidationMessages": {
+              "string.min": "Address must include at least 3 letters",
+              "string.pattern.base": "Address must only include letters, numbers, hyphens and apostrophes"
+            }
           },
-          "schema": {}
+          "schema": {
+            "regex": "^[a-zA-Z0-9' -]*$",
+            "min": 3
+          }
         },
         {
           "type": "TextField",
           "name": "agentTown",
           "title": "Town",
           "options": {
-            "required": true
+            "required": true,
+            "customValidationMessages": {
+              "string.empty": "Enter your town",
+              "string.min": "Town must include letters",
+              "string.pattern.base": "Town must only include letters, hyphens and spaces"
+            }
           },
-          "schema": {}
+          "schema": {
+            "regex": "^[a-zA-Z\\s-]+$",
+            "min": 2
+          }
         },
         {
-          "type": "SelectField",
+          "type": "TextField",
           "name": "agentCounty",
           "title": "County",
-          "list": "counties-list",
           "options": {
             "required": false
           },
@@ -453,7 +515,11 @@
           "name": "agentPostcode",
           "title": "Postcode",
           "options": {
-            "required": true
+            "required": true,
+            "customValidationMessages": {
+              "string.empty": "Enter your postcode, like AA1 1AA",
+              "string.pattern.base": "Enter a postcode, like AA1 1AA"
+            }
           },
           "schema": {
             "regex": "^[a-zA-Z]{1,2}\\d[a-zA-Z\\d]?\\s?\\d[a-zA-Z]{2}$"
@@ -476,13 +542,11 @@
             "customValidationMessages": {
               "string.empty": "Enter your first name",
               "string.max": "First name must be 30 characters or fewer",
-              "string.min": "First name must be 30 characters or fewer",
               "string.pattern.base": "First name must only include letters, hyphens and apostrophes"
             }
           },
           "schema": {
-            "regex": "^[a-zA-Z'-]*$",
-            "min": 1,
+            "regex": "^[a-zA-Z' -]*$",
             "max": 30
           }
         },
@@ -495,18 +559,16 @@
             "customValidationMessages": {
               "string.empty": "Enter your last name",
               "string.max": "Last name must be 30 characters or fewer",
-              "string.min": "Last name must be 30 characters or fewer",
               "string.pattern.base": "Last name must only include letters, hyphens and apostrophes"
             }
           },
           "schema": {
-            "regex": "^[a-zA-Z'-]*$",
-            "min": 1,
+            "regex": "^[a-zA-Z' -]*$",
             "max": 30
           }
         },
         {
-          "type": "TextField",
+          "type": "EmailAddressField",
           "name": "applicantEmailAddress",
           "title": "Email address",
           "hint": "We will only use this to send you a confirmation",
@@ -514,30 +576,30 @@
             "required": true,
             "customValidationMessages": {
               "string.empty": "Enter your email address",
-              "string.pattern.base": "Enter an email address in the correct format, like name@example.com"
+              "string.email": "Enter an email address in the correct format, like name@example.com"
             }
           },
           "schema": {
-            "regex": "^\\w+([.-](\\w+))*@[a-zA-Z0-9]+([_-][a-zA-Z0-9]+)*(\\.[a-zA-Z]{2,5})+$"
+            "regex": "^\\w+([.-]\\w+)*@[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*(\\.[a-zA-Z]{2,})+$"
           }
         },
         {
-          "type": "TextField",
+          "type": "EmailAddressField",
           "name": "applicantConfirmEmailAddress",
           "title": "Confirm email address",
           "options": {
             "required": true,
             "customValidationMessages": {
               "string.empty": "Confirm your email address",
-              "string.pattern.base": "Enter an email address that matches"
+              "string.email": "Enter an email address that matches"
             }
           },
           "schema": {
-            "regex": "^\\w+([.-](\\w+))*@[a-zA-Z0-9]+([_-][a-zA-Z0-9]+)*(\\.[a-zA-Z]{2,5})+$"
+            "regex": "^\\w+([.-]\\w+)*@[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*(\\.[a-zA-Z]{2,})+$"
           }
         },
         {
-          "type": "TextField",
+          "type": "TelephoneNumberField",
           "name": "applicantMobileNumber",
           "title": "Mobile number",
           "hint": "We will only use this to contact you about your application",
@@ -545,17 +607,16 @@
             "required": true,
             "customValidationMessages": {
               "string.empty": "Enter a mobile number",
-              "string.min": "Your mobile number must have at least 10 characters",
               "string.pattern.base": "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192"
-            }
+            },
+            "autocomplete": "tel"
           },
           "schema": {
-            "regex": "^\\+?[0-9\\s()-]{10,}$",
-            "min": 10
+            "regex": "^\\+?[0-9\\s()-]{10,}$"
           }
         },
         {
-          "type": "TextField",
+          "type": "TelephoneNumberField",
           "name": "applicantLandlineNumber",
           "title": "Landline number",
           "hint": "We will only use this to contact you about your application",
@@ -565,11 +626,11 @@
               "string.empty": "Enter a landline number",
               "string.min": "Your landline number must have at least 10 characters",
               "string.pattern.base": "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192"
-            }
+            },
+            "autocomplete": "tel"
           },
           "schema": {
-            "regex": "^\\+?[0-9\\s()-]{10,}$",
-            "min": 10
+            "regex": "^\\+?[0-9\\s()-]{10,}$"
           }
         },
         {
@@ -618,17 +679,22 @@
           "name": "applicantTown",
           "title": "Town",
           "options": {
-            "required": true
+            "required": true,
+            "customValidationMessages": {
+              "string.empty": "Enter your town",
+              "string.min": "Town must include letters",
+              "string.pattern.base": "Town must only include letters, hyphens and spaces"
+            }
           },
           "schema": {
-            "regex": "^[a-zA-Z\\s-]+$"
+            "regex": "^[a-zA-Z\\s-]+$",
+            "min": 2
           }
         },
         {
-          "type": "SelectField",
+          "type": "TextField",
           "name": "applicantCounty",
           "title": "County",
-          "list": "counties-list",
           "options": {
             "required": false
           },
@@ -639,7 +705,11 @@
           "name": "applicantBusinessPostcode",
           "title": "Business postcode",
           "options": {
-            "required": true
+            "required": true,
+            "customValidationMessages": {
+              "string.empty": "Enter your postcode, like AA1 1AA",
+              "string.pattern.base": "Enter a postcode, like AA1 1AA"
+            }
           },
           "schema": {
             "regex": "^[a-zA-Z]{1,2}\\d[a-zA-Z\\d]?\\s?\\d[a-zA-Z]{2}$"
@@ -651,7 +721,11 @@
           "title": "Project postcode",
           "hint": "The site postcode where the work will happen",
           "options": {
-            "required": true
+            "required": true,
+            "customValidationMessages": {
+              "string.empty": "Enter your postcode, like AA1 1AA",
+              "string.pattern.base": "Enter a postcode, like AA1 1AA"
+            }
           },
           "schema": {
             "regex": "^[a-zA-Z]{1,2}\\d[a-zA-Z\\d]?\\s?\\d[a-zA-Z]{2}$"
@@ -881,283 +955,6 @@
         {
           "text": "(Optional) I consent to being contacted by Defra or a third party about service improvements",
           "value": "consent-optional-list-A1"
-        }
-      ]
-    },
-    {
-      "title": "Counties",
-      "name": "counties-list",
-      "type": "string",
-      "items": [
-        {
-          "text": "Bath and North East Somerset",
-          "description": "",
-          "value": "counties-list-A1"
-        },
-        {
-          "text": "Bedfordshire",
-          "description": "",
-          "value": "counties-list-A2"
-        },
-        {
-          "text": "Berkshire",
-          "description": "",
-          "value": "counties-list-A3"
-        },
-        {
-          "text": "Bristol",
-          "description": "",
-          "value": "counties-list-A4"
-        },
-        {
-          "text": "Buckinghamshire",
-          "description": "",
-          "value": "counties-list-A5"
-        },
-        {
-          "text": "Cheshire",
-          "description": "",
-          "value": "counties-list-A6"
-        },
-        {
-          "text": "Cleveland",
-          "description": "",
-          "value": "counties-list-A7"
-        },
-        {
-          "text": "Cornwall",
-          "description": "",
-          "value": "counties-list-A8"
-        },
-        {
-          "text": "County Durham",
-          "description": "",
-          "value": "counties-list-A9"
-        },
-        {
-          "text": "Cumbria",
-          "description": "",
-          "value": "counties-list-A10"
-        },
-        {
-          "text": "Derbyshire",
-          "description": "",
-          "value": "counties-list-A11"
-        },
-        {
-          "text": "Devon",
-          "description": "",
-          "value": "counties-list-A12"
-        },
-        {
-          "text": "Dorset",
-          "description": "",
-          "value": "counties-list-A13"
-        },
-        {
-          "text": "East Sussex",
-          "description": "",
-          "value": "counties-list-A14"
-        },
-        {
-          "text": "East Yorkshire",
-          "description": "",
-          "value": "counties-list-A15"
-        },
-        {
-          "text": "Essex",
-          "description": "",
-          "value": "counties-list-A16"
-        },
-        {
-          "text": "Gloucestershire",
-          "description": "",
-          "value": "counties-list-A17"
-        },
-        {
-          "text": "Greater London",
-          "description": "",
-          "value": "counties-list-A18"
-        },
-        {
-          "text": "Greater Manchester",
-          "description": "",
-          "value": "counties-list-A19"
-        },
-        {
-          "text": "Hampshire",
-          "description": "",
-          "value": "counties-list-A20"
-        },
-        {
-          "text": "Herefordshire",
-          "description": "",
-          "value": "counties-list-A21"
-        },
-        {
-          "text": "Hertfordshire",
-          "description": "",
-          "value": "counties-list-A22"
-        },
-        {
-          "text": "Isle of Wight",
-          "description": "",
-          "value": "counties-list-A23"
-        },
-        {
-          "text": "Isles of Scilly",
-          "description": "",
-          "value": "counties-list-A24"
-        },
-        {
-          "text": "Kent",
-          "description": "",
-          "value": "counties-list-A25"
-        },
-        {
-          "text": "Lancashire",
-          "description": "",
-          "value": "counties-list-A26"
-        },
-        {
-          "text": "Leicestershire",
-          "description": "",
-          "value": "counties-list-A27"
-        },
-        {
-          "text": "Lincolnshire",
-          "description": "",
-          "value": "counties-list-A28"
-        },
-        {
-          "text": "Merseyside",
-          "description": "",
-          "value": "counties-list-A29"
-        },
-        {
-          "text": "Norfolk",
-          "description": "",
-          "value": "counties-list-A30"
-        },
-        {
-          "text": "North East Lincolnshire",
-          "description": "",
-          "value": "counties-list-A31"
-        },
-        {
-          "text": "North Lincolnshire",
-          "description": "",
-          "value": "counties-list-A32"
-        },
-        {
-          "text": "North Somerset",
-          "description": "",
-          "value": "counties-list-A33"
-        },
-        {
-          "text": "North Yorkshire",
-          "description": "",
-          "value": "counties-list-A34"
-        },
-        {
-          "text": "Northamptonshire",
-          "description": "",
-          "value": "counties-list-A35"
-        },
-        {
-          "text": "Northumberland",
-          "description": "",
-          "value": "counties-list-A36"
-        },
-        {
-          "text": "Nottinghamshire",
-          "description": "",
-          "value": "counties-list-A37"
-        },
-        {
-          "text": "Oxfordshire",
-          "description": "",
-          "value": "counties-list-A38"
-        },
-        {
-          "text": "Rutland",
-          "description": "",
-          "value": "counties-list-A39"
-        },
-        {
-          "text": "Shropshire",
-          "description": "",
-          "value": "counties-list-A40"
-        },
-        {
-          "text": "Somerset",
-          "description": "",
-          "value": "counties-list-A41"
-        },
-        {
-          "text": "South Gloucestershire",
-          "description": "",
-          "value": "counties-list-A42"
-        },
-        {
-          "text": "South Yorkshire",
-          "description": "",
-          "value": "counties-list-A43"
-        },
-        {
-          "text": "Staffordshire",
-          "description": "",
-          "value": "counties-list-A44"
-        },
-        {
-          "text": "Suffolk",
-          "description": "",
-          "value": "counties-list-A45"
-        },
-        {
-          "text": "Surrey",
-          "description": "",
-          "value": "counties-list-A46"
-        },
-        {
-          "text": "Tyne and Wear",
-          "description": "",
-          "value": "counties-list-A47"
-        },
-        {
-          "text": "Warwickshire",
-          "description": "",
-          "value": "counties-list-A48"
-        },
-        {
-          "text": "West Midlands",
-          "description": "",
-          "value": "counties-list-A49"
-        },
-        {
-          "text": "West Sussex",
-          "description": "",
-          "value": "counties-list-A50"
-        },
-        {
-          "text": "West Yorkshire",
-          "description": "",
-          "value": "counties-list-A51"
-        },
-        {
-          "text": "Wiltshire",
-          "description": "",
-          "value": "counties-list-A52"
-        },
-        {
-          "text": "Worcestershire",
-          "description": "",
-          "value": "counties-list-A53"
-        },
-        {
-          "text": "Other",
-          "description": "",
-          "value": "counties-list-A54"
         }
       ]
     }
