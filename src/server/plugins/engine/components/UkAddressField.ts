@@ -72,6 +72,17 @@ export class UkAddressField extends FormComponent {
         },
         {
           type: ComponentType.TextField,
+          name: `${name}__county`,
+          title: 'County',
+          schema: { max: 100 },
+          options: {
+            autocomplete: 'county',
+            required: false,
+            optionalText: !isRequired && (hideOptional || !hideTitle)
+          }
+        },
+        {
+          type: ComponentType.TextField,
           name: `${name}__postcode`,
           title: 'Postcode',
           schema: {
@@ -159,7 +170,8 @@ export class UkAddressField extends FormComponent {
       isFormState(value) &&
       TextField.isText(value.addressLine1) &&
       TextField.isText(value.town) &&
-      TextField.isText(value.postcode)
+      TextField.isText(value.postcode) &&
+      (value.county === undefined || TextField.isText(value.county))
     )
   }
 }
@@ -168,5 +180,6 @@ export interface UkAddressState extends Record<string, string> {
   addressLine1: string
   addressLine2: string
   town: string
+  county: string
   postcode: string
 }

@@ -445,85 +445,19 @@
         },
         {
           "type": "Html",
-          "name": "agentBusinessAddress",
+          "name": "agentBusinessAddressHeader",
           "title": "Html",
           "content": "<h1 class=\"govuk-heading-m\">Business address</h1>",
           "options": {},
           "schema": {}
         },
         {
-          "type": "TextField",
-          "name": "agentAddressLineOne",
-          "title": "Address line 1",
-          "options": {
-            "required": true,
-            "customValidationMessages": {
-              "string.empty": "Enter your address line 1",
-              "string.min": "Address must include at least 3 letters",
-              "string.pattern.base": "Address must only include letters, numbers, hyphens and apostrophes"
-            }
-          },
-          "schema": {
-            "regex": "^[a-zA-Z0-9' -]*$",
-            "min": 3
-          }
-        },
-        {
-          "type": "TextField",
-          "name": "agentAddressLineTwo",
-          "title": "Address line 2",
-          "options": {
-            "required": false,
-            "customValidationMessages": {
-              "string.min": "Address must include at least 3 letters",
-              "string.pattern.base": "Address must only include letters, numbers, hyphens and apostrophes"
-            }
-          },
-          "schema": {
-            "regex": "^[a-zA-Z0-9' -]*$",
-            "min": 3
-          }
-        },
-        {
-          "type": "TextField",
-          "name": "agentTown",
-          "title": "Town",
-          "options": {
-            "required": true,
-            "customValidationMessages": {
-              "string.empty": "Enter your town",
-              "string.min": "Town must include letters",
-              "string.pattern.base": "Town must only include letters, hyphens and spaces"
-            }
-          },
-          "schema": {
-            "regex": "^[a-zA-Z\\s-]+$",
-            "min": 2
-          }
-        },
-        {
-          "type": "TextField",
-          "name": "agentCounty",
-          "title": "County",
-          "options": {
-            "required": false
-          },
+          "type": "UkAddressField",
+          "title": "Address",
+          "name": "agentBusinessAddress",
+          "hint": "",
+          "options": {},
           "schema": {}
-        },
-        {
-          "type": "TextField",
-          "name": "agentPostcode",
-          "title": "Postcode",
-          "options": {
-            "required": true,
-            "customValidationMessages": {
-              "string.empty": "Enter your postcode, like AA1 1AA",
-              "string.pattern.base": "Enter a postcode, like AA1 1AA"
-            }
-          },
-          "schema": {
-            "regex": "^[a-zA-Z]{1,2}\\d[a-zA-Z\\d]?\\s?\\d[a-zA-Z]{2}$"
-          }
         }
       ],
       "condition": "agentDetailsSelected"
@@ -635,85 +569,19 @@
         },
         {
           "type": "Html",
-          "name": "applicantBusinessAddress",
+          "name": "applicantBusinessAddressHeader",
           "title": "Html",
           "content": "<h1 class=\"govuk-heading-m\">Business address</h1>",
           "options": {},
           "schema": {}
         },
         {
-          "type": "TextField",
-          "name": "applicantAddressLineOne",
-          "title": "Address line 1",
-          "options": {
-            "required": true,
-            "customValidationMessages": {
-              "string.empty": "Enter your address line 1",
-              "string.min": "Address must include at least 3 letters",
-              "string.pattern.base": "Address must only include letters, numbers, hyphens and apostrophes"
-            }
-          },
-          "schema": {
-            "regex": "^[a-zA-Z0-9' -]*$",
-            "min": 3
-          }
-        },
-        {
-          "type": "TextField",
-          "name": "applicantAddressLineTwo",
-          "title": "Address line 2",
-          "options": {
-            "required": false,
-            "customValidationMessages": {
-              "string.min": "Address must include at least 3 letters",
-              "string.pattern.base": "Address must only include letters, numbers, hyphens and apostrophes"
-            }
-          },
-          "schema": {
-            "regex": "^[a-zA-Z0-9' -]*$",
-            "min": 3
-          }
-        },
-        {
-          "type": "TextField",
-          "name": "applicantTown",
-          "title": "Town",
-          "options": {
-            "required": true,
-            "customValidationMessages": {
-              "string.empty": "Enter your town",
-              "string.min": "Town must include letters",
-              "string.pattern.base": "Town must only include letters, hyphens and spaces"
-            }
-          },
-          "schema": {
-            "regex": "^[a-zA-Z\\s-]+$",
-            "min": 2
-          }
-        },
-        {
-          "type": "TextField",
-          "name": "applicantCounty",
-          "title": "County",
-          "options": {
-            "required": false
-          },
+          "type": "UkAddressField",
+          "title": "Address",
+          "name": "applicantBusinessAddress",
+          "hint": "",
+          "options": {},
           "schema": {}
-        },
-        {
-          "type": "TextField",
-          "name": "applicantBusinessPostcode",
-          "title": "Business postcode",
-          "options": {
-            "required": true,
-            "customValidationMessages": {
-              "string.empty": "Enter your postcode, like AA1 1AA",
-              "string.pattern.base": "Enter a postcode, like AA1 1AA"
-            }
-          },
-          "schema": {
-            "regex": "^[a-zA-Z]{1,2}\\d[a-zA-Z\\d]?\\s?\\d[a-zA-Z]{2}$"
-          }
         },
         {
           "type": "TextField",
@@ -723,8 +591,8 @@
           "options": {
             "required": true,
             "customValidationMessages": {
-              "string.empty": "Enter your postcode, like AA1 1AA",
-              "string.pattern.base": "Enter a postcode, like AA1 1AA"
+              "string.empty": "Enter postcode",
+              "string.pattern.base": "Enter a valid postcode"
             }
           },
           "schema": {
