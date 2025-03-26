@@ -170,8 +170,7 @@ export class UkAddressField extends FormComponent {
       isFormState(value) &&
       TextField.isText(value.addressLine1) &&
       TextField.isText(value.town) &&
-      TextField.isText(value.postcode) &&
-      (value.county === undefined || TextField.isText(value.county))
+      TextField.isText(value.postcode)
     )
   }
 }
