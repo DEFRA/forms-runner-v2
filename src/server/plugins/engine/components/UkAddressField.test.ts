@@ -1,4 +1,4 @@
-import { ComponentType, type UkAddressFieldComponent } from '@defra/forms-model'
+import { ComponentType, type TextFieldComponent, type UkAddressFieldComponent  } from '@defra/forms-model'
 
 import { ComponentCollection } from '~/src/server/plugins/engine/components/ComponentCollection.js'
 import { UkAddressField } from '~/src/server/plugins/engine/components/UkAddressField.js'
@@ -286,8 +286,7 @@ describe('UkAddressField', () => {
             }
           },
           {
-            model: {},
-            name: 'testAddress'
+            model
           }
         )
 
@@ -300,8 +299,11 @@ describe('UkAddressField', () => {
         ]
 
         ukAddressField.collection.components.forEach((component) => {
+          const addressFieldOptions =
+            component.options as TextFieldComponent['options']
+
           expect(expectedAutocompleteValues).toContain(
-            component.options.autocomplete
+            addressFieldOptions.autocomplete
           )
         })
       })
