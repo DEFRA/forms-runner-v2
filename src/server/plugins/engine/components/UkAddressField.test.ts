@@ -1,4 +1,8 @@
-import { ComponentType, type TextFieldComponent, type UkAddressFieldComponent  } from '@defra/forms-model'
+import {
+  ComponentType,
+  type TextFieldComponent,
+  type UkAddressFieldComponent
+} from '@defra/forms-model'
 
 import { ComponentCollection } from '~/src/server/plugins/engine/components/ComponentCollection.js'
 import { UkAddressField } from '~/src/server/plugins/engine/components/UkAddressField.js'
