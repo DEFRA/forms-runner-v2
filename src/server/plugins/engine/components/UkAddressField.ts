@@ -76,7 +76,7 @@ export class UkAddressField extends FormComponent {
           title: 'County',
           schema: { max: 100 },
           options: {
-            autocomplete: 'county',
+            autocomplete: 'address-level1',
             required: false,
             optionalText: !isRequired && (hideOptional || !hideTitle)
           }
