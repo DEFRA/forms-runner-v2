@@ -1,6 +1,11 @@
-import { ComponentType, type UkAddressFieldComponent } from '@defra/forms-model'
+import {
+  ComponentType,
+  type TextFieldComponent,
+  type UkAddressFieldComponent
+} from '@defra/forms-model'
 
 import { ComponentCollection } from '~/src/server/plugins/engine/components/ComponentCollection.js'
+import { UkAddressField } from '~/src/server/plugins/engine/components/UkAddressField.js'
 import {
   getAnswer,
   type Field
@@ -272,6 +277,40 @@ describe('UkAddressField', () => {
         expect(result2.errors).toBeTruthy()
         expect(result3.errors).toBeTruthy()
       })
+
+      it('should ensure all address fields have valid autocomplete values', () => {
+        const ukAddressField = new UkAddressField(
+          {
+            type: ComponentType.UkAddressField,
+            name: 'testAddress',
+            title: 'Test Address',
+            options: {
+              required: true,
+              hideTitle: false
+            }
+          },
+          {
+            model
+          }
+        )
+
+        const expectedAutocompleteValues = [
+          'address-line1',
+          'address-line2',
+          'address-level1',
+          'address-level2',
+          'postal-code'
+        ]
+
+        ukAddressField.collection.components.forEach((component) => {
+          const addressFieldOptions =
+            component.options as TextFieldComponent['options']
+
+          expect(expectedAutocompleteValues).toContain(
+            addressFieldOptions.autocomplete
+          )
+        })
+      })
     })
 
     describe('State', () => {
@@ -396,7 +435,7 @@ describe('UkAddressField', () => {
               expect.objectContaining({
                 model: getViewModel(address, 'county', {
                   label: { text: 'County (optional)' },
-                  attributes: { autocomplete: 'county' },
+                  attributes: { autocomplete: 'address-level1' },
                   value: address.county
                 })
               }),

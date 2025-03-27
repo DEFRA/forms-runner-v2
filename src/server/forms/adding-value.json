@@ -453,7 +453,7 @@
         },
         {
           "type": "UkAddressField",
-          "title": "Address",
+          "title": "Business address",
           "name": "agentBusinessAddress",
           "hint": "",
           "options": {},
@@ -568,16 +568,8 @@
           }
         },
         {
-          "type": "Html",
-          "name": "applicantBusinessAddressHeader",
-          "title": "Html",
-          "content": "<h1 class=\"govuk-heading-m\">Business address</h1>",
-          "options": {},
-          "schema": {}
-        },
-        {
           "type": "UkAddressField",
-          "title": "Address",
+          "title": "Business address",
           "name": "applicantBusinessAddress",
           "hint": "",
           "options": {},
@@ -591,8 +583,8 @@
           "options": {
             "required": true,
             "customValidationMessages": {
-              "string.empty": "Enter postcode",
-              "string.pattern.base": "Enter a valid postcode"
+              "string.empty": "Enter project postcode",
+              "string.pattern.base": "Enter a valid project postcode"
             }
           },
           "schema": {
