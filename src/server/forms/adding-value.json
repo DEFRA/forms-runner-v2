@@ -444,14 +444,6 @@
           }
         },
         {
-          "type": "Html",
-          "name": "agentBusinessAddressHeader",
-          "title": "Html",
-          "content": "<h1 class=\"govuk-heading-m\">Business address</h1>",
-          "options": {},
-          "schema": {}
-        },
-        {
           "type": "UkAddressField",
           "title": "Business address",
           "name": "agentBusinessAddress",
