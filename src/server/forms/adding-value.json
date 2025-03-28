@@ -577,7 +577,8 @@
             "customValidationMessages": {
               "string.empty": "Enter project postcode",
               "string.pattern.base": "Enter a valid project postcode"
-            }
+            },
+            "classes": "govuk-input--width-10"
           },
           "schema": {
             "regex": "^[a-zA-Z]{1,2}\\d[a-zA-Z\\d]?\\s?\\d[a-zA-Z]{2}$"
