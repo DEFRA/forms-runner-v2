@@ -1,0 +1,4 @@
+{
+  "pages": [{ "title": "Page 2" }],
+  "conditions": [{ "name": "some-condition", "value": true }]
+}

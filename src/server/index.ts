@@ -1,3 +1,6 @@
+import path from 'path'
+import { fileURLToPath } from 'url'
+
 import { Engine as CatboxMemory } from '@hapi/catbox-memory'
 import { Engine as CatboxRedis } from '@hapi/catbox-redis'
 import hapi, {
@@ -27,6 +30,7 @@ import pluginSession from '~/src/server/plugins/session.js'
 import { prepareSecureContext } from '~/src/server/secure-context.js'
 import { CacheService } from '~/src/server/services/index.js'
 import { type RouteConfig } from '~/src/server/types.js'
+import { mergeForm } from '~/src/server/utils/mergeForm.js'
 
 const proxyAgent = new ProxyAgent()
 
@@ -74,6 +78,15 @@ const serverOptions = (): ServerOptions => {
 
   return serverOptions
 }
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+const outputDir = path.join(__dirname, 'forms', 'merge-test.json')
+const baseDir = path.join(__dirname, 'forms', 'merge-test/base.json')
+const extraDir = path.join(__dirname, 'forms', 'merge-test/extra')
+
+mergeForm(baseDir, extraDir, outputDir)
 
 export async function createServer(routeConfig?: RouteConfig) {
   const server = hapi.server(serverOptions())
