@@ -1,0 +1,4 @@
+{
+  "pages": [{ "title": "Page 1" }],
+  "lists": [{ "name": "some-list", "items": [] }]
+}
